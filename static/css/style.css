@@ -1,0 +1,16 @@
+pre code {
+    display: block;
+    padding: 1rem;
+    background-color: var(--bs-dark);
+    border-radius: 0.25rem;
+    color: var(--bs-light);
+}
+
+#output {
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+.input-group {
+    margin-top: 1rem;
+}

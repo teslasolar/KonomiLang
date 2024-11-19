@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="mb-4">Konomi Documentation</h1>
+        
+        <h2>Basic Syntax</h2>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>Variable Declaration</h5>
+                <pre><code>let name = "value"</code></pre>
+                
+                <h5>AI Interaction</h5>
+                <pre><code>ask "What is the meaning of life?"</code></pre>
+                
+                <h5>Error Handling</h5>
+                <pre><code>try {
+    ask "Complex question"
+} catch {
+    // Handle error
+}</code></pre>
+            </div>
+        </div>
+
+        <h2>Examples</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5>Basic Conversation</h5>
+                <pre><code>let greeting = "Hello, AI!"
+ask "What's the weather like today?"</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
