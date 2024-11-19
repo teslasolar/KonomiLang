@@ -9,12 +9,12 @@ class Interpreter:
         self.variables = {}
         self.client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
-    def visit_variable_declaration(self, node):
+    def visit_variabledeclaration(self, node):
         value = self.visit(node.value)
         self.variables[node.name] = value
         return f"Variable {node.name} set to: {value}"
 
-    def visit_ask_command(self, node):
+    def visit_askcommand(self, node):
         try:
             prompt = self.visit(node.prompt) if not isinstance(node.prompt, str) else node.prompt
             response = self.client.chat.completions.create(
@@ -27,7 +27,7 @@ class Interpreter:
         except Exception as e:
             raise RuntimeError(f"AI Error: {str(e)}")
 
-    def visit_binary_op(self, node):
+    def visit_binaryop(self, node):
         left = self.visit(node.left)
         right = self.visit(node.right)
         
@@ -61,7 +61,7 @@ class Interpreter:
             raise RuntimeError(f"Variable '{node.name}' is not defined")
         return self.variables[node.name]
 
-    def visit_if_statement(self, node):
+    def visit_ifstatement(self, node):
         condition = self.visit(node.condition)
         
         if condition:
@@ -76,7 +76,7 @@ class Interpreter:
             return '\n'.join(results)
         return ""
 
-    def visit_try_catch(self, node):
+    def visit_trycatch(self, node):
         try:
             results = []
             for statement in node.try_body:
