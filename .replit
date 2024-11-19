@@ -23,6 +23,14 @@ args = "DB Grid Setup"
 task = "workflow.run"
 args = "Verify Grid"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "DB Initialization"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "DB Population"
+
 [[workflows.workflow]]
 name = "Konomi Server"
 author = "agent"
@@ -65,6 +73,34 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python verify_grid.py"
+
+[[workflows.workflow]]
+name = "DB Initialization"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python initialize_databases.py"
+
+[[workflows.workflow]]
+name = "DB Population"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python populate_databases.py"
 
 [deployment]
 run = ["sh", "-c", "python main.py"]
