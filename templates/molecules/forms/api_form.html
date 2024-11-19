@@ -1,0 +1,9 @@
+{% from "atoms/inputs/text_input.html" import text_input %}
+{% from "atoms/buttons/primary_button.html" import primary_button %}
+
+{% macro api_form(endpoint_id, method="POST", placeholder="Enter parameters...") %}
+<form class="api-form" onsubmit="handleApiSubmit('{{ endpoint_id }}', event)">
+    {{ text_input("params_" + endpoint_id, placeholder=placeholder) }}
+    {{ primary_button("Submit", type="submit", class="mt-2") }}
+</form>
+{% endmacro %}

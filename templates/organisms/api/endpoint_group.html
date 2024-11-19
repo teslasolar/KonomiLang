@@ -1,0 +1,20 @@
+{% from "molecules/forms/api_form.html" import api_form %}
+
+{% macro endpoint_group(title, endpoints) %}
+<div class="endpoint-group">
+    <div class="endpoint-group-title">{{ title }}</div>
+    <ul class="endpoint-list">
+        {% for endpoint in endpoints %}
+        <li class="endpoint-item">
+            <button class="endpoint-button {{ endpoint.method|lower }}" onclick="insertEndpoint('{{ endpoint.id }}')">
+                {{ endpoint.method }} {{ endpoint.path }}
+            </button>
+            <div class="endpoint-tooltip">{{ endpoint.description }}</div>
+            {% if endpoint.form %}
+                {{ api_form(endpoint.id, endpoint.method, endpoint.placeholder) }}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endmacro %}

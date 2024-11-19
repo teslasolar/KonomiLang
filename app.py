@@ -10,6 +10,7 @@ from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 import psycopg2
 from psycopg2 import Error as PostgresError
+from konomi.nlp_chains import NLPChains # Add this import
 
 app = Flask(__name__)
 interpreter = Interpreter()
@@ -584,6 +585,91 @@ def database_restore():
     
     try:
         result = program_library.database_restore(backup)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+# Add these new endpoints to app.py after the existing endpoints
+
+@app.route('/api/v1/chains/grammar-check', methods=['POST'])
+def check_grammar():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    text = request.json.get('text')
+    if not text:
+        return jsonify({'success': False, 'error': 'Text parameter is required'}), 400
+    
+    try:
+        nlp_chains = NLPChains(interpreter)
+        result = nlp_chains.grammar_checker(text)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/paraphrase', methods=['POST'])
+def paraphrase_text():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    text = request.json.get('text')
+    style = request.json.get('style', 'formal')
+    if not text:
+        return jsonify({'success': False, 'error': 'Text parameter is required'}), 400
+    
+    try:
+        nlp_chains = NLPChains(interpreter)
+        result = nlp_chains.paraphraser(text, style)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/simplify', methods=['POST'])
+def simplify_text():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    text = request.json.get('text')
+    target_level = request.json.get('target_level', 'middle school')
+    if not text:
+        return jsonify({'success': False, 'error': 'Text parameter is required'}), 400
+    
+    try:
+        nlp_chains = NLPChains(interpreter)
+        result = nlp_chains.text_simplifier(text, target_level)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/thesaurus', methods=['POST'])
+def contextual_thesaurus():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    text = request.json.get('text')
+    word = request.json.get('word')
+    if not text or not word:
+        return jsonify({'success': False, 'error': 'Text and word parameters are required'}), 400
+    
+    try:
+        nlp_chains = NLPChains(interpreter)
+        result = nlp_chains.contextual_thesaurus(text, word)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/analyze-style', methods=['POST'])
+def analyze_style():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    text = request.json.get('text')
+    if not text:
+        return jsonify({'success': False, 'error': 'Text parameter is required'}), 400
+    
+    try:
+        nlp_chains = NLPChains(interpreter)
+        result = nlp_chains.style_analyzer(text)
         return jsonify(result)
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500

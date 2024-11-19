@@ -14,398 +14,66 @@
 
     <!-- API Endpoints Sidebar -->
     <div class="api-sidebar">
-        <!-- Code Modularization -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Code Modularization</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('analyze-code-size')">
-                        POST /chains/analyze-code-size
-                    </button>
-                    <div class="endpoint-tooltip">Analyze function sizes and complexity</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('modularize-function')">
-                        POST /chains/modularize-function
-                    </button>
-                    <div class="endpoint-tooltip">Break down large functions into modules</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('generate-tests')">
-                        POST /chains/generate-tests
-                    </button>
-                    <div class="endpoint-tooltip">Generate tests for both versions</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('backup-code')">
-                        POST /chains/backup-code
-                    </button>
-                    <div class="endpoint-tooltip">Create code backup with metadata</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('replace-code')">
-                        POST /chains/replace-code
-                    </button>
-                    <div class="endpoint-tooltip">Replace code with modularized version</div>
-                </li>
-            </ul>
-        </div>
+        {% from "organisms/api/endpoint_group.html" import endpoint_group %}
+        
+        <!-- Core Operations -->
+        {{ endpoint_group("Core Operations", [
+            {"id": "execute", "method": "POST", "path": "/execute", "description": "Execute Konomi code"},
+            {"id": "status", "method": "GET", "path": "/status", "description": "Get interpreter status"},
+            {"id": "variables", "method": "GET", "path": "/variables", "description": "Get all variables"}
+        ]) }}
 
-        <!-- Component Operations -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Component Operations</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('component-builder')">
-                        POST /chains/component-builder
-                    </button>
-                    <div class="endpoint-tooltip">Generate component from specifications</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('component-validator')">
-                        POST /chains/component-validator
-                    </button>
-                    <div class="endpoint-tooltip">Validate component against best practices</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('component-optimizer')">
-                        POST /chains/component-optimizer
-                    </button>
-                    <div class="endpoint-tooltip">Optimize component based on feedback</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('component-integration')">
-                        POST /chains/component-integration
-                    </button>
-                    <div class="endpoint-tooltip">Test component integration</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('component-auto-build')">
-                        POST /chains/component-auto-build
-                    </button>
-                    <div class="endpoint-tooltip">Auto-build with quality checks</div>
-                </li>
-            </ul>
-        </div>
+        <!-- Code Management -->
+        {{ endpoint_group("Code Management", [
+            {"id": "analyze-code-size", "method": "POST", "path": "/chains/analyze-code-size", "description": "Analyze code size and complexity"},
+            {"id": "modularize-function", "method": "POST", "path": "/chains/modularize-function", "description": "Modularize large functions"},
+            {"id": "generate-tests", "method": "POST", "path": "/chains/generate-tests", "description": "Generate test cases"},
+            {"id": "review-code", "method": "POST", "path": "/chains/review-code", "description": "Review and analyze code"}
+        ]) }}
 
-        <!-- Basic Operations -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Basic Operations</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('execute')">
-                        POST /execute
-                    </button>
-                    <div class="endpoint-tooltip">Execute Konomi code and return results</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button get" onclick="insertEndpoint('status')">
-                        GET /status
-                    </button>
-                    <div class="endpoint-tooltip">Get interpreter status and version</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button get" onclick="insertEndpoint('variables')">
-                        GET /variables
-                    </button>
-                    <div class="endpoint-tooltip">Get all currently defined variables</div>
-                </li>
-            </ul>
-        </div>
+        <!-- Data Operations -->
+        {{ endpoint_group("Data Operations", [
+            {"id": "data-validation", "method": "POST", "path": "/chains/data-validation", "description": "Validate data against schema"},
+            {"id": "data-analysis", "method": "POST", "path": "/chains/data-analysis", "description": "Analyze data patterns"},
+            {"id": "database-setup", "method": "POST", "path": "/chains/database-setup", "description": "Setup database connection"},
+            {"id": "database-migration", "method": "POST", "path": "/chains/database-migration", "description": "Handle database migrations"}
+        ]) }}
 
-        <!-- Content Analysis -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Content Analysis</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('analyze-content')">
-                        POST /chains/analyze-content
-                    </button>
-                    <div class="endpoint-tooltip">Analyze content and extract insights</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('sentiment-analysis')">
-                        POST /chains/sentiment-analysis
-                    </button>
-                    <div class="endpoint-tooltip">Analyze text sentiment and emotional tones</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('entity-recognition')">
-                        POST /chains/entity-recognition
-                    </button>
-                    <div class="endpoint-tooltip">Extract and categorize named entities</div>
-                </li>
-            </ul>
-        </div>
+        <!-- AI Services -->
+        {{ endpoint_group("AI Services", [
+            {"id": "language-tutor", "method": "POST", "path": "/chains/language-tutor", "description": "Language learning assistance"},
+            {"id": "sentiment-analysis", "method": "POST", "path": "/chains/sentiment-analysis", "description": "Analyze text sentiment"},
+            {"id": "entity-recognition", "method": "POST", "path": "/chains/entity-recognition", "description": "Extract named entities"},
+            {"id": "grammar-check", "method": "POST", "path": "/chains/grammar-check", "description": "Check text for grammar errors"},
+            {"id": "paraphrase", "method": "POST", "path": "/chains/paraphrase", "description": "Paraphrase text in different styles"},
+            {"id": "simplify", "method": "POST", "path": "/chains/simplify", "description": "Simplify text to target reading level"},
+            {"id": "thesaurus", "method": "POST", "path": "/chains/thesaurus", "description": "Get contextual synonyms"},
+            {"id": "analyze-style", "method": "POST", "path": "/chains/analyze-style", "description": "Analyze writing style"}
+        ]) }}
 
-        <!-- Code Operations -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Code Operations</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('review-code')">
-                        POST /chains/review-code
-                    </button>
-                    <div class="endpoint-tooltip">Review and analyze code</div>
-                </li>
-            </ul>
-        </div>
+        <!-- Document Processing -->
+        {{ endpoint_group("Document Processing", [
+            {"id": "document-summary", "method": "POST", "path": "/chains/document-summary", "description": "Summarize documents"},
+            {"id": "document-classification", "method": "POST", "path": "/chains/document-classification", "description": "Classify documents"}
+        ]) }}
 
-        <!-- Language Processing -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Language Processing</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('language-tutor')">
-                        POST /chains/language-tutor
-                    </button>
-                    <div class="endpoint-tooltip">Get language learning assistance</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('text-classification')">
-                        POST /chains/text-classification
-                    </button>
-                    <div class="endpoint-tooltip">Classify text into categories</div>
-                </li>
-            </ul>
-        </div>
+        <!-- Business Tools -->
+        {{ endpoint_group("Business Tools", [
+            {"id": "analyze-business", "method": "POST", "path": "/chains/analyze-business", "description": "Analyze business ideas"},
+            {"id": "build-knowledge-graph", "method": "POST", "path": "/chains/build-knowledge-graph", "description": "Build knowledge graphs"}
+        ]) }}
 
-        <!-- Data Analysis -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Data Analysis</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('data-analysis')">
-                        POST /chains/data-analysis
-                    </button>
-                    <div class="endpoint-tooltip">Analyze data patterns and trends</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('data-validation')">
-                        POST /chains/data-validation
-                    </button>
-                    <div class="endpoint-tooltip">Validate data against schema</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Business Analysis -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Business Analysis</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('analyze-business')">
-                        POST /chains/analyze-business
-                    </button>
-                    <div class="endpoint-tooltip">Analyze business ideas and strategies</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Story Development -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Story Development</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('story-developer')">
-                        POST /chains/story-developer
-                    </button>
-                    <div class="endpoint-tooltip">Generate and develop stories</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Media Analysis -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Media Analysis</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('analyze-media')">
-                        POST /chains/analyze-media
-                    </button>
-                    <div class="endpoint-tooltip">Analyze media content and context</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Interactive Learning -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Interactive Learning</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('generate-tutorial')">
-                        POST /chains/generate-tutorial
-                    </button>
-                    <div class="endpoint-tooltip">Create interactive tutorials</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('debug-interactive')">
-                        POST /chains/debug-interactive
-                    </button>
-                    <div class="endpoint-tooltip">Interactive debugging assistance</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Knowledge Graph -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Knowledge Graph</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('build-knowledge-graph')">
-                        POST /chains/build-knowledge-graph
-                    </button>
-                    <div class="endpoint-tooltip">Build domain knowledge graphs</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Code Generation -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Code Generation</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('generate-code')">
-                        POST /chains/generate-code
-                    </button>
-                    <div class="endpoint-tooltip">Generate code from specifications</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Pattern Recognition -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Pattern Recognition</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('recognize-patterns')">
-                        POST /chains/recognize-patterns
-                    </button>
-                    <div class="endpoint-tooltip">Identify patterns in data</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Code Operations -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Code Operations</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('review-code')">
-                        POST /chains/review-code
-                    </button>
-                    <div class="endpoint-tooltip">Review and analyze code</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Language Processing -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Language Processing</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('language-tutor')">
-                        POST /chains/language-tutor
-                    </button>
-                    <div class="endpoint-tooltip">Get language learning assistance</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('text-classification')">
-                        POST /chains/text-classification
-                    </button>
-                    <div class="endpoint-tooltip">Classify text into categories</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Data Analysis -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Data Analysis</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('data-analysis')">
-                        POST /chains/data-analysis
-                    </button>
-                    <div class="endpoint-tooltip">Analyze data patterns and trends</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('data-validation')">
-                        POST /chains/data-validation
-                    </button>
-                    <div class="endpoint-tooltip">Validate data against schema</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Business Analysis -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Business Analysis</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('analyze-business')">
-                        POST /chains/analyze-business
-                    </button>
-                    <div class="endpoint-tooltip">Analyze business ideas and strategies</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Story Development -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Story Development</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('story-developer')">
-                        POST /chains/story-developer
-                    </button>
-                    <div class="endpoint-tooltip">Generate and develop stories</div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Database Operations -->
-        <div class="endpoint-group">
-            <div class="endpoint-group-title">Database Operations</div>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('database-setup')">
-                        POST /chains/database-setup
-                    </button>
-                    <div class="endpoint-tooltip">Set up and configure database</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('database-migration')">
-                        POST /chains/database-migration
-                    </button>
-                    <div class="endpoint-tooltip">Handle database schema migrations</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('database-backup')">
-                        POST /chains/database-backup
-                    </button>
-                    <div class="endpoint-tooltip">Create database backups</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('database-validate')">
-                        POST /chains/database-validate
-                    </button>
-                    <div class="endpoint-tooltip">Validate database operations</div>
-                </li>
-                <li class="endpoint-item">
-                    <button class="endpoint-button post" onclick="insertEndpoint('database-restore')">
-                        POST /chains/database-restore
-                    </button>
-                    <div class="endpoint-tooltip">Restore database from backup</div>
-                </li>
-            </ul>
-        </div>
+        <!-- Interactive Features -->
+        {{ endpoint_group("Interactive Features", [
+            {"id": "generate-tutorial", "method": "POST", "path": "/chains/generate-tutorial", "description": "Generate interactive tutorials"},
+            {"id": "debug-interactive", "method": "POST", "path": "/chains/debug-interactive", "description": "Interactive debugging"}
+        ]) }}
     </div>
 
-    <div class="container with-sidebar mt-4">
+    <div class="container with-sidebar">
         {% block content %}{% endblock %}
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/repl.js') }}"></script>
 </body>
 </html>
