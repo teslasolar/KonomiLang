@@ -62,17 +62,13 @@ def initialize_database(db_path: Path, schema_queries: List[str]) -> bool:
 def create_migration_script(schema_queries: List[str]) -> str:
     """Create a properly formatted migration script from schema queries."""
     try:
-        # Start with BEGIN TRANSACTION
-        script_parts = ["PRAGMA foreign_keys = ON;", "BEGIN TRANSACTION;"]
+        script_parts = ["PRAGMA foreign_keys = ON;"]
         
         # Add each schema query, properly formatted
         for query in schema_queries:
             # Remove any trailing semicolons and extra whitespace
             clean_query = query.strip().rstrip(';')
             script_parts.append(clean_query + ";")
-        
-        # End with COMMIT
-        script_parts.append("COMMIT;")
         
         # Join all parts with proper spacing
         return "\n\n".join(script_parts)
@@ -103,15 +99,18 @@ def main():
                         # Step 1: Initialize database with empty schema
                         if initialize_database(db_path, []):
                             try:
-                                # Step 2: Create migration script
+                                # Step 2: Clean existing migrations if any
+                                schema_manager.clean_migrations(db_path)
+                                
+                                # Step 3: Create migration script
                                 migration_script = create_migration_script(SCHEMAS[position])
                                 
                                 logger.info(f"Registering migration for database {position}")
-                                if schema_manager.register_migration(db_path, 1, migration_script, []):
+                                if schema_manager.register_migration(db_path, 1, migration_script, [], force=True):
                                     try:
-                                        # Step 3: Apply migration
+                                        # Step 4: Apply migration
                                         logger.info(f"Applying migration for database {position}")
-                                        if schema_manager.apply_migration(db_path, 1, f"Initial schema for {position}"):
+                                        if schema_manager.apply_migration(db_path, 1, f"Initial schema for {position}", force=True):
                                             success_count += 1
                                             logger.info(f"Successfully applied migration for database {position}")
                                         else:
