@@ -3,6 +3,7 @@ from konomi.interpreter import Interpreter
 from konomi.errors import KonomiError
 from konomi.konomi_lexer import KonomiLexer
 from konomi.chained_programs import ProgramLibrary
+from monitoring.api import monitor_api
 import markdown
 import os
 from pygments import highlight
@@ -13,6 +14,10 @@ from psycopg2 import Error as PostgresError
 from konomi.nlp_chains import NLPChains
 
 app = Flask(__name__)
+
+# Register monitoring API blueprint
+app.register_blueprint(monitor_api)
+
 interpreter = Interpreter()
 
 # Database error classes
