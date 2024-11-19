@@ -1,39 +1,43 @@
-// Command templates with proper string escaping
+// Command templates with proper template literal syntax
 const commands = {
     'ask': {
-        template: 'ask ""',
-        placeholderText: 'Your question here',
-        cursorOffset: -1
+        template: `ask ""`,
+        placeholderText: 'Your question here'
     },
     'let': {
-        template: 'let name = ""',
-        placeholderText: 'value',
-        cursorOffset: -1
+        template: `let name = ""`,
+        placeholderText: 'value'
     },
     'if': {
-        template: 'if (condition) {\n    ask ""\n}',
-        placeholderText: 'Your question here',
-        cursorOffset: -2
+        template: `if (condition) {
+    ask ""
+}`,
+        placeholderText: 'Your question here'
     },
     'try': {
-        template: 'try {\n    ask ""\n} catch {\n    ask ""\n}',
-        placeholderText: 'Your question here',
-        cursorOffset: -2
+        template: `try {
+    ask ""
+} catch {
+    ask ""
+}`,
+        placeholderText: 'Your question here'
     }
 };
 
-// Error type classification
+// Error type classification with template literals
 const errorTypes = {
-    SYNTAX_ERROR: 'Syntax Error',
-    RUNTIME_ERROR: 'Runtime Error',
-    NETWORK_ERROR: 'Network Error',
-    UNKNOWN_ERROR: 'Unknown Error'
+    SYNTAX_ERROR: `Syntax Error`,
+    RUNTIME_ERROR: `Runtime Error`,
+    NETWORK_ERROR: `Network Error`,
+    UNKNOWN_ERROR: `Unknown Error`
 };
 
 function classifyError(error) {
-    if (error.includes('SyntaxError')) return errorTypes.SYNTAX_ERROR;
-    if (error.includes('RuntimeError')) return errorTypes.RUNTIME_ERROR;
-    if (error.includes('Network')) return errorTypes.NETWORK_ERROR;
+    if (!error) return errorTypes.UNKNOWN_ERROR;
+    const errorStr = String(error);
+    if (errorStr.includes('SyntaxError')) return errorTypes.SYNTAX_ERROR;
+    if (errorStr.includes('RuntimeError')) return errorTypes.RUNTIME_ERROR;
+    if (errorStr.includes('Network')) return errorTypes.NETWORK_ERROR;
     return errorTypes.UNKNOWN_ERROR;
 }
 
@@ -44,7 +48,6 @@ function executeCode() {
 
     if (!code) return;
 
-    // Create FormData for proper encoding
     const formData = new FormData();
     formData.append('code', code);
 
@@ -62,7 +65,7 @@ function executeCode() {
         if (data.success) {
             appendToOutput(output, code, data.result);
         } else {
-            const errorType = classifyError(data.error || '');
+            const errorType = classifyError(data.error);
             appendError(output, code, data.error || 'Unknown error', errorType);
         }
         input.value = '';
@@ -76,59 +79,65 @@ function executeCode() {
 }
 
 function appendToOutput(output, code, result) {
-    const formattedOutput = `<div class="repl-entry">
-        <div class="repl-input">> ${escapeHtml(code)}</div>
-        <div class="repl-result">${escapeHtml(result)}</div>
-    </div>`;
-    output.innerHTML += formattedOutput;
+    const safeCode = escapeHtml(code);
+    const safeResult = escapeHtml(result);
+    output.insertAdjacentHTML('beforeend', `
+        <div class="repl-entry">
+            <div class="repl-input">&gt; ${safeCode}</div>
+            <div class="repl-result">${safeResult}</div>
+        </div>
+    `);
     output.scrollTop = output.scrollHeight;
 }
 
 function appendError(output, code, error, errorType) {
-    const formattedError = `<div class="repl-entry">
-        <div class="repl-input">> ${escapeHtml(code)}</div>
-        <div class="repl-error">${errorType}: ${escapeHtml(error)}</div>
-    </div>`;
-    output.innerHTML += formattedError;
+    const safeCode = escapeHtml(code);
+    const safeError = escapeHtml(error);
+    const safeErrorType = escapeHtml(errorType);
+    output.insertAdjacentHTML('beforeend', `
+        <div class="repl-entry">
+            <div class="repl-input">&gt; ${safeCode}</div>
+            <div class="repl-error">${safeErrorType}: ${safeError}</div>
+        </div>
+    `);
     output.scrollTop = output.scrollHeight;
 }
 
 function escapeHtml(unsafe) {
     if (unsafe == null) return '';
-    return unsafe
-        .toString()
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(unsafe)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
-function insertCommand(template) {
+function insertCommand(cmdName) {
     const input = document.getElementById('input');
-    const command = commands[template];
+    const command = commands[cmdName];
     
-    if (command) {
-        input.value = command.template;
-        input.focus();
-        
-        // Calculate cursor position from the right side of the template
-        const insertPoint = command.template.lastIndexOf('"');
-        if (insertPoint !== -1) {
-            input.setSelectionRange(insertPoint, insertPoint);
-        }
-        
-        // Insert placeholder text if provided
+    if (!command) return;
+
+    input.value = command.template;
+    input.focus();
+
+    // Find position between quotes for cursor placement
+    const quoteMatch = command.template.match(/""/);
+    if (quoteMatch) {
+        const cursorPos = quoteMatch.index + 1;
+        input.setSelectionRange(cursorPos, cursorPos);
+
         if (command.placeholderText) {
-            const before = input.value.slice(0, insertPoint);
-            const after = input.value.slice(insertPoint);
-            input.value = before + command.placeholderText + after;
-            input.setSelectionRange(insertPoint, insertPoint + command.placeholderText.length);
+            const before = command.template.slice(0, cursorPos);
+            const after = command.template.slice(cursorPos);
+            input.value = `${before}${command.placeholderText}${after}`;
+            input.setSelectionRange(cursorPos, cursorPos + command.placeholderText.length);
         }
     }
 }
 
-// Input handling with improved command completion
+// Command completion with debouncing
 let inputTimeout = null;
 document.getElementById('input').addEventListener('input', function(e) {
     const input = e.target;
@@ -142,19 +151,17 @@ document.getElementById('input').addEventListener('input', function(e) {
             const matchingCommands = Object.entries(commands)
                 .filter(([cmd]) => cmd.startsWith(lastWord));
             
-            if (matchingCommands.length === 1) {
-                const [cmd, details] = matchingCommands[0];
-                if (currentText === lastWord) {
-                    input.value = details.template;
-                    if (details.placeholderText) {
-                        const insertPoint = details.template.lastIndexOf('"');
-                        if (insertPoint !== -1) {
-                            const before = input.value.slice(0, insertPoint);
-                            const after = input.value.slice(insertPoint);
-                            input.value = before + details.placeholderText + after;
-                            input.setSelectionRange(insertPoint, insertPoint + details.placeholderText.length);
-                        }
-                    }
+            if (matchingCommands.length === 1 && currentText === lastWord) {
+                const [cmdName, command] = matchingCommands[0];
+                input.value = command.template;
+                
+                const quoteMatch = command.template.match(/""/);
+                if (quoteMatch && command.placeholderText) {
+                    const cursorPos = quoteMatch.index + 1;
+                    const before = command.template.slice(0, cursorPos);
+                    const after = command.template.slice(cursorPos);
+                    input.value = `${before}${command.placeholderText}${after}`;
+                    input.setSelectionRange(cursorPos, cursorPos + command.placeholderText.length);
                 }
             }
         }
