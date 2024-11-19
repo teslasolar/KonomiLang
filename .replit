@@ -51,6 +51,14 @@ args = "List Backups"
 task = "workflow.run"
 args = "Directory Manager Tests"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Code Validator Tests"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Code Validator Demo"
+
 [[workflows.workflow]]
 name = "Konomi Server"
 author = "agent"
@@ -191,6 +199,56 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python -m pytest tests/test_directory_manager.py -v"
+
+[[workflows.workflow]]
+name = "Code Validator Tests"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python -m pytest tests/test_code_validator.py -v"
+
+[[workflows.workflow]]
+name = "Code Validator Demo"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+python3 -c \"
+from konomi.utils.code_validator import CodeValidator
+
+# Test the validator with sample code
+validator = CodeValidator()
+test_code = '''
+def insecure_function():
+    api_key = 'secret123'
+    eval(input('Enter code: '))
+'''
+
+results = validator.validate_code(test_code)
+print('
+Validation Results:')
+print('=' * 20)
+print(f'Valid: {results[\"valid\"]}')
+print('Details:')
+for category, details in results['details'].items():
+    print(f'{category}:')
+    for key, value in details.items():
+        print(f'  - {key}: {value}')\"
+"""
 
 [deployment]
 run = ["sh", "-c", "python main.py"]
