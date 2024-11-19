@@ -22,10 +22,13 @@ class TokenType(Enum):
     GREATER = auto()
     LESS = auto()
     EQUALS_EQUALS = auto()
-    # New file system command tokens
+    # File system command tokens
     LS = auto()
     MKDIR = auto()
     RMDIR = auto()
+    # Console error checking tokens
+    CHECK_CONSOLE = auto()
+    LIST_ERRORS = auto()
     EOF = auto()
 
 class Token:
@@ -67,10 +70,11 @@ class Lexer:
             'else': TokenType.ELSE,
             'try': TokenType.TRY,
             'catch': TokenType.CATCH,
-            # New file system command keywords
             'ls': TokenType.LS,
             'mkdir': TokenType.MKDIR,
-            'rmdir': TokenType.RMDIR
+            'rmdir': TokenType.RMDIR,
+            'checkConsole': TokenType.CHECK_CONSOLE,
+            'listErrors': TokenType.LIST_ERRORS
         }
         
         return Token(keywords.get(result, TokenType.IDENTIFIER), result)
@@ -79,7 +83,12 @@ class Lexer:
         result = ''
         self.advance()  # Skip opening quote
         while self.current_char and self.current_char != '"':
-            result += self.current_char
+            if self.current_char == '\\':
+                self.advance()
+                if self.current_char in {'"', '\\', 'n', 't', 'r'}:
+                    result += '\\' + self.current_char
+            else:
+                result += self.current_char
             self.advance()
         self.advance()  # Skip closing quote
         return Token(TokenType.STRING, result)
