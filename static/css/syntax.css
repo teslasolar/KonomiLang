@@ -1,0 +1,27 @@
+/* Syntax highlighting theme */
+.highlight .k { color: #c678dd; } /* Keyword */
+.highlight .s { color: #98c379; } /* String */
+.highlight .n { color: #e06c75; } /* Name */
+.highlight .o { color: #56b6c2; } /* Operator */
+.highlight .p { color: #abb2bf; } /* Punctuation */
+.highlight .w { color: #abb2bf; } /* Text.Whitespace */
+.highlight .nv { color: #61afef; } /* Name.Variable */
+.highlight .c { color: #5c6370; font-style: italic; } /* Comment */
+.highlight .m { color: #d19a66; } /* Number */
+
+/* Code block styling */
+.code-block {
+    background-color: #282c34;
+    border-radius: 4px;
+    padding: 1em;
+    margin: 1em 0;
+    overflow-x: auto;
+}
+
+.code-block pre {
+    margin: 0;
+    color: #abb2bf;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}

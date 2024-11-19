@@ -1,9 +1,11 @@
 {% from "atoms/text.html" import code_text %}
 {% from "atoms/button.html" import button %}
 
-{% macro code_block(code, show_copy_button=True) %}
+{% macro code_block(code, show_copy_button=True, language='konomi') %}
 <div class="example-code">
-    {{ code_text(code) }}
+    <div class="code-block">
+        {{ highlight_code(code, language) | safe }}
+    </div>
     {% if show_copy_button %}
     {{ button("Try in REPL", "copyToRepl(this)", "btn-secondary btn-sm mt-2") }}
     {% endif %}

@@ -6,6 +6,8 @@
     <title>Konomi - AI Programming Language</title>
     <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/syntax.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/repl.css') }}">
 </head>
 <body>
     {% include "organisms/navbar.html" %}
@@ -15,5 +17,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/repl.js') }}"></script>
 </body>
 </html>

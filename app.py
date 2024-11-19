@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from konomi.interpreter import Interpreter
 from konomi.errors import KonomiError
+from konomi.konomi_lexer import KonomiLexer
 import markdown
 import os
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
 
 app = Flask(__name__)
 interpreter = Interpreter()
@@ -14,6 +18,16 @@ markdown_extensions = [
     'tables',
     'attr_list'
 ]
+
+def highlight_code(code, language='konomi'):
+    try:
+        lexer = get_lexer_by_name(language)
+        formatter = HtmlFormatter(style='monokai', cssclass='highlight')
+        return highlight(code, lexer, formatter)
+    except:
+        return code
+
+app.jinja_env.globals.update(highlight_code=highlight_code)
 
 @app.route('/')
 def index():
