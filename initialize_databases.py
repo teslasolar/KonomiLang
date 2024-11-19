@@ -274,16 +274,217 @@ SCHEMAS = {
             details TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )'''
+    ],
+    'F1': [
+        '''CREATE TABLE IF NOT EXISTS responses (
+            id INTEGER PRIMARY KEY,
+            request_id TEXT NOT NULL,
+            prompt TEXT NOT NULL,
+            response TEXT NOT NULL,
+            metadata JSON,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            archived_at TIMESTAMP
+        )''',
+        '''CREATE TABLE IF NOT EXISTS response_metrics (
+            id INTEGER PRIMARY KEY,
+            response_id INTEGER,
+            tokens_used INTEGER,
+            response_time REAL,
+            rating INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (response_id) REFERENCES responses(id)
+        )'''
+    ],
+    'F2': [
+        '''CREATE TABLE IF NOT EXISTS responses (
+            id INTEGER PRIMARY KEY,
+            request_id TEXT NOT NULL,
+            prompt TEXT NOT NULL,
+            response TEXT NOT NULL,
+            metadata JSON,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            archived_at TIMESTAMP
+        )''',
+        '''CREATE TABLE IF NOT EXISTS response_metrics (
+            id INTEGER PRIMARY KEY,
+            response_id INTEGER,
+            tokens_used INTEGER,
+            response_time REAL,
+            rating INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (response_id) REFERENCES responses(id)
+        )'''
+    ],
+    'F3': [
+        '''CREATE TABLE IF NOT EXISTS responses (
+            id INTEGER PRIMARY KEY,
+            request_id TEXT NOT NULL,
+            prompt TEXT NOT NULL,
+            response TEXT NOT NULL,
+            metadata JSON,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            archived_at TIMESTAMP
+        )''',
+        '''CREATE TABLE IF NOT EXISTS response_metrics (
+            id INTEGER PRIMARY KEY,
+            response_id INTEGER,
+            tokens_used INTEGER,
+            response_time REAL,
+            rating INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (response_id) REFERENCES responses(id)
+        )'''
+    ],
+    'F4': [
+        '''CREATE TABLE IF NOT EXISTS responses (
+            id INTEGER PRIMARY KEY,
+            request_id TEXT NOT NULL,
+            prompt TEXT NOT NULL,
+            response TEXT NOT NULL,
+            metadata JSON,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            archived_at TIMESTAMP
+        )''',
+        '''CREATE TABLE IF NOT EXISTS response_metrics (
+            id INTEGER PRIMARY KEY,
+            response_id INTEGER,
+            tokens_used INTEGER,
+            response_time REAL,
+            rating INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (response_id) REFERENCES responses(id)
+        )'''
+    ],
+    'F5': [
+        '''CREATE TABLE IF NOT EXISTS responses (
+            id INTEGER PRIMARY KEY,
+            request_id TEXT NOT NULL,
+            prompt TEXT NOT NULL,
+            response TEXT NOT NULL,
+            metadata JSON,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            archived_at TIMESTAMP
+        )''',
+        '''CREATE TABLE IF NOT EXISTS response_metrics (
+            id INTEGER PRIMARY KEY,
+            response_id INTEGER,
+            tokens_used INTEGER,
+            response_time REAL,
+            rating INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (response_id) REFERENCES responses(id)
+        )'''
+    ],
+    
+    'G1': [
+        '''CREATE TABLE IF NOT EXISTS responses (
+            id INTEGER PRIMARY KEY,
+            request_id TEXT NOT NULL,
+            prompt TEXT NOT NULL,
+            response TEXT NOT NULL,
+            metadata JSON,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            archived_at TIMESTAMP
+        )''',
+        '''CREATE TABLE IF NOT EXISTS response_metrics (
+            id INTEGER PRIMARY KEY,
+            response_id INTEGER,
+            tokens_used INTEGER,
+            response_time REAL,
+            rating INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (response_id) REFERENCES responses(id)
+        )'''
+    ],
+    'G2': [
+        '''CREATE TABLE IF NOT EXISTS responses (
+            id INTEGER PRIMARY KEY,
+            request_id TEXT NOT NULL,
+            prompt TEXT NOT NULL,
+            response TEXT NOT NULL,
+            metadata JSON,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            archived_at TIMESTAMP
+        )''',
+        '''CREATE TABLE IF NOT EXISTS response_metrics (
+            id INTEGER PRIMARY KEY,
+            response_id INTEGER,
+            tokens_used INTEGER,
+            response_time REAL,
+            rating INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (response_id) REFERENCES responses(id)
+        )'''
+    ],
+    'G3': [
+        '''CREATE TABLE IF NOT EXISTS responses (
+            id INTEGER PRIMARY KEY,
+            request_id TEXT NOT NULL,
+            prompt TEXT NOT NULL,
+            response TEXT NOT NULL,
+            metadata JSON,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            archived_at TIMESTAMP
+        )''',
+        '''CREATE TABLE IF NOT EXISTS response_metrics (
+            id INTEGER PRIMARY KEY,
+            response_id INTEGER,
+            tokens_used INTEGER,
+            response_time REAL,
+            rating INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (response_id) REFERENCES responses(id)
+        )'''
+    ],
+    'G4': [
+        '''CREATE TABLE IF NOT EXISTS responses (
+            id INTEGER PRIMARY KEY,
+            request_id TEXT NOT NULL,
+            prompt TEXT NOT NULL,
+            response TEXT NOT NULL,
+            metadata JSON,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            archived_at TIMESTAMP
+        )''',
+        '''CREATE TABLE IF NOT EXISTS response_metrics (
+            id INTEGER PRIMARY KEY,
+            response_id INTEGER,
+            tokens_used INTEGER,
+            response_time REAL,
+            rating INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (response_id) REFERENCES responses(id)
+        )'''
+    ],
+    'G5': [
+        '''CREATE TABLE IF NOT EXISTS responses (
+            id INTEGER PRIMARY KEY,
+            request_id TEXT NOT NULL,
+            prompt TEXT NOT NULL,
+            response TEXT NOT NULL,
+            metadata JSON,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            archived_at TIMESTAMP
+        )''',
+        '''CREATE TABLE IF NOT EXISTS response_metrics (
+            id INTEGER PRIMARY KEY,
+            response_id INTEGER,
+            tokens_used INTEGER,
+            response_time REAL,
+            rating INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (response_id) REFERENCES responses(id)
+        )'''
     ]
 }
 
 def main():
     base_dir = "db_grid"
     success_count = 0
-    total_dbs = 25
+    total_dbs = 35 
 
     # Initialize each database
-    for row in 'ABCDE':
+    for row in 'ABCDEFG':
         for col in range(1, 6):
             position = f"{row}{col}"
             db_path = os.path.join(base_dir, position, "database.db")

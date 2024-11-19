@@ -9,8 +9,8 @@ def create_grid_structure():
     print(f"Creating base directory: {base_dir}")
     os.makedirs(base_dir, exist_ok=True)
     
-    # Create 5x5 grid of directories and databases
-    rows = list(string.ascii_uppercase[:5])  # A through E
+    # Create 7x5 grid of directories and databases (A-G)
+    rows = list(string.ascii_uppercase[:7])  # A through G
     cols = range(1, 6)  # 1 through 5
     
     created_dbs = []
@@ -52,7 +52,7 @@ def create_grid_structure():
     return created_dbs
 
 if __name__ == "__main__":
-    print("Creating 5x5 grid of SQLite databases...")
+    print("Creating 7x5 grid of SQLite databases...")
     created_dbs = create_grid_structure()
     print(f"Successfully created databases in positions: {', '.join(created_dbs)}")
     

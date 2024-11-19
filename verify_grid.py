@@ -11,7 +11,7 @@ def verify_grid_structure():
     success = True
     total_dbs = 0
     
-    for row in 'ABCDE':
+    for row in 'ABCDEFG':  # Updated to include F and G
         for col in range(1, 6):
             position = f"{row}{col}"
             db_path = f"{base_dir}/{position}/database.db"
@@ -35,6 +35,18 @@ def verify_grid_structure():
                     success = False
                     continue
                 
+                # For F and G rows, verify response tables
+                if row in 'FG':
+                    cursor.execute("""
+                        SELECT name FROM sqlite_master 
+                        WHERE type='table' AND name IN ('responses', 'response_metrics');
+                    """)
+                    tables = cursor.fetchall()
+                    if len(tables) != 2:
+                        print(f"Error: Response tables not found in database at {position}")
+                        success = False
+                        continue
+                
                 # Verify position data
                 cursor.execute("SELECT position FROM grid_info")
                 stored_position = cursor.fetchone()
@@ -51,11 +63,11 @@ def verify_grid_structure():
                 success = False
     
     print(f"\nVerification complete:")
-    print(f"Total valid databases found: {total_dbs}/25")
-    return success and total_dbs == 25
+    print(f"Total valid databases found: {total_dbs}/35")  # Updated total
+    return success and total_dbs == 35  # Updated total
 
 if __name__ == "__main__":
-    print("Verifying 5x5 grid of SQLite databases...")
+    print("Verifying 7x5 grid of SQLite databases...")
     if verify_grid_structure():
         print("Success: All databases are properly initialized!")
         sys.exit(0)
