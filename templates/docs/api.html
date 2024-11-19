@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="mb-4">Konomi API Documentation</h1>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2>API Endpoints</h2>
+                
+                <h3 class="mt-4">POST /api/v1/execute</h3>
+                <p>Execute Konomi code and return the results.</p>
+                
+                <h4>Request Format</h4>
+                <pre><code>{
+    "code": "let x = 42\nask \"What is the meaning of life?\""
+}</code></pre>
+                
+                <h4>Response Format</h4>
+                <pre><code>{
+    "success": true,
+    "result": "The meaning of life is...",
+    "variables": {
+        "x": 42
+    }
+}</code></pre>
+                
+                <h4>Example Usage</h4>
+                <pre><code>curl -X POST http://localhost:5000/api/v1/execute \
+    -H "Content-Type: application/json" \
+    -d '{"code": "let x = 42\nask \"What is x?\""}' </code></pre>
+                
+                <h3 class="mt-4">GET /api/v1/status</h3>
+                <p>Get the current interpreter status.</p>
+                
+                <h4>Response Format</h4>
+                <pre><code>{
+    "success": true,
+    "status": "running",
+    "version": "1.0",
+    "active_variables": 1
+}</code></pre>
+                
+                <h4>Example Usage</h4>
+                <pre><code>curl http://localhost:5000/api/v1/status</code></pre>
+                
+                <h3 class="mt-4">GET /api/v1/variables</h3>
+                <p>Get all currently defined variables.</p>
+                
+                <h4>Response Format</h4>
+                <pre><code>{
+    "success": true,
+    "variables": {
+        "x": 42,
+        "name": "Alice"
+    }
+}</code></pre>
+                
+                <h4>Example Usage</h4>
+                <pre><code>curl http://localhost:5000/api/v1/variables</code></pre>
+                
+                <h2 class="mt-4">Error Handling</h2>
+                <p>All endpoints return error responses in the following format:</p>
+                <pre><code>{
+    "success": false,
+    "error": "Error message description"
+}</code></pre>
+                
+                <h3>Common Error Codes</h3>
+                <ul>
+                    <li><strong>400</strong> - Bad Request (invalid input)</li>
+                    <li><strong>500</strong> - Internal Server Error</li>
+                </ul>
+                
+                <h2 class="mt-4">Authentication</h2>
+                <p>Currently, the API is open and does not require authentication. For production use, it's recommended to implement appropriate authentication mechanisms.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
