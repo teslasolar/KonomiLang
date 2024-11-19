@@ -1,4 +1,4 @@
-// Configuration objects
+// Global configuration
 const config = {
     commands: {
         'ask': {
@@ -88,9 +88,12 @@ function executeCode() {
         return;
     }
 
+    const formData = new FormData();
+    formData.append('code', code);
+
     fetch('/execute', {
         method: 'POST',
-        body: new FormData().append('code', code)
+        body: formData
     })
     .then(response => {
         if (!response.ok) {
