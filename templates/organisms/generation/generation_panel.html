@@ -1,0 +1,25 @@
+<div class="generation-panel">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">AI Generation</h2>
+                <p class="mt-1 text-sm text-gray-500">Create AI-generated content using Konomi</p>
+            </div>
+            
+            <form id="generation-form" class="space-y-6">
+                {% include "molecules/generation/generation_controls.html" %}
+            </form>
+
+            <div class="mt-8">
+                {% include "molecules/generation/generation_result.html" %}
+            </div>
+
+            <div class="mt-8">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Generation History</h3>
+                <div class="space-y-4" id="generation-history">
+                    <!-- History items will be dynamically populated -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

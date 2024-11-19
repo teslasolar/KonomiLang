@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 py-6">
+    {% include "organisms/generation/generation_panel.html" %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('generation-form');
+    const generateButton = document.getElementById('generate-button');
+    const outputDiv = document.getElementById('generation-output');
+    const historyDiv = document.getElementById('generation-history');
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        generateButton.disabled = true;
+        
+        try {
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            outputDiv.innerHTML = `<pre>${data.result}</pre>`;
+            
+            // Add to history
+            const historyItem = document.createElement('div');
+            historyItem.className = 'bg-white shadow rounded-lg p-4';
+            historyItem.innerHTML = `
+                <div class="text-sm text-gray-500">${new Date().toLocaleString()}</div>
+                <div class="mt-2">${data.result}</div>
+            `;
+            historyDiv.prepend(historyItem);
+        } catch (error) {
+            outputDiv.innerHTML = `<div class="text-red-500">Error: ${error.message}</div>`;
+        } finally {
+            generateButton.disabled = false;
+        }
+    });
+});
+</script>
+{% endblock %}

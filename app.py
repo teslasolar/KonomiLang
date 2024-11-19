@@ -10,7 +10,7 @@ from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 import psycopg2
 from psycopg2 import Error as PostgresError
-from konomi.nlp_chains import NLPChains # Add this import
+from konomi.nlp_chains import NLPChains
 
 app = Flask(__name__)
 interpreter = Interpreter()
@@ -71,6 +71,10 @@ app.jinja_env.globals.update(highlight_code=highlight_code)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/generation')
+def generation():
+    return render_template('generation.html')
 
 @app.route('/docs')
 def docs():
