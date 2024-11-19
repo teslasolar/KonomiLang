@@ -22,6 +22,10 @@ class TokenType(Enum):
     GREATER = auto()
     LESS = auto()
     EQUALS_EQUALS = auto()
+    # New file system command tokens
+    LS = auto()
+    MKDIR = auto()
+    RMDIR = auto()
     EOF = auto()
 
 class Token:
@@ -62,7 +66,11 @@ class Lexer:
             'if': TokenType.IF,
             'else': TokenType.ELSE,
             'try': TokenType.TRY,
-            'catch': TokenType.CATCH
+            'catch': TokenType.CATCH,
+            # New file system command keywords
+            'ls': TokenType.LS,
+            'mkdir': TokenType.MKDIR,
+            'rmdir': TokenType.RMDIR
         }
         
         return Token(keywords.get(result, TokenType.IDENTIFIER), result)

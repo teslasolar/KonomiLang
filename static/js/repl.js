@@ -21,6 +21,18 @@ const commands = {
     ask ""
 }`,
         placeholderText: 'Your question here'
+    },
+    'ls': {
+        template: `ls`,
+        placeholderText: ''
+    },
+    'mkdir': {
+        template: `mkdir ""`,
+        placeholderText: 'directory_name'
+    },
+    'rmdir': {
+        template: `rmdir ""`,
+        placeholderText: 'directory_name'
     }
 };
 

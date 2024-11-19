@@ -1,7 +1,8 @@
 import os
 from openai import OpenAI
 from .lexer import Lexer, TokenType
-from .parser import Parser, VariableDeclaration, AskCommand, BinaryOp, Number, String, Identifier, IfStatement, TryCatch
+from .parser import Parser, VariableDeclaration, AskCommand, BinaryOp, Number, String, Identifier
+from .parser import IfStatement, TryCatch, ListDirectoryCommand, CreateDirectoryCommand, RemoveDirectoryCommand
 from .errors import RuntimeError
 
 class Interpreter:
@@ -26,6 +27,39 @@ class Interpreter:
             return response.choices[0].message.content
         except Exception as e:
             raise RuntimeError(f"AI Error: {str(e)}")
+
+    def visit_listdirectorycommand(self, node):
+        try:
+            path = "." if node.path is None else self.visit(node.path)
+            if not os.path.exists(path):
+                raise RuntimeError(f"Directory not found: {path}")
+            items = os.listdir(path)
+            return "\n".join([
+                f"{'[DIR] ' if os.path.isdir(os.path.join(path, item)) else '[FILE] '}{item}"
+                for item in sorted(items)
+            ])
+        except Exception as e:
+            raise RuntimeError(f"File System Error: {str(e)}")
+
+    def visit_createdirectorycommand(self, node):
+        try:
+            path = self.visit(node.path)
+            os.makedirs(path, exist_ok=True)
+            return f"Directory created: {path}"
+        except Exception as e:
+            raise RuntimeError(f"File System Error: {str(e)}")
+
+    def visit_removedirectorycommand(self, node):
+        try:
+            path = self.visit(node.path)
+            if not os.path.exists(path):
+                raise RuntimeError(f"Directory not found: {path}")
+            if not os.path.isdir(path):
+                raise RuntimeError(f"Not a directory: {path}")
+            os.rmdir(path)
+            return f"Directory removed: {path}"
+        except Exception as e:
+            raise RuntimeError(f"File System Error: {str(e)}")
 
     def visit_binaryop(self, node):
         left = self.visit(node.left)

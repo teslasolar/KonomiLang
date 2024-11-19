@@ -42,6 +42,19 @@ class TryCatch(ASTNode):
         self.try_body = try_body
         self.catch_body = catch_body
 
+# New AST nodes for file system operations
+class ListDirectoryCommand(ASTNode):
+    def __init__(self, path=None):
+        self.path = path
+
+class CreateDirectoryCommand(ASTNode):
+    def __init__(self, path):
+        self.path = path
+
+class RemoveDirectoryCommand(ASTNode):
+    def __init__(self, path):
+        self.path = path
+
 class Parser:
     def __init__(self, lexer):
         self.lexer = lexer
@@ -68,6 +81,12 @@ class Parser:
             return self.if_statement()
         elif self.current_token.type == TokenType.TRY:
             return self.try_catch()
+        elif self.current_token.type == TokenType.LS:
+            return self.list_directory()
+        elif self.current_token.type == TokenType.MKDIR:
+            return self.create_directory()
+        elif self.current_token.type == TokenType.RMDIR:
+            return self.remove_directory()
         else:
             return self.expr()
 
@@ -89,6 +108,28 @@ class Parser:
             return AskCommand(self.expr())
         else:
             raise SyntaxError("Expected string or variable after 'ask'")
+
+    # New methods for file system operations
+    def list_directory(self):
+        self.eat(TokenType.LS)
+        path = None
+        if self.current_token.type in (TokenType.STRING, TokenType.IDENTIFIER):
+            path = self.expr()
+        return ListDirectoryCommand(path)
+
+    def create_directory(self):
+        self.eat(TokenType.MKDIR)
+        if self.current_token.type in (TokenType.STRING, TokenType.IDENTIFIER):
+            path = self.expr()
+            return CreateDirectoryCommand(path)
+        raise SyntaxError("Expected path after 'mkdir'")
+
+    def remove_directory(self):
+        self.eat(TokenType.RMDIR)
+        if self.current_token.type in (TokenType.STRING, TokenType.IDENTIFIER):
+            path = self.expr()
+            return RemoveDirectoryCommand(path)
+        raise SyntaxError("Expected path after 'rmdir'")
 
     def if_statement(self):
         self.eat(TokenType.IF)
@@ -133,8 +174,8 @@ class Parser:
         node = self.term()
         
         while self.current_token.type in (TokenType.PLUS, TokenType.MINUS, 
-                                        TokenType.EQUALS_EQUALS, TokenType.GREATER, 
-                                        TokenType.LESS):
+                                      TokenType.EQUALS_EQUALS, TokenType.GREATER, 
+                                      TokenType.LESS):
             token = self.current_token
             if token.type == TokenType.PLUS:
                 self.eat(TokenType.PLUS)
