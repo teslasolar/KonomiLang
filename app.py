@@ -1,16 +1,53 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify
 from konomi.interpreter import Interpreter
 from konomi.errors import KonomiError
 from konomi.konomi_lexer import KonomiLexer
+from konomi.chained_programs import ProgramLibrary
 import markdown
 import os
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
-from konomi.chained_programs import ProgramLibrary  # Import ProgramLibrary
+import psycopg2
+from psycopg2 import Error as PostgresError
 
 app = Flask(__name__)
 interpreter = Interpreter()
+
+# Database error classes
+class DatabaseConnectionError(Exception):
+    pass
+
+class DatabaseConfigError(Exception):
+    pass
+
+def validate_database_config(config):
+    required_fields = ['host', 'port', 'database', 'user']
+    for field in required_fields:
+        if field not in config:
+            raise DatabaseConfigError(f"Missing required field: {field}")
+    
+    # Validate port number
+    try:
+        port = int(config['port'])
+        if port < 1 or port > 65535:
+            raise DatabaseConfigError("Port number must be between 1 and 65535")
+    except ValueError:
+        raise DatabaseConfigError("Port must be a valid number")
+
+def test_database_connection(config):
+    try:
+        conn = psycopg2.connect(
+            host=config['host'],
+            port=config['port'],
+            database=config['database'],
+            user=config['user'],
+            password=config.get('password', '')
+        )
+        conn.close()
+        return True
+    except PostgresError as e:
+        raise DatabaseConnectionError(f"Failed to connect to database: {str(e)}")
 
 # Configure Markdown extensions
 markdown_extensions = [
@@ -115,7 +152,7 @@ def api_variables():
     })
 
 # Initialize program library
-program_library = ProgramLibrary(interpreter)  # Initialize ProgramLibrary
+program_library = ProgramLibrary(interpreter)
 
 # Complex Chained Program Endpoints
 @app.route('/api/v1/chains/analyze-content', methods=['POST'])
@@ -472,11 +509,22 @@ def setup_database():
     
     config = request.json.get('config')
     if not config:
-        return jsonify({'success': False, 'error': 'Database configuration is required'}), 400
+        return jsonify({'success': False, 'error': 'Config parameter is required'}), 400
     
     try:
+        # Validate configuration
+        validate_database_config(config)
+        
+        # Test database connection
+        test_database_connection(config)
+        
+        # Process with program library
         result = program_library.database_setup(config)
         return jsonify(result)
+    except DatabaseConfigError as e:
+        return jsonify({'success': False, 'error': f'Invalid configuration: {str(e)}'}), 400
+    except DatabaseConnectionError as e:
+        return jsonify({'success': False, 'error': f'Connection error: {str(e)}'}), 500
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 

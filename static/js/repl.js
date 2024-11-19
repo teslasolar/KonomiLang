@@ -188,7 +188,7 @@
             'database-setup': {
                 method: 'POST',
                 path: '/api/v1/chains/database-setup',
-                template: '{\n    "config": {\n        "host": "localhost",\n        "port": 5432,\n        "database": "mydb",\n        "user": "dbuser"\n    }\n}'
+                template: '{\n  "config": {\n    "host": "localhost",\n    "port": 5432,\n    "database": "mydb",\n    "user": "dbuser",\n    "password": "yourpassword"\n  }\n}'
             },
             'database-migration': {
                 method: 'POST',
