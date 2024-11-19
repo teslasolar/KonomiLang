@@ -1,22 +1,41 @@
-// Command templates with proper escaping
+// Command templates with proper string escaping
 const commands = {
     'ask': {
-        template: 'ask "Your question here"',
+        template: 'ask ""',
+        placeholderText: 'Your question here',
         cursorOffset: -1
     },
     'let': {
-        template: 'let name = "value"',
-        cursorOffset: -7
+        template: 'let name = ""',
+        placeholderText: 'value',
+        cursorOffset: -1
     },
     'if': {
-        template: 'if (condition) {\n    ask "Your question here"\n}',
-        cursorOffset: -24
+        template: 'if (condition) {\n    ask ""\n}',
+        placeholderText: 'Your question here',
+        cursorOffset: -2
     },
     'try': {
-        template: 'try {\n    ask "Your question here"\n} catch {\n    ask "Error handler"\n}',
-        cursorOffset: -24
+        template: 'try {\n    ask ""\n} catch {\n    ask ""\n}',
+        placeholderText: 'Your question here',
+        cursorOffset: -2
     }
 };
+
+// Error type classification
+const errorTypes = {
+    SYNTAX_ERROR: 'Syntax Error',
+    RUNTIME_ERROR: 'Runtime Error',
+    NETWORK_ERROR: 'Network Error',
+    UNKNOWN_ERROR: 'Unknown Error'
+};
+
+function classifyError(error) {
+    if (error.includes('SyntaxError')) return errorTypes.SYNTAX_ERROR;
+    if (error.includes('RuntimeError')) return errorTypes.RUNTIME_ERROR;
+    if (error.includes('Network')) return errorTypes.NETWORK_ERROR;
+    return errorTypes.UNKNOWN_ERROR;
+}
 
 function executeCode() {
     const input = document.getElementById('input');
@@ -35,25 +54,43 @@ function executeCode() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(`Network response was not ok: ${response.status}`);
         }
         return response.json();
     })
     .then(data => {
         if (data.success) {
-            output.innerHTML += `\n> ${escapeHtml(code)}\n${escapeHtml(data.result)}`;
+            appendToOutput(output, code, data.result);
         } else {
-            output.innerHTML += `\n> ${escapeHtml(code)}\nError: ${escapeHtml(data.error || 'Unknown error')}`;
+            const errorType = classifyError(data.error || '');
+            appendError(output, code, data.error || 'Unknown error', errorType);
         }
         input.value = '';
-        output.scrollTop = output.scrollHeight;
     })
     .catch(error => {
         console.error('Error:', error);
-        output.innerHTML += `\n> ${escapeHtml(code)}\nError: Failed to execute code`;
+        const errorType = classifyError(error.message);
+        appendError(output, code, 'Failed to execute code', errorType);
         input.value = '';
-        output.scrollTop = output.scrollHeight;
     });
+}
+
+function appendToOutput(output, code, result) {
+    const formattedOutput = `<div class="repl-entry">
+        <div class="repl-input">> ${escapeHtml(code)}</div>
+        <div class="repl-result">${escapeHtml(result)}</div>
+    </div>`;
+    output.innerHTML += formattedOutput;
+    output.scrollTop = output.scrollHeight;
+}
+
+function appendError(output, code, error, errorType) {
+    const formattedError = `<div class="repl-entry">
+        <div class="repl-input">> ${escapeHtml(code)}</div>
+        <div class="repl-error">${errorType}: ${escapeHtml(error)}</div>
+    </div>`;
+    output.innerHTML += formattedError;
+    output.scrollTop = output.scrollHeight;
 }
 
 function escapeHtml(unsafe) {
@@ -67,7 +104,31 @@ function escapeHtml(unsafe) {
         .replace(/'/g, "&#039;");
 }
 
-// Improved input handling with debounce
+function insertCommand(template) {
+    const input = document.getElementById('input');
+    const command = commands[template];
+    
+    if (command) {
+        input.value = command.template;
+        input.focus();
+        
+        // Calculate cursor position from the right side of the template
+        const insertPoint = command.template.lastIndexOf('"');
+        if (insertPoint !== -1) {
+            input.setSelectionRange(insertPoint, insertPoint);
+        }
+        
+        // Insert placeholder text if provided
+        if (command.placeholderText) {
+            const before = input.value.slice(0, insertPoint);
+            const after = input.value.slice(insertPoint);
+            input.value = before + command.placeholderText + after;
+            input.setSelectionRange(insertPoint, insertPoint + command.placeholderText.length);
+        }
+    }
+}
+
+// Input handling with improved command completion
 let inputTimeout = null;
 document.getElementById('input').addEventListener('input', function(e) {
     const input = e.target;
@@ -77,17 +138,23 @@ document.getElementById('input').addEventListener('input', function(e) {
     inputTimeout = setTimeout(() => {
         const lastWord = currentText.trim().split(/[\s\n]/).pop();
         
-        if (currentText === lastWord && lastWord.length >= 2) {
-            for (const [cmd, details] of Object.entries(commands)) {
-                if (cmd.startsWith(lastWord)) {
-                    const cursorPos = details.cursorOffset ? 
-                        details.template.length + details.cursorOffset : 
-                        details.template.length;
-                    
+        if (lastWord && lastWord.length >= 2) {
+            const matchingCommands = Object.entries(commands)
+                .filter(([cmd]) => cmd.startsWith(lastWord));
+            
+            if (matchingCommands.length === 1) {
+                const [cmd, details] = matchingCommands[0];
+                if (currentText === lastWord) {
                     input.value = details.template;
-                    input.setSelectionRange(cursorPos, cursorPos);
-                    input.focus();
-                    break;
+                    if (details.placeholderText) {
+                        const insertPoint = details.template.lastIndexOf('"');
+                        if (insertPoint !== -1) {
+                            const before = input.value.slice(0, insertPoint);
+                            const after = input.value.slice(insertPoint);
+                            input.value = before + details.placeholderText + after;
+                            input.setSelectionRange(insertPoint, insertPoint + details.placeholderText.length);
+                        }
+                    }
                 }
             }
         }
@@ -100,22 +167,6 @@ document.getElementById('input').addEventListener('keydown', function(e) {
         executeCode();
     }
 });
-
-function insertCommand(template) {
-    const input = document.getElementById('input');
-    const command = commands[template];
-    
-    if (command) {
-        input.value = command.template;
-        input.focus();
-        
-        const cursorPos = command.cursorOffset ? 
-            command.template.length + command.cursorOffset : 
-            command.template.length;
-        
-        input.setSelectionRange(cursorPos, cursorPos);
-    }
-}
 
 // Initialize output scroll position
 document.addEventListener('DOMContentLoaded', function() {

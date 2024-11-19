@@ -1,0 +1,36 @@
+.repl-entry {
+    margin-bottom: 8px;
+    font-family: monospace;
+}
+
+.repl-input {
+    color: #c5c8c6;
+    margin-bottom: 4px;
+}
+
+.repl-result {
+    color: #b5bd68;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.repl-error {
+    color: #cc6666;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#output {
+    font-family: monospace;
+    padding: 12px;
+    background-color: #1d1f21;
+    border-radius: 4px;
+    border: 1px solid #373b41;
+}
+
+#input {
+    font-family: monospace;
+    background-color: #1d1f21;
+    color: #c5c8c6;
+    border: 1px solid #373b41;
+}
