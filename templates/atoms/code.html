@@ -1,0 +1,21 @@
+{# Code Block Components #}
+
+{% macro code_block(code, language="konomi", classes="") %}
+<pre class="code-block {{ classes }}"><code class="language-{{ language }}">{{ code | e }}</code></pre>
+{% endmacro %}
+
+{% macro inline_code(code, classes="") %}
+<code class="inline-code {{ classes }}">{{ code | e }}</code>
+{% endmacro %}
+
+{% macro highlighted_code(code, language="konomi", classes="") %}
+{{ highlight_code(code, language) | safe }}
+{% endmacro %}
+
+{% macro example_code(code, title="", description="", language="konomi", classes="") %}
+<div class="example-code {{ classes }}">
+    {% if title %}<h5>{{ title }}</h5>{% endif %}
+    {% if description %}<p>{{ description }}</p>{% endif %}
+    {{ highlighted_code(code, language) }}
+</div>
+{% endmacro %}

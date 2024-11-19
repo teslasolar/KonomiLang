@@ -1,0 +1,52 @@
+{# Documentation Section Component #}
+
+{% from "atoms/code.html" import code_block, example_code %}
+{% from "atoms/headers.html" import section_header, subsection_header %}
+
+{% macro docs_section(title, content, code_examples=[], classes="") %}
+<div class="docs-section {{ classes }}">
+    {{ section_header(title) }}
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            {{ content | safe }}
+            
+            {% for example in code_examples %}
+                {{ example_code(
+                    example.code,
+                    title=example.title,
+                    description=example.description,
+                    language=example.language|default('konomi')
+                ) }}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro api_docs_section(title, endpoint, method, request_format="", response_format="", example_usage="", classes="") %}
+<div class="api-docs-section {{ classes }}">
+    {{ section_header(title) }}
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3>{{ method }} {{ endpoint }}</h3>
+            
+            {% if request_format %}
+            <h4>Request Format</h4>
+            {{ code_block(request_format, "json") }}
+            {% endif %}
+            
+            {% if response_format %}
+            <h4>Response Format</h4>
+            {{ code_block(response_format, "json") }}
+            {% endif %}
+            
+            {% if example_usage %}
+            <h4>Example Usage</h4>
+            {{ code_block(example_usage, "bash") }}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endmacro %}

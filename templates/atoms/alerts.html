@@ -1,0 +1,37 @@
+{# Alert Components #}
+
+{% macro info_alert(message, classes="", dismissible=false) %}
+<div class="alert alert-info {{ 'alert-dismissible fade show' if dismissible }} {{ classes }}" role="alert">
+    {{ message | safe }}
+    {% if dismissible %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro success_alert(message, classes="", dismissible=false) %}
+<div class="alert alert-success {{ 'alert-dismissible fade show' if dismissible }} {{ classes }}" role="alert">
+    {{ message | safe }}
+    {% if dismissible %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro warning_alert(message, classes="", dismissible=false) %}
+<div class="alert alert-warning {{ 'alert-dismissible fade show' if dismissible }} {{ classes }}" role="alert">
+    {{ message | safe }}
+    {% if dismissible %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro error_alert(message, classes="", dismissible=false) %}
+<div class="alert alert-danger {{ 'alert-dismissible fade show' if dismissible }} {{ classes }}" role="alert">
+    {{ message | safe }}
+    {% if dismissible %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {% endif %}
+</div>
+{% endmacro %}

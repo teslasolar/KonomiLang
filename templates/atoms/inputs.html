@@ -1,0 +1,33 @@
+{# Input Field Components #}
+
+{% macro text_input(name, placeholder="", value="", classes="", attrs={}) %}
+<input type="text" 
+       name="{{ name }}" 
+       class="form-control {{ classes }}"
+       value="{{ value }}"
+       placeholder="{{ placeholder }}"
+       {% for attr, value in attrs.items() %}{{ attr }}="{{ value }}"{% endfor %}>
+{% endmacro %}
+
+{% macro textarea(name, placeholder="", value="", rows=3, classes="", attrs={}) %}
+<textarea name="{{ name }}"
+          class="form-control {{ classes }}"
+          rows="{{ rows }}"
+          placeholder="{{ placeholder }}"
+          {% for attr, value in attrs.items() %}{{ attr }}="{{ value }}"{% endfor %}>{{ value }}</textarea>
+{% endmacro %}
+
+{% macro code_input(name, placeholder="", value="", classes="", attrs={}) %}
+<textarea name="{{ name }}"
+          class="form-control code-editor {{ classes }}"
+          placeholder="{{ placeholder }}"
+          {% for attr, value in attrs.items() %}{{ attr }}="{{ value }}"{% endfor %}>{{ value }}</textarea>
+{% endmacro %}
+
+{% macro search_input(name="search", placeholder="Search...", classes="", attrs={}) %}
+<input type="search"
+       name="{{ name }}"
+       class="form-control {{ classes }}"
+       placeholder="{{ placeholder }}"
+       {% for attr, value in attrs.items() %}{{ attr }}="{{ value }}"{% endfor %}>
+{% endmacro %}

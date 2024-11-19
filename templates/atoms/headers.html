@@ -1,0 +1,27 @@
+{# Header Components #}
+
+{% macro page_title(title, subtitle="", classes="") %}
+<div class="page-header {{ classes }}">
+    <h1>{{ title }}</h1>
+    {% if subtitle %}
+    <p class="lead">{{ subtitle }}</p>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro section_header(title, level=2, classes="") %}
+<h{{ level }} class="section-header {{ classes }}">{{ title }}</h{{ level }}>
+{% endmacro %}
+
+{% macro api_header(title, version="", classes="") %}
+<div class="api-header {{ classes }}">
+    <h1>{{ title }}</h1>
+    {% if version %}
+    <span class="api-version">v{{ version }}</span>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro subsection_header(title, classes="") %}
+<h3 class="subsection-header {{ classes }}">{{ title }}</h3>
+{% endmacro %}

@@ -1,0 +1,75 @@
+{# API Sidebar Component #}
+
+{% from "atoms/buttons.html" import api_button %}
+{% from "molecules/docs/section.html" import api_docs_section %}
+
+<div class="api-sidebar">
+    <div class="accordion" id="apiAccordion">
+        {# Core Operations #}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#coreOperations">
+                    <i class="bi bi-gear-fill me-2"></i>Core Operations
+                </button>
+            </h2>
+            <div id="coreOperations" class="accordion-collapse collapse show" data-bs-parent="#apiAccordion">
+                <div class="accordion-body">
+                    {{ api_button("POST", "/api/v1/execute", "Execute Konomi code") }}
+                    {{ api_button("GET", "/api/v1/status", "Get interpreter status") }}
+                    {{ api_button("GET", "/api/v1/variables", "Get all variables") }}
+                </div>
+            </div>
+        </div>
+
+        {# Code Management #}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#codeManagement">
+                    <i class="bi bi-code-square me-2"></i>Code Management
+                </button>
+            </h2>
+            <div id="codeManagement" class="accordion-collapse collapse" data-bs-parent="#apiAccordion">
+                <div class="accordion-body">
+                    {{ api_button("POST", "/api/v1/chains/analyze-code-size", "Analyze code size and complexity") }}
+                    {{ api_button("POST", "/api/v1/chains/modularize-function", "Modularize large functions") }}
+                    {{ api_button("POST", "/api/v1/chains/generate-tests", "Generate test cases") }}
+                    {{ api_button("POST", "/api/v1/chains/review-code", "Review and analyze code") }}
+                </div>
+            </div>
+        </div>
+
+        {# Data Operations #}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dataOperations">
+                    <i class="bi bi-database me-2"></i>Data Operations
+                </button>
+            </h2>
+            <div id="dataOperations" class="accordion-collapse collapse" data-bs-parent="#apiAccordion">
+                <div class="accordion-body">
+                    {{ api_button("POST", "/api/v1/chains/data-validation", "Validate data against schema") }}
+                    {{ api_button("POST", "/api/v1/chains/data-analysis", "Analyze data patterns") }}
+                    {{ api_button("POST", "/api/v1/chains/database-setup", "Setup database connection") }}
+                    {{ api_button("POST", "/api/v1/chains/database-migration", "Handle database migrations") }}
+                </div>
+            </div>
+        </div>
+
+        {# AI Services #}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#aiServices">
+                    <i class="bi bi-robot me-2"></i>AI Services
+                </button>
+            </h2>
+            <div id="aiServices" class="accordion-collapse collapse" data-bs-parent="#apiAccordion">
+                <div class="accordion-body">
+                    {{ api_button("POST", "/api/v1/chains/language-tutor", "Language learning assistance") }}
+                    {{ api_button("POST", "/api/v1/chains/sentiment-analysis", "Analyze text sentiment") }}
+                    {{ api_button("POST", "/api/v1/chains/entity-recognition", "Extract named entities") }}
+                    {{ api_button("POST", "/api/v1/chains/grammar-check", "Check text for grammar errors") }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

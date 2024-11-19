@@ -1,0 +1,25 @@
+{# Button Styles Component #}
+
+{% macro primary_button(text, classes="", attrs={}) %}
+<button class="btn btn-primary {{ classes }}" {% for attr, value in attrs.items() %}{{ attr }}="{{ value }}"{% endfor %}>
+    {{ text }}
+</button>
+{% endmacro %}
+
+{% macro secondary_button(text, classes="", attrs={}) %}
+<button class="btn btn-secondary {{ classes }}" {% for attr, value in attrs.items() %}{{ attr }}="{{ value }}"{% endfor %}>
+    {{ text }}
+</button>
+{% endmacro %}
+
+{% macro api_button(method, path, description, classes="") %}
+<button class="endpoint-button {{ method.lower() }} {{ classes }}" data-path="{{ path }}" title="{{ description }}">
+    <span class="method">{{ method }}</span> {{ path }}
+</button>
+{% endmacro %}
+
+{% macro submit_button(text="Submit", classes="", attrs={}) %}
+<button type="submit" class="btn btn-primary {{ classes }}" {% for attr, value in attrs.items() %}{{ attr }}="{{ value }}"{% endfor %}>
+    {{ text }}
+</button>
+{% endmacro %}
