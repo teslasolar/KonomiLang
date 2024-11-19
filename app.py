@@ -12,7 +12,11 @@ from konomi.routes.core import setup_core_routes
 from konomi.routes.chains import setup_chain_routes
 from monitoring.api import monitor_api
 from generation.functions import DocumentationGenerator
-from konomi.generators.examples import generate_example_card, generate_example_chart
+from konomi.generators.examples import (
+    generate_example_card, generate_example_chart,
+    generate_animated_loader, generate_animated_path,
+    generate_pulse_animation
+)
 import markdown
 import os
 import logging
