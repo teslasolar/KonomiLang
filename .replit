@@ -59,6 +59,10 @@ args = "Code Validator Tests"
 task = "workflow.run"
 args = "Code Validator Demo"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Generated Components Tests"
+
 [[workflows.workflow]]
 name = "Konomi Server"
 author = "agent"
@@ -249,6 +253,20 @@ for category, details in results['details'].items():
     for key, value in details.items():
         print(f'  - {key}: {value}')\"
 """
+
+[[workflows.workflow]]
+name = "Generated Components Tests"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python -m pytest tests/test_generated_components.py -v"
 
 [deployment]
 run = ["sh", "-c", "python main.py"]

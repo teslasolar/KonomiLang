@@ -115,3 +115,48 @@
 2024-11-19 17:14:09,463 - konomi.utils.directory_manager - INFO - Removed structure at /tmp/tmp_6btamz3/test_dir
 2024-11-19 17:14:09,463 - konomi.utils.directory_manager - INFO - Removed structure at /tmp/tmp_6btamz3/test_dir
 2024-11-19 17:14:09,463 - konomi.utils.directory_manager - INFO - Removed structure at /tmp/tmp_6btamz3/test_dir
+2024-11-19 21:28:43,150 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpxo450jhu
+2024-11-19 21:28:43,163 - konomi.utils.directory_manager - INFO - Exported template to /tmp/tmpaqwd4v9y/template.json
+2024-11-19 21:28:43,163 - konomi.utils.directory_manager - INFO - Exported template to /tmp/tmpaqwd4v9y/template.json
+2024-11-19 21:28:43,163 - konomi.utils.directory_manager - INFO - Imported template from /tmp/tmpaqwd4v9y/template.json
+2024-11-19 21:28:43,163 - konomi.utils.directory_manager - INFO - Imported template from /tmp/tmpaqwd4v9y/template.json
+2024-11-19 21:28:43,163 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpaqwd4v9y
+2024-11-19 21:28:43,163 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpaqwd4v9y
+2024-11-19 21:28:43,165 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmptka1y08k
+2024-11-19 21:28:43,165 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmptka1y08k
+2024-11-19 21:28:43,165 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmptka1y08k
+2024-11-19 21:28:43,167 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpt394_s5j
+2024-11-19 21:28:43,167 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpt394_s5j
+2024-11-19 21:28:43,167 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpt394_s5j
+2024-11-19 21:28:43,167 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpt394_s5j
+2024-11-19 21:28:43,167 - konomi.utils.directory_manager - INFO - Listed directory contents at /tmp/tmpt394_s5j
+2024-11-19 21:28:43,167 - konomi.utils.directory_manager - INFO - Listed directory contents at /tmp/tmpt394_s5j
+2024-11-19 21:28:43,167 - konomi.utils.directory_manager - INFO - Listed directory contents at /tmp/tmpt394_s5j
+2024-11-19 21:28:43,167 - konomi.utils.directory_manager - INFO - Listed directory contents at /tmp/tmpt394_s5j
+2024-11-19 21:28:43,169 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpea2hb9qk
+2024-11-19 21:28:43,169 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpea2hb9qk
+2024-11-19 21:28:43,169 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpea2hb9qk
+2024-11-19 21:28:43,169 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpea2hb9qk
+2024-11-19 21:28:43,169 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpea2hb9qk
+2024-11-19 21:28:43,170 - konomi.utils.directory_manager - INFO - Listed directory contents at /tmp/tmpea2hb9qk
+2024-11-19 21:28:43,170 - konomi.utils.directory_manager - INFO - Listed directory contents at /tmp/tmpea2hb9qk
+2024-11-19 21:28:43,170 - konomi.utils.directory_manager - INFO - Listed directory contents at /tmp/tmpea2hb9qk
+2024-11-19 21:28:43,170 - konomi.utils.directory_manager - INFO - Listed directory contents at /tmp/tmpea2hb9qk
+2024-11-19 21:28:43,170 - konomi.utils.directory_manager - INFO - Listed directory contents at /tmp/tmpea2hb9qk
+2024-11-19 21:28:43,170 - konomi.utils.directory_manager - INFO - Cleared operation history
+2024-11-19 21:28:43,170 - konomi.utils.directory_manager - INFO - Cleared operation history
+2024-11-19 21:28:43,170 - konomi.utils.directory_manager - INFO - Cleared operation history
+2024-11-19 21:28:43,170 - konomi.utils.directory_manager - INFO - Cleared operation history
+2024-11-19 21:28:43,170 - konomi.utils.directory_manager - INFO - Cleared operation history
+2024-11-19 21:28:43,171 - konomi.utils.directory_manager - INFO - Removed structure at /tmp/tmpz8n8ygli/test_dir
+2024-11-19 21:28:43,171 - konomi.utils.directory_manager - INFO - Removed structure at /tmp/tmpz8n8ygli/test_dir
+2024-11-19 21:28:43,171 - konomi.utils.directory_manager - INFO - Removed structure at /tmp/tmpz8n8ygli/test_dir
+2024-11-19 21:28:43,171 - konomi.utils.directory_manager - INFO - Removed structure at /tmp/tmpz8n8ygli/test_dir
+2024-11-19 21:28:43,171 - konomi.utils.directory_manager - INFO - Removed structure at /tmp/tmpz8n8ygli/test_dir
+2024-11-19 21:28:43,171 - konomi.utils.directory_manager - INFO - Removed structure at /tmp/tmpz8n8ygli/test_dir
+2024-11-19 21:28:47,304 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpbou1xaqf
+2024-11-19 21:28:47,304 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmpbou1xaqf
+2024-11-19 21:28:47,307 - konomi.utils.directory_manager - INFO - Exported template to /tmp/tmpbou1xaqf/structure.json
+2024-11-19 21:28:47,307 - konomi.utils.directory_manager - INFO - Exported template to /tmp/tmpbou1xaqf/structure.json
+2024-11-19 21:28:47,308 - konomi.utils.directory_manager - INFO - Imported template from /tmp/tmpbou1xaqf/structure.json
+2024-11-19 21:28:47,308 - konomi.utils.directory_manager - INFO - Imported template from /tmp/tmpbou1xaqf/structure.json
