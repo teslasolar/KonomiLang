@@ -1,0 +1,9 @@
+{% from "atoms/input.html" import text_input %}
+{% from "atoms/button.html" import button %}
+
+{% macro input_group(input_id, input_placeholder="", button_text="Run", button_onclick="") %}
+<div class="input-group">
+    {{ text_input(input_id, input_placeholder) }}
+    {{ button(button_text, button_onclick, "btn-primary") }}
+</div>
+{% endmacro %}

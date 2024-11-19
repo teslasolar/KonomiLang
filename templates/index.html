@@ -1,35 +1,11 @@
 {% extends "base.html" %}
 
+{% from "organisms/repl_console.html" import repl_console %}
+
 {% block content %}
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <h1 class="mb-4">Konomi REPL</h1>
-        <div class="card">
-            <div class="card-body">
-                <div id="output" class="mb-3 p-3 bg-dark rounded" style="height: 300px; overflow-y: auto;">
-                    Welcome to Konomi REPL!
-                    Try these commands:
-                    > let name = "Alice"
-                    > ask "What is the weather?"
-                </div>
-                <div class="input-group">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            Commands
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="insertCommand('ask ""')">Ask AI</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="insertCommand('let name = ""')">Declare Variable</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="insertCommand('let result = ')">Math Expression</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="insertCommand('if () {\n    ask ""\n}')">If Statement</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="insertCommand('try {\n    ask ""\n} catch {\n    ask ""\n}')">Try-Catch</a></li>
-                        </ul>
-                    </div>
-                    <input type="text" id="input" class="form-control" placeholder="Enter Konomi code...">
-                    <button class="btn btn-primary" onclick="executeCode()">Run</button>
-                </div>
-            </div>
-        </div>
+        {{ repl_console() }}
     </div>
 </div>
 <script src="{{ url_for('static', filename='js/repl.js') }}"></script>

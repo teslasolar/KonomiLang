@@ -1,0 +1,9 @@
+{% macro button(text, onclick="", class="", type="button") %}
+<button class="btn {{ class }}" onclick="{{ onclick }}" type="{{ type }}">{{ text }}</button>
+{% endmacro %}
+
+{% macro dropdown_toggle(text, class="btn-secondary") %}
+<button class="btn {{ class }} dropdown-toggle" type="button" data-bs-toggle="dropdown">
+    {{ text }}
+</button>
+{% endmacro %}

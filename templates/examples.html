@@ -1,72 +1,29 @@
 {% extends "base.html" %}
+{% from "atoms/text.html" import heading %}
+{% from "organisms/example_card.html" import example_card %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <h1 class="mb-4">Konomi Examples</h1>
+        {{ heading("Konomi Examples", class="mb-4") }}
         
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">AI Conversation Assistant</h5>
-            </div>
-            <div class="card-body">
-                <p class="mb-3">Create an AI assistant that helps with different topics:</p>
-                <div class="example-code">
-                    <pre><code>let topic = "quantum physics"
-try {
-    let response = ask "Explain " + topic + " in simple terms"
-    if (response.length > 200) {
-        ask "Can you give me a shorter explanation?"
-    }
-} catch {
-    ask "Let's try something simpler instead"
-}</code></pre>
-                <button class="btn btn-secondary btn-sm mt-2" onclick="copyToRepl(this)">Try in REPL</button>
-                </div>
-            </div>
-        </div>
+        {{ example_card(
+            "AI Conversation Assistant",
+            "Create an AI assistant that helps with different topics:",
+            'let topic = "quantum physics"\ntry {\n    let response = ask "Explain " + topic + " in simple terms"\n    if (response.length > 200) {\n        ask "Can you give me a shorter explanation?"\n    }\n} catch {\n    ask "Let\'s try something simpler instead"\n}'
+        ) }}
 
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">Smart Calculator</h5>
-            </div>
-            <div class="card-body">
-                <p class="mb-3">Perform calculations and get AI explanations:</p>
-                <div class="example-code">
-                    <pre><code>let num1 = 42
-let num2 = 8
-let result = num1 / num2
+        {{ example_card(
+            "Smart Calculator",
+            "Perform calculations and get AI explanations:",
+            'let num1 = 42\nlet num2 = 8\nlet result = num1 / num2\n\nif (result > 5) {\n    ask "Explain why " + num1 + " divided by " + num2 + " equals " + result\n}'
+        ) }}
 
-if (result > 5) {
-    ask "Explain why " + num1 + " divided by " + num2 + " equals " + result
-}</code></pre>
-                <button class="btn btn-secondary btn-sm mt-2" onclick="copyToRepl(this)">Try in REPL</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">Dynamic Story Generator</h5>
-            </div>
-            <div class="card-body">
-                <p class="mb-3">Generate interactive stories based on user input:</p>
-                <div class="example-code">
-                    <pre><code>let character = "space explorer"
-let setting = "distant galaxy"
-
-try {
-    let story = ask "Create a short story about a " + character + " in a " + setting
-    if (story.length > 150) {
-        ask "That was great! What happens next?"
-    }
-} catch {
-    ask "Tell me a different story about " + character
-}</code></pre>
-                <button class="btn btn-secondary btn-sm mt-2" onclick="copyToRepl(this)">Try in REPL</button>
-                </div>
-            </div>
-        </div>
+        {{ example_card(
+            "Dynamic Story Generator",
+            "Generate interactive stories based on user input:",
+            'let character = "space explorer"\nlet setting = "distant galaxy"\n\ntry {\n    let story = ask "Create a short story about a " + character + " in a " + setting\n    if (story.length > 150) {\n        ask "That was great! What happens next?"\n    }\n} catch {\n    ask "Tell me a different story about " + character\n}'
+        ) }}
     </div>
 </div>
 

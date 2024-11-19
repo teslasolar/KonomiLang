@@ -1,0 +1,14 @@
+{% from "atoms/text.html" import heading %}
+{% from "molecules/code_block.html" import code_block %}
+
+{% macro example_card(title, description, code) %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">{{ title }}</h5>
+    </div>
+    <div class="card-body">
+        <p class="mb-3">{{ description }}</p>
+        {{ code_block(code) }}
+    </div>
+</div>
+{% endmacro %}

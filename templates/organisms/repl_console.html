@@ -1,0 +1,21 @@
+{% from "atoms/text.html" import heading %}
+{% from "molecules/command_dropdown.html" import command_dropdown %}
+{% from "molecules/input_group.html" import input_group %}
+
+{% macro repl_console() %}
+{{ heading("Konomi REPL", class="mb-4") }}
+<div class="card">
+    <div class="card-body">
+        <div id="output" class="mb-3 p-3 bg-dark rounded" style="height: 300px; overflow-y: auto;">
+            Welcome to Konomi REPL!
+            Try these commands:
+            > let name = "Alice"
+            > ask "What is the weather?"
+        </div>
+        <div class="input-group">
+            {{ command_dropdown() }}
+            {{ input_group("input", "Enter Konomi code...", "Run", "executeCode()") }}
+        </div>
+    </div>
+</div>
+{% endmacro %}

@@ -1,0 +1,14 @@
+{% from "atoms/button.html" import dropdown_toggle %}
+
+{% macro command_dropdown() %}
+<div class="dropdown">
+    {{ dropdown_toggle("Commands") }}
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#" onclick="insertCommand('ask &quot;&quot;')">Ask AI</a></li>
+        <li><a class="dropdown-item" href="#" onclick="insertCommand('let name = &quot;&quot;')">Declare Variable</a></li>
+        <li><a class="dropdown-item" href="#" onclick="insertCommand('let result = ')">Math Expression</a></li>
+        <li><a class="dropdown-item" href="#" onclick="insertCommand('if () {\n    ask &quot;&quot;\n}')">If Statement</a></li>
+        <li><a class="dropdown-item" href="#" onclick="insertCommand('try {\n    ask &quot;&quot;\n} catch {\n    ask &quot;&quot;\n}')">Try-Catch</a></li>
+    </ul>
+</div>
+{% endmacro %}

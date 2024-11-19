@@ -1,0 +1,11 @@
+{% macro heading(text, level=1, class="") %}
+<h{{ level }} class="{{ class }}">{{ text }}</h{{ level }}>
+{% endmacro %}
+
+{% macro paragraph(text, class="") %}
+<p class="{{ class }}">{{ text }}</p>
+{% endmacro %}
+
+{% macro code_text(text) %}
+<pre><code>{{ text }}</code></pre>
+{% endmacro %}
