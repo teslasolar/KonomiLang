@@ -3,7 +3,7 @@ Documentation Generator for KonomiLang
 Handles automatic generation of documentation, APIs, and directory structure
 with caching and optimization features
 """
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 import os
 import json
 import hashlib
@@ -13,12 +13,14 @@ from pathlib import Path
 from functools import lru_cache
 import markdown
 from concurrent.futures import ThreadPoolExecutor
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 class DocumentationCache:
     def __init__(self):
         self.content_cache = {}
         self.hash_cache = {}
         self.markdown_cache = {}
+        self.template_cache = {}
         self._executor = ThreadPoolExecutor(max_workers=4)
 
     def get_content(self, key: str) -> Optional[str]:
@@ -34,6 +36,13 @@ class DocumentationCache:
     def set_markdown(self, key: str, content: str):
         self.markdown_cache[key] = content
 
+    def get_template(self, key: str) -> Optional[str]:
+        return self.template_cache.get(key)
+
+    def set_template(self, key: str, content: str):
+        self.template_cache[key] = content
+        self.hash_cache[key] = self._hash_content(content)
+
     def has_changed(self, key: str, content: str) -> bool:
         if key not in self.hash_cache:
             return True
@@ -44,7 +53,7 @@ class DocumentationCache:
         return hashlib.md5(content.encode()).hexdigest()
 
 class DocumentationGenerator:
-    def __init__(self):
+    def __init__(self, template_dir: str = "templates/docs"):
         self.default_params = {
             "format": "markdown",
             "include_examples": True,
@@ -52,38 +61,113 @@ class DocumentationGenerator:
         }
         self.cache = DocumentationCache()
         self.pending_writes = {}
+        self.jinja_env = Environment(
+            loader=FileSystemLoader(template_dir),
+            autoescape=select_autoescape(['html', 'xml']),
+            enable_async=True
+        )
+        self._setup_template_filters()
+
+    def _setup_template_filters(self):
+        """Setup custom Jinja2 filters"""
+        self.jinja_env.filters['code_highlight'] = self._highlight_code
+        self.jinja_env.filters['markdown'] = self._render_markdown
+
+    def _highlight_code(self, code: str, language: str = 'python') -> str:
+        """Syntax highlighting filter for code blocks"""
+        try:
+            from pygments import highlight
+            from pygments.lexers import get_lexer_by_name
+            from pygments.formatters import HtmlFormatter
+            
+            lexer = get_lexer_by_name(language)
+            formatter = HtmlFormatter(style='monokai')
+            return highlight(code, lexer, formatter)
+        except Exception:
+            return code
+
+    def _render_markdown(self, content: str) -> str:
+        """Convert markdown to HTML"""
+        return markdown.markdown(content, extensions=['fenced_code', 'codehilite'])
+
+    async def render_template(self, template_name: str, context: Dict[str, Any]) -> str:
+        """Render a template with the given context"""
+        try:
+            template = self.jinja_env.get_template(template_name)
+            return await template.render_async(**context)
+        except Exception as e:
+            raise Exception(f"Template rendering failed: {str(e)}")
 
     async def generate_api_docs(self, endpoints: List[Dict], output_path: str = "docs/api.md") -> str:
-        """Generate API documentation from endpoint definitions with caching"""
-        doc_content = "# API Documentation\n\n"
+        """Generate API documentation using templates"""
+        context = {
+            "endpoints": endpoints,
+            "title": "API Documentation",
+            "description": "Complete API reference for the Konomi Language"
+        }
         
-        for endpoint in endpoints:
-            doc_content += f"## {endpoint['method']} {endpoint['path']}\n\n"
-            if 'description' in endpoint:
-                doc_content += f"{endpoint['description']}\n\n"
+        try:
+            content = await self.render_template("api_docs.md.j2", context)
             
-            if 'request_schema' in endpoint:
-                doc_content += "### Request Schema\n```json\n"
-                doc_content += json.dumps(endpoint['request_schema'], indent=2)
-                doc_content += "\n```\n\n"
+            if self.cache.has_changed('api_docs', content):
+                self.cache.set_content('api_docs', content)
+                self.pending_writes[output_path] = content
+                await self._batch_write()
             
-            if 'response_schema' in endpoint:
-                doc_content += "### Response Schema\n```json\n"
-                doc_content += json.dumps(endpoint['response_schema'], indent=2)
-                doc_content += "\n```\n\n"
-            
-            if 'example' in endpoint:
-                doc_content += "### Example\n```bash\n"
-                doc_content += endpoint['example']
-                doc_content += "\n```\n\n"
+            return content
+        except Exception as e:
+            raise Exception(f"API documentation generation failed: {str(e)}")
 
-        # Only write if content has changed
-        if self.cache.has_changed('api_docs', doc_content):
-            self.cache.set_content('api_docs', doc_content)
-            self.pending_writes[output_path] = doc_content
-            await self._batch_write()
+    async def generate_component_docs(self, components: List[Dict], output_path: str = "docs/components.md") -> str:
+        """Generate documentation for UI components using templates"""
+        context = {
+            "components": components,
+            "title": "Component Documentation",
+            "description": "Documentation for UI components"
+        }
         
-        return doc_content
+        try:
+            content = await self.render_template("component_docs.md.j2", context)
+            
+            if self.cache.has_changed('component_docs', content):
+                self.cache.set_content('component_docs', content)
+                self.pending_writes[output_path] = content
+                await self._batch_write()
+            
+            return content
+        except Exception as e:
+            raise Exception(f"Component documentation generation failed: {str(e)}")
+
+    async def generate_syntax_docs(self, syntax_data: Dict, output_path: str = "docs/syntax.md") -> str:
+        """Generate syntax documentation using templates"""
+        context = {
+            "syntax": syntax_data,
+            "title": "Syntax Documentation",
+            "description": "Complete syntax reference for the Konomi Language"
+        }
+        
+        try:
+            content = await self.render_template("syntax_docs.md.j2", context)
+            
+            if self.cache.has_changed('syntax_docs', content):
+                self.cache.set_content('syntax_docs', content)
+                self.pending_writes[output_path] = content
+                await self._batch_write()
+            
+            return content
+        except Exception as e:
+            raise Exception(f"Syntax documentation generation failed: {str(e)}")
+
+    async def _batch_write(self):
+        """Batch write operations to reduce I/O"""
+        for path, content in self.pending_writes.items():
+            try:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                async with aiofiles.open(path, 'w') as f:
+                    await f.write(content)
+            except Exception as e:
+                print(f"Error writing to {path}: {str(e)}")
+        self.pending_writes.clear()
 
     @lru_cache(maxsize=128)
     def discover_endpoints(self, app) -> List[Dict]:
@@ -105,65 +189,14 @@ class DocumentationGenerator:
         
         return endpoints
 
-    async def _batch_write(self):
-        """Batch write operations to reduce I/O"""
-        for path, content in self.pending_writes.items():
-            try:
-                os.makedirs(os.path.dirname(path), exist_ok=True)
-                async with aiofiles.open(path, 'w') as f:
-                    await f.write(content)
-            except Exception as e:
-                print(f"Error writing to {path}: {str(e)}")
-        self.pending_writes.clear()
-
-    async def process_markdown(self, content: str, cache_key: str) -> str:
-        """Process markdown content asynchronously with caching"""
-        if not self.cache.has_changed(cache_key, content):
-            cached_result = self.cache.get_markdown(cache_key)
-            if cached_result:
-                return cached_result
-
-        # Process markdown in thread pool to avoid blocking
-        loop = asyncio.get_event_loop()
-        result = await loop.run_in_executor(
-            self.cache._executor,
-            lambda: markdown.markdown(content, extensions=['fenced_code', 'codehilite'])
-        )
+    def validate_template(self, template: Dict) -> bool:
+        """Validate directory structure template"""
+        def validate_node(node):
+            if isinstance(node, dict):
+                return all(validate_node(value) for value in node.values())
+            return isinstance(node, (str, type(None)))
         
-        self.cache.set_markdown(cache_key, result)
-        return result
-
-    async def generate_component_docs(self, components: List[Dict], output_path: str = "docs/components.md") -> str:
-        """Generate documentation for UI components with caching"""
-        doc_content = "# Component Documentation\n\n"
-        
-        for component in components:
-            doc_content += f"## {component['name']}\n\n"
-            if 'description' in component:
-                doc_content += f"{component['description']}\n\n"
-            
-            if 'props' in component:
-                doc_content += "### Props\n\n"
-                for prop, details in component['props'].items():
-                    doc_content += f"- `{prop}`: {details['type']}"
-                    if 'required' in details and details['required']:
-                        doc_content += " (Required)"
-                    if 'description' in details:
-                        doc_content += f"\n  - {details['description']}"
-                    doc_content += "\n"
-                doc_content += "\n"
-            
-            if 'example' in component:
-                doc_content += "### Example\n```html\n"
-                doc_content += component['example']
-                doc_content += "\n```\n\n"
-        
-        if self.cache.has_changed('component_docs', doc_content):
-            self.cache.set_content('component_docs', doc_content)
-            self.pending_writes[output_path] = doc_content
-            await self._batch_write()
-        
-        return doc_content
+        return validate_node(template)
 
     def generate_directory_structure(self, template: Dict[str, any], base_path: str = ".") -> None:
         """Generate directory structure based on template with error handling"""
@@ -179,19 +212,13 @@ class DocumentationGenerator:
                         create_structure(content, path)
                     else:
                         path.parent.mkdir(parents=True, exist_ok=True)
-                        with open(path, 'w') as f:
-                            if content:
+                        if content is not None:
+                            with open(path, 'w') as f:
                                 f.write(content)
                 except Exception as e:
                     print(f"Error creating {path}: {str(e)}")
         
-        create_structure(template, base)
-
-    def validate_template(self, template: Dict) -> bool:
-        """Validate directory structure template"""
-        def validate_node(node):
-            if isinstance(node, dict):
-                return all(validate_node(value) for value in node.values())
-            return isinstance(node, (str, type(None)))
-        
-        return validate_node(template)
+        if self.validate_template(template):
+            create_structure(template, base)
+        else:
+            raise ValueError("Invalid template format")

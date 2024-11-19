@@ -1,0 +1,29 @@
+# {{ title }}
+
+{{ description }}
+
+{% for section in syntax.sections %}
+## {{ section.title }}
+
+{{ section.description }}
+
+{% if section.code_examples %}
+{% for example in section.code_examples %}
+```{{ example.language }}
+{{ example.code }}
+```
+{% if example.description %}
+{{ example.description }}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+
+{% if syntax.best_practices %}
+## Best Practices
+
+{% for practice in syntax.best_practices %}
+{{ loop.index }}. {{ practice }}
+{% endfor %}
+{% endif %}

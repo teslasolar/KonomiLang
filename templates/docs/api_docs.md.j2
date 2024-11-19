@@ -1,0 +1,51 @@
+# {{ title }}
+
+{{ description }}
+
+## API Endpoints
+
+{% for endpoint in endpoints %}
+### {{ endpoint.method }} {{ endpoint.path }}
+{% if endpoint.description %}
+{{ endpoint.description }}
+{% endif %}
+
+{% if endpoint.request_schema %}
+#### Request Format
+```json
+{{ endpoint.request_schema | tojson(indent=2) }}
+```
+{% endif %}
+
+{% if endpoint.response_schema %}
+#### Response Format
+```json
+{{ endpoint.response_schema | tojson(indent=2) }}
+```
+{% endif %}
+
+{% if endpoint.example %}
+#### Example Usage
+```bash
+{{ endpoint.example }}
+```
+{% endif %}
+
+{% endfor %}
+
+## Error Handling
+All endpoints return error responses in the following format:
+
+```json
+{
+    "success": false,
+    "error": "Error message description"
+}
+```
+
+### Common Error Codes
+- **400** - Bad Request (invalid input)
+- **500** - Internal Server Error
+
+## Authentication
+Currently, the API is open and does not require authentication. For production use, it's recommended to implement appropriate authentication mechanisms.

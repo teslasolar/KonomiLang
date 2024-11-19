@@ -1,0 +1,31 @@
+# {{ title }}
+
+{{ description }}
+
+{% for component in components %}
+## {{ component.name }}
+
+{{ component.description }}
+
+{% if component.props %}
+### Props
+
+{% for prop_name, prop_details in component.props.items() %}
+- `{{ prop_name }}`: {{ prop_details.type }}
+{%- if prop_details.required %} (Required){% endif %}
+  - {{ prop_details.description }}
+{% endfor %}
+{% endif %}
+
+{% if component.example %}
+### Example
+
+```{{ component.example.language | default('html') }}
+{{ component.example.code }}
+```
+{% if component.example.description %}
+{{ component.example.description }}
+{% endif %}
+{% endif %}
+
+{% endfor %}

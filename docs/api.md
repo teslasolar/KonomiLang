@@ -1,71 +1,236 @@
-# Konomi API Documentation
+# API Documentation
+
+Complete API reference for the Konomi Language
 
 ## API Endpoints
 
+
+### GET /static/<path:filename>
+
+
+
+
+
+
+
+
+
+### GET /api/v1/monitor/status
+
+Get overall grid status.
+
+
+
+
+
+
+
+
+
+### GET /api/v1/monitor/database/<position>
+
+Get status for a specific database.
+
+
+
+
+
+
+
+
+
+### GET /api/v1/monitor/metrics
+
+Get performance metrics for all databases.
+
+
+
+
+
+
+
+
+
+### POST /api/v1/monitor/check
+
+Manually trigger a monitoring check.
+
+
+
+
+
+
+
+
+
+### GET /api/v1/monitor/backups
+
+List all available backups.
+
+
+
+
+
+
+
+
+
+### POST /api/v1/monitor/backups
+
+Create a new backup.
+
+
+
+
+
+
+
+
+
+### POST /api/v1/monitor/backups/restore
+
+Restore from a backup.
+
+
+
+
+
+
+
+
+
+### GET /docs/
+
+Render main documentation page.
+
+
+
+
+
+
+
+
+
+### GET /docs/api
+
+Render API documentation page.
+
+
+
+
+
+
+
+
+
+### GET /docs/syntax
+
+Render syntax documentation page.
+
+
+
+
+
+
+
+
+
+### GET /docs/endpoints
+
+Render endpoints documentation page.
+
+
+
+
+
+
+
+
+
+### GET /
+
+Render main page with REPL interface.
+
+
+
+
+
+
+
+
+
+### GET /examples
+
+Render examples page.
+
+
+
+
+
+
+
+
+
+### GET /generation
+
+Render code generation page.
+
+
+
+
+
+
+
+
+
+### POST /execute
+
+Execute Konomi code from web interface.
+
+
+
+
+
+
+
+
+
 ### POST /api/v1/execute
-Execute Konomi code and return the results.
 
-#### Request Format
-```json
-{
-    "code": "let x = 42\nask \"What is the meaning of life?\""
-}
-```
+Execute Konomi code via API.
 
-#### Response Format
-```json
-{
-    "success": true,
-    "result": "The meaning of life is...",
-    "variables": {
-        "x": 42
-    }
-}
-```
 
-#### Example Usage
-```bash
-curl -X POST http://localhost:5000/api/v1/execute \
-    -H "Content-Type: application/json" \
-    -d '{"code": "let x = 42\nask \"What is x?\""}' 
-```
+
+
+
+
+
+
 
 ### GET /api/v1/status
-Get the current interpreter status.
 
-#### Response Format
-```json
-{
-    "success": true,
-    "status": "running",
-    "version": "1.0",
-    "active_variables": 1
-}
-```
+Get interpreter status.
 
-#### Example Usage
-```bash
-curl http://localhost:5000/api/v1/status
-```
+
+
+
+
+
+
+
 
 ### GET /api/v1/variables
-Get all currently defined variables.
 
-#### Response Format
-```json
-{
-    "success": true,
-    "variables": {
-        "x": 42,
-        "name": "Alice"
-    }
-}
-```
+Get all defined variables.
 
-#### Example Usage
-```bash
-curl http://localhost:5000/api/v1/variables
-```
+
+
+
+
+
+
+
+
 
 ## Error Handling
 All endpoints return error responses in the following format:
