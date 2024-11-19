@@ -15,6 +15,9 @@ import markdown
 from concurrent.futures import ThreadPoolExecutor
 from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
 import time
+import inspect
+from flask import current_app
+import re
 
 class DocumentationCache:
     def __init__(self):
@@ -41,49 +44,39 @@ class DocumentationCache:
         self.markdown_cache[key] = content
 
     def get_template(self, key: str) -> Optional[tuple[str, int]]:
-        """Get template content and version"""
         if key in self.template_cache:
             return self.template_cache[key], self.template_versions.get(key, 1)
         return None
 
-    def set_template(self, key: str, content: str, dependencies: Set[str] = None):
-        """Set template with version control and dependency tracking"""
+    def set_template(self, key: str, content: str, dependencies: Optional[Set[str]] = None):
         self.template_cache[key] = content
         self.hash_cache[key] = self._hash_content(content)
-        
-        # Update version
         current_version = self.template_versions.get(key, 0)
         self.template_versions[key] = current_version + 1
-        
-        # Track dependencies
         if dependencies:
             self.template_dependencies[key] = dependencies
 
     def invalidate_dependent_templates(self, template_key: str):
-        """Invalidate all templates that depend on the given template"""
         for key, deps in self.template_dependencies.items():
             if template_key in deps:
                 if key in self.template_versions:
                     self.template_versions[key] += 1
 
     def should_rerender(self, template_key: str, min_interval: float = 5.0) -> bool:
-        """Check if template should be rerendered based on time and dependencies"""
         current_time = time.time()
         last_time = self.last_render_time.get(template_key, 0)
         
         if current_time - last_time < min_interval:
             return False
-            
-        # Check if dependencies have changed
+        
         if template_key in self.template_dependencies:
             for dep in self.template_dependencies[template_key]:
                 if self.has_changed(dep, self.template_cache.get(dep, '')):
                     return True
-                    
+        
         return True
 
     def update_render_time(self, template_key: str):
-        """Update last render time for a template"""
         self.last_render_time[template_key] = time.time()
 
     def has_changed(self, key: str, content: str) -> bool:
@@ -94,6 +87,69 @@ class DocumentationCache:
     @staticmethod
     def _hash_content(content: str) -> str:
         return hashlib.md5(content.encode()).hexdigest()
+
+class EndpointMetadata:
+    def __init__(self, func, rule, methods):
+        self.func = func
+        self.rule = rule
+        self.methods = methods
+        self.docstring = inspect.getdoc(func) or ""
+        self.parameters = self._extract_parameters()
+        self.response_schema = self._extract_response_schema()
+        self.example = self._extract_example()
+
+    def _extract_parameters(self) -> Dict:
+        """Extract parameters from function signature and docstring"""
+        params = {}
+        signature = inspect.signature(self.func)
+        
+        for name, param in signature.parameters.items():
+            if name not in ['self', 'args', 'kwargs']:
+                param_info = {
+                    'type': str(param.annotation) if param.annotation != inspect._empty else 'any',
+                    'default': None if param.default == inspect._empty else param.default,
+                    'required': param.default == inspect._empty
+                }
+                params[name] = param_info
+        
+        return params
+
+    def _extract_response_schema(self) -> Dict:
+        """Extract response schema from docstring or return annotations"""
+        schema = {'type': 'object', 'properties': {}}
+        
+        # Try to get from return annotation
+        return_annotation = inspect.signature(self.func).return_annotation
+        if return_annotation != inspect._empty:
+            schema['return_type'] = str(return_annotation)
+        
+        # Look for response schema in docstring
+        if 'Returns:' in self.docstring:
+            returns_section = self.docstring.split('Returns:')[1].split('\n')[0]
+            schema['description'] = returns_section.strip()
+        
+        return schema
+
+    def _extract_example(self) -> Optional[Dict]:
+        """Extract example usage from docstring"""
+        if 'Example:' in self.docstring:
+            example_section = self.docstring.split('Example:')[1].split('\n\n')[0]
+            return {
+                'description': 'Example usage',
+                'code': example_section.strip()
+            }
+        return None
+
+    def to_dict(self) -> Dict:
+        """Convert endpoint metadata to dictionary"""
+        return {
+            'path': self.rule,
+            'methods': list(self.methods - {'HEAD', 'OPTIONS'}),
+            'description': self.docstring,
+            'parameters': self.parameters,
+            'response_schema': self.response_schema,
+            'example': self.example
+        }
 
 class DocumentationGenerator:
     def __init__(self, template_dir: str = "templates/docs"):
@@ -126,10 +182,6 @@ class DocumentationGenerator:
         self.jinja_env.filters['markdown'] = self._render_markdown
         self.jinja_env.filters['format_date'] = lambda d: d.strftime('%Y-%m-%d %H:%M:%S')
 
-    def register_custom_format(self, name: str, formatter: callable):
-        """Register a custom template format"""
-        self.custom_formats[name] = formatter
-
     def _highlight_code(self, code: str, language: str = 'python') -> str:
         """Syntax highlighting filter for code blocks"""
         try:
@@ -149,6 +201,51 @@ class DocumentationGenerator:
             content,
             extensions=['fenced_code', 'codehilite', 'tables', 'attr_list', 'toc']
         )
+
+    def discover_endpoints(self, app) -> List[Dict]:
+        """Discover and analyze all endpoints in a Flask application"""
+        endpoints = []
+        
+        for rule in app.url_map.iter_rules():
+            if rule.endpoint != 'static':  # Skip static file serving
+                view_func = app.view_functions[rule.endpoint]
+                metadata = EndpointMetadata(view_func, rule.rule, rule.methods)
+                endpoints.append(metadata.to_dict())
+        
+        return endpoints
+
+    async def generate_api_docs(self, endpoints: List[Dict], output_path: str = "docs/api.md") -> str:
+        """Generate API documentation using templates with enhanced metadata"""
+        # Group endpoints by their base path
+        grouped_endpoints = {}
+        for endpoint in endpoints:
+            base_path = endpoint['path'].split('/')[1]
+            if base_path not in grouped_endpoints:
+                grouped_endpoints[base_path] = []
+            grouped_endpoints[base_path].append(endpoint)
+
+        context = {
+            "groups": grouped_endpoints,
+            "title": "API Documentation",
+            "description": "Complete API reference for the Konomi Language",
+            "current_version": "1.0"
+        }
+        
+        try:
+            content = await self.render_template(
+                "api_docs.md.j2",
+                context,
+                cache_key='api_docs'
+            )
+            
+            if self.cache.has_changed('api_docs', content):
+                self.cache.set_content('api_docs', content)
+                self.pending_writes[output_path] = content
+                await self._batch_write()
+            
+            return content
+        except Exception as e:
+            raise Exception(f"API documentation generation failed: {str(e)}")
 
     async def process_markdown(self, content: str, cache_key: str) -> str:
         """Process markdown content with caching support"""
@@ -170,7 +267,7 @@ class DocumentationGenerator:
         except Exception as e:
             raise Exception(f"Failed to process markdown: {str(e)}")
 
-    async def render_template(self, template_name: str, context: Dict[str, Any], cache_key: str = None) -> str:
+    async def render_template(self, template_name: str, context: Dict[str, Any], cache_key: Optional[str] = None) -> str:
         """Render a template with caching and dependency tracking"""
         try:
             if cache_key and not self.cache.should_rerender(cache_key):
@@ -181,10 +278,24 @@ class DocumentationGenerator:
 
             template = self.jinja_env.get_template(template_name)
             
-            # Track template dependencies
+            # Track template dependencies using template.filename
             dependencies = {template_name}
-            for parent in template.iter_referenced_templates():
-                dependencies.add(parent)
+            template_stack = [template]
+            
+            # Traverse up the template hierarchy
+            while template_stack:
+                current_template = template_stack.pop()
+                if hasattr(current_template, 'filename'):
+                    template_filename = current_template.filename
+                    if template_filename:
+                        dependencies.add(os.path.basename(template_filename))
+                # Check for extends and include tags in the template source
+                if hasattr(current_template, 'blocks'):
+                    for block in current_template.blocks.values():
+                        if isinstance(block, Template) and hasattr(block, 'filename'):
+                            block_filename = block.filename
+                            if block_filename:
+                                dependencies.add(os.path.basename(block_filename))
 
             content = await template.render_async(**context)
             
@@ -195,31 +306,6 @@ class DocumentationGenerator:
             return content
         except Exception as e:
             raise Exception(f"Template rendering failed: {str(e)}")
-
-    async def generate_api_docs(self, endpoints: List[Dict], output_path: str = "docs/api.md") -> str:
-        """Generate API documentation using templates"""
-        context = {
-            "endpoints": endpoints,
-            "title": "API Documentation",
-            "description": "Complete API reference for the Konomi Language",
-            "current_version": "1.0"
-        }
-        
-        try:
-            content = await self.render_template(
-                "api_docs.md.j2",
-                context,
-                cache_key='api_docs'
-            )
-            
-            if self.cache.has_changed('api_docs', content):
-                self.cache.set_content('api_docs', content)
-                self.pending_writes[output_path] = content
-                await self._batch_write()
-            
-            return content
-        except Exception as e:
-            raise Exception(f"API documentation generation failed: {str(e)}")
 
     async def generate_error_docs(self, error_definitions: List[Dict], output_path: str = "docs/errors.md") -> str:
         """Generate error documentation using templates"""
@@ -255,26 +341,6 @@ class DocumentationGenerator:
             except Exception as e:
                 print(f"Error writing to {path}: {str(e)}")
         self.pending_writes.clear()
-
-    @lru_cache(maxsize=128)
-    def discover_endpoints(self, app) -> List[Dict]:
-        """Cache and discover all endpoints in a Flask application"""
-        endpoints = []
-        
-        for rule in app.url_map.iter_rules():
-            endpoint_data = {
-                "path": rule.rule,
-                "method": list(rule.methods - {"HEAD", "OPTIONS"})[0],
-                "name": rule.endpoint,
-                "description": app.view_functions[rule.endpoint].__doc__
-            }
-            
-            if hasattr(app.view_functions[rule.endpoint], 'example'):
-                endpoint_data['example'] = app.view_functions[rule.endpoint].example
-            
-            endpoints.append(endpoint_data)
-        
-        return endpoints
 
     def validate_template(self, template: Dict) -> bool:
         """Validate directory structure template"""

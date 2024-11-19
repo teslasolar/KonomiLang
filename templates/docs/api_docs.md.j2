@@ -2,23 +2,31 @@
 
 {{ description }}
 
-## API Endpoints
+{% for group_name, endpoints in groups.items() %}
+## {{ group_name | title }} Endpoints
 
 {% for endpoint in endpoints %}
-### {{ endpoint.method }} {{ endpoint.path }}
+### {{ endpoint.methods[0] }} {{ endpoint.path }}
+
 {% if endpoint.description %}
 {{ endpoint.description }}
 {% endif %}
 
-{% if endpoint.request_schema %}
-#### Request Format
-```json
-{{ endpoint.request_schema | tojson(indent=2) }}
-```
+{% if endpoint.parameters %}
+#### Parameters
+
+{% for name, param in endpoint.parameters.items() %}
+- `{{ name }}` ({{ param.type }}{% if not param.required %}?, default: {{ param.default }}{% endif %})
+{% endfor %}
 {% endif %}
 
 {% if endpoint.response_schema %}
 #### Response Format
+
+{% if endpoint.response_schema.description %}
+{{ endpoint.response_schema.description }}
+{% endif %}
+
 ```json
 {{ endpoint.response_schema | tojson(indent=2) }}
 ```
@@ -26,11 +34,15 @@
 
 {% if endpoint.example %}
 #### Example Usage
+
+{{ endpoint.example.description }}
+
 ```bash
-{{ endpoint.example }}
+{{ endpoint.example.code }}
 ```
 {% endif %}
 
+{% endfor %}
 {% endfor %}
 
 ## Error Handling
@@ -39,12 +51,19 @@ All endpoints return error responses in the following format:
 ```json
 {
     "success": false,
-    "error": "Error message description"
+    "error": {
+        "message": "Error message description",
+        "code": "ERROR_CODE",
+        "details": {}
+    }
 }
 ```
 
 ### Common Error Codes
 - **400** - Bad Request (invalid input)
+- **401** - Unauthorized
+- **403** - Forbidden
+- **404** - Not Found
 - **500** - Internal Server Error
 
 ## Authentication
