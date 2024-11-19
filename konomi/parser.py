@@ -85,7 +85,10 @@ class Parser:
             prompt = self.current_token.value
             self.eat(TokenType.STRING)
             return AskCommand(prompt)
-        return AskCommand(self.expr())
+        elif self.current_token.type == TokenType.IDENTIFIER:
+            return AskCommand(self.expr())
+        else:
+            raise SyntaxError("Expected string or variable after 'ask'")
 
     def if_statement(self):
         self.eat(TokenType.IF)
