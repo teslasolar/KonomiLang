@@ -17,6 +17,8 @@ import os
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
+import asyncio
+from functools import wraps
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -41,6 +43,12 @@ markdown_extensions = [
     'attr_list'
 ]
 
+def async_route(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        return asyncio.run(f(*args, **kwargs))
+    return wrapper
+
 def highlight_code(code, language='konomi'):
     """Syntax highlight code snippets."""
     try:
@@ -64,36 +72,56 @@ def generation():
     return render_template('generation.html')
 
 @app.route('/docs')
-def docs():
+@async_route
+async def docs():
     """Render documentation page."""
     # Auto-generate API documentation
     endpoints = doc_generator.discover_endpoints(app)
-    doc_generator.generate_api_docs(endpoints, 'docs/api.md')
+    await doc_generator.generate_api_docs(endpoints, 'docs/api.md')
     
-    with open('docs/README.md', 'r') as f:
-        content = markdown.markdown(f.read(), extensions=markdown_extensions)
-    return render_template('markdown.html', content=content, title="Documentation")
+    try:
+        async with aiofiles.open('docs/README.md', 'r') as f:
+            content = await f.read()
+            processed_content = await doc_generator.process_markdown(content, 'readme')
+        return render_template('markdown.html', content=processed_content, title="Documentation")
+    except Exception as e:
+        return f"Error loading documentation: {str(e)}", 500
 
 @app.route('/docs/api')
-def api_docs():
+@async_route
+async def api_docs():
     """Render API documentation page."""
-    with open('docs/api.md', 'r') as f:
-        content = markdown.markdown(f.read(), extensions=markdown_extensions)
-    return render_template('markdown.html', content=content, title="API Documentation")
+    try:
+        async with aiofiles.open('docs/api.md', 'r') as f:
+            content = await f.read()
+            processed_content = await doc_generator.process_markdown(content, 'api')
+        return render_template('markdown.html', content=processed_content, title="API Documentation")
+    except Exception as e:
+        return f"Error loading API documentation: {str(e)}", 500
 
 @app.route('/docs/endpoints')
-def endpoints_docs():
+@async_route
+async def endpoints_docs():
     """Render endpoints documentation page."""
-    with open('docs/endpoints.md', 'r') as f:
-        content = markdown.markdown(f.read(), extensions=markdown_extensions)
-    return render_template('markdown.html', content=content, title="API Endpoints")
+    try:
+        async with aiofiles.open('docs/endpoints.md', 'r') as f:
+            content = await f.read()
+            processed_content = await doc_generator.process_markdown(content, 'endpoints')
+        return render_template('markdown.html', content=processed_content, title="API Endpoints")
+    except Exception as e:
+        return f"Error loading endpoints documentation: {str(e)}", 500
 
 @app.route('/docs/syntax')
-def syntax_docs():
+@async_route
+async def syntax_docs():
     """Render syntax documentation page."""
-    with open('docs/basic_syntax.md', 'r') as f:
-        content = markdown.markdown(f.read(), extensions=markdown_extensions)
-    return render_template('markdown.html', content=content, title="Basic Syntax")
+    try:
+        async with aiofiles.open('docs/basic_syntax.md', 'r') as f:
+            content = await f.read()
+            processed_content = await doc_generator.process_markdown(content, 'syntax')
+        return render_template('markdown.html', content=processed_content, title="Basic Syntax")
+    except Exception as e:
+        return f"Error loading syntax documentation: {str(e)}", 500
 
 @app.route('/examples')
 def examples():
@@ -102,11 +130,12 @@ def examples():
 
 # API Management endpoints
 @app.route('/api/v1/docs/generate', methods=['POST'])
-def generate_docs():
+@async_route
+async def generate_docs():
     """Generate documentation based on current API endpoints."""
     try:
         endpoints = doc_generator.discover_endpoints(app)
-        doc_generator.generate_api_docs(endpoints)
+        await doc_generator.generate_api_docs(endpoints)
         return jsonify({"success": True, "message": "Documentation generated successfully"})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
