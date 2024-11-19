@@ -90,6 +90,27 @@ class DocumentationGenerator:
         """Convert markdown to HTML"""
         return markdown.markdown(content, extensions=['fenced_code', 'codehilite'])
 
+    async def process_markdown(self, content: str, cache_key: str) -> str:
+        """Process markdown content with caching support"""
+        try:
+            if cached_content := self.cache.get_markdown(cache_key):
+                return cached_content
+            
+            # Process markdown in thread pool to avoid blocking
+            loop = asyncio.get_event_loop()
+            processed_content = await loop.run_in_executor(
+                self.cache._executor,
+                lambda: markdown.markdown(
+                    content,
+                    extensions=['fenced_code', 'codehilite', 'tables', 'attr_list']
+                )
+            )
+            
+            self.cache.set_markdown(cache_key, processed_content)
+            return processed_content
+        except Exception as e:
+            raise Exception(f"Failed to process markdown: {str(e)}")
+
     async def render_template(self, template_name: str, context: Dict[str, Any]) -> str:
         """Render a template with the given context"""
         try:
@@ -198,7 +219,7 @@ class DocumentationGenerator:
         
         return validate_node(template)
 
-    def generate_directory_structure(self, template: Dict[str, any], base_path: str = ".") -> None:
+    def generate_directory_structure(self, template: Dict[str, Any], base_path: str = ".") -> None:
         """Generate directory structure based on template with error handling"""
         base = Path(base_path)
         
