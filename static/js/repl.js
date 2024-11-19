@@ -56,7 +56,9 @@ document.getElementById('input').addEventListener('input', function(e) {
         for (const [cmd, template] of Object.entries(commands)) {
             if (cmd.startsWith(lastWord) && lastWord.length >= 2) { // Require at least 2 chars
                 const cursorPos = input.selectionStart;
-                input.value = currentText.slice(0, -lastWord.length) + template;
+                // Replace escaped newlines with actual newlines
+                const processedTemplate = template.replace(/\\n/g, '\n');
+                input.value = currentText.slice(0, -lastWord.length) + processedTemplate;
                 
                 // Smart cursor positioning
                 if (template.includes('""')) {
@@ -65,9 +67,6 @@ document.getElementById('input').addEventListener('input', function(e) {
                 } else if (template.includes('()')) {
                     const parenPos = input.value.indexOf('()') + 1;
                     input.setSelectionRange(parenPos, parenPos);
-                } else if (template.includes('{\n')) {
-                    const bracePos = input.value.indexOf('{\n') + 3;
-                    input.setSelectionRange(bracePos, bracePos);
                 }
                 break;
             }
@@ -77,18 +76,17 @@ document.getElementById('input').addEventListener('input', function(e) {
 
 function insertCommand(template) {
     const input = document.getElementById('input');
-    input.value = template;
+    // Replace escaped newlines with actual newlines
+    const processedTemplate = template.replace(/\\n/g, '\n');
+    input.value = processedTemplate;
     input.focus();
     
     // Position cursor based on template type
     if (template.includes('""')) {
-        const cursorPos = template.indexOf('""') + 1;
-        input.setSelectionRange(cursorPos, cursorPos);
+        const quotePos = input.value.indexOf('""') + 1;
+        input.setSelectionRange(quotePos, quotePos);
     } else if (template.includes('()')) {
-        const cursorPos = template.indexOf('()') + 1;
-        input.setSelectionRange(cursorPos, cursorPos);
-    } else if (template.includes('{\n')) {
-        const cursorPos = template.indexOf('{\n') + 2;
-        input.setSelectionRange(cursorPos, cursorPos);
+        const parenPos = input.value.indexOf('()') + 1;
+        input.setSelectionRange(parenPos, parenPos);
     }
 }
