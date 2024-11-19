@@ -18,10 +18,11 @@
                             Commands
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="insertCommand('ask ""')">ask ""</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="insertCommand('let name = ""')">let name = ""</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="insertCommand('if () {\n\n}')">if statement</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="insertCommand('try {\n\n} catch {\n\n}')">try-catch</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="insertCommand('ask ""')">Ask AI</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="insertCommand('let variable = ""')">Declare Variable</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="insertCommand('let result = ')">Math Expression</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="insertCommand('if () {\n    ask ""\n}')">If Statement</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="insertCommand('try {\n    ask ""\n} catch {\n    ask ""\n}')">Try-Catch</a></li>
                         </ul>
                     </div>
                     <input type="text" id="input" class="form-control" placeholder="Enter Konomi code...">

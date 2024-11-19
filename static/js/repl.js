@@ -1,8 +1,8 @@
 const commands = {
     'ask': 'ask ""',
-    'let': 'let name = ""',
-    'if': 'if () {\n\n}',
-    'try': 'try {\n\n} catch {\n\n}'
+    'let': 'let variable = ""',
+    'if': 'if () {\n    ask ""\n}',
+    'try': 'try {\n    ask ""\n} catch {\n    ask ""\n}'
 };
 
 function executeCode() {
@@ -12,12 +12,17 @@ function executeCode() {
 
     if (!code) return;
 
+    // Properly escape special characters for the server
+    const escapedCode = code.replace(/\\/g, '\\\\')
+                           .replace(/\n/g, '\\n')
+                           .replace(/"/g, '\\"');
+
     fetch('/execute', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `code=${encodeURIComponent(code)}`
+        body: `code=${encodeURIComponent(escapedCode)}`
     })
     .then(response => response.json())
     .then(data => {
@@ -62,9 +67,15 @@ function insertCommand(template) {
     input.value = template;
     input.focus();
     
-    // If the template contains quotes, place cursor between them
+    // Position cursor based on template type
     if (template.includes('""')) {
-        const cursorPos = input.value.indexOf('""') + 1;
+        const cursorPos = template.indexOf('""') + 1;
+        input.setSelectionRange(cursorPos, cursorPos);
+    } else if (template.includes('()')) {
+        const cursorPos = template.indexOf('()') + 1;
+        input.setSelectionRange(cursorPos, cursorPos);
+    } else if (template.includes('{\n')) {
+        const cursorPos = template.indexOf('{\n') + 2;
         input.setSelectionRange(cursorPos, cursorPos);
     }
 }
