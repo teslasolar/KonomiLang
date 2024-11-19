@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xbox Controller Interface with Test Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #444, #222);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #0f0;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .controller-status {
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 255, 0, 0.1);
+            padding: 20px;
+            border: 1px solid #0f0;
+        }
+
+        .game-container {
+            background: #000;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            border: 1px solid #0f0;
+        }
+
+        #gameCanvas {
+            background: #111;
+            border-radius: 4px;
+            width: 100%;
+            height: 400px;
+        }
+
+        .button-state {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            gap: 10px;
+        }
+
+        .input-name {
+            background-color: #333;
+            color: #0f0;
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            padding: 8px;
+            margin: 5px;
+            flex: 1;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .status-pressed {
+            background-color: #0f0;
+            box-shadow: 0 0 10px #0f0;
+        }
+
+        .status-released {
+            background-color: #333;
+        }
+
+        .thumbstick-display {
+            background: #222;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            border: 1px solid #0f0;
+        }
+
+        .game-instructions {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 1px solid #0f0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Xbox Controller Interface with Test Game</h1>
+        </header>
+
+        <div class="controller-status">
+            <h3>Controller Status:</h3>
+            <div id="status" class="status-message">No controller connected.</div>
+            
+            <h3>Button States:</h3>
+            <div id="buttons"></div>
+            
+            <h3>Thumbstick Positions:</h3>
+            <div id="thumbstick"></div>
+        </div>
+
+        <div class="game-container">
+            <canvas id="gameCanvas"></canvas>
+            <div class="game-instructions">
+                <h3>Game Controls:</h3>
+                <ul>
+                    <li>Left Stick: Move character</li>
+                    <li>A Button: Jump</li>
+                    <li>B Button: Change color</li>
+                    <li>X Button: Shrink</li>
+                    <li>Y Button: Grow</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game variables
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let player = {
+            x: 100,
+            y: 100,
+            size: 20,
+            color: '#0f0',
+            speed: 5,
+            velocityY: 0,
+            isJumping: false
+        };
+
+        // Collectibles
+        let collectibles = [];
+        const COLLECTIBLE_COUNT = 5;
+
+        // Game state
+        let score = 0;
+
+        // Initialize canvas size
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Initialize collectibles
+        function initCollectibles() {
+            collectibles = [];
+            for (let i = 0; i < COLLECTIBLE_COUNT; i++) {
+                collectibles.push({
+                    x: Math.random() * (canvas.width - 10),
+                    y: Math.random() * (canvas.height - 10),
+                    size: 10
+                });
+            }
+        }
+        initCollectibles();
+
+        // Controller handling
+        const statusElement = document.getElementById('status');
+        const buttonsElement = document.getElementById('buttons');
+        const thumbstickElement = document.getElementById('thumbstick');
+        const buttonNames = {
+            0: 'A Button',
+            1: 'B Button',
+            2: 'X Button',
+            3: 'Y Button',
+            4: 'LB',
+            5: 'RB',
+            6: 'LT',
+            7: 'RT',
+            8: 'Back',
+            9: 'Start',
+            10: 'LS',
+            11: 'RS',
+            12: 'DPad Up',
+            13: 'DPad Down',
+            14: 'DPad Left',
+            15: 'DPad Right'
+        };
+
+        function updateControllerState() {
+            const gamepads = navigator.getGamepads();
+            if (!gamepads) return;
+
+            const controller = gamepads[0];
+
+            if (controller) {
+                statusElement.textContent = 'Controller connected!';
+                updateButtonStates(controller);
+                updateThumbsticks(controller);
+                updateGameState(controller);
+            } else {
+                statusElement.textContent = 'No controller connected.';
+                buttonsElement.innerHTML = '';
+                thumbstickElement.innerHTML = '';
+            }
+
+            requestAnimationFrame(updateControllerState);
+        }
+
+        function updateButtonStates(controller) {
+            buttonsElement.innerHTML = '';
+            controller.buttons.forEach((button, index) => {
+                const buttonState = button.pressed ? 'Pressed' : 'Released';
+                const buttonName = buttonNames[index];
+                buttonsElement.innerHTML += `
+                    <div class="button-state">
+                        <input class="input-name" type="text" value="${buttonName}" 
+                               onchange="updateButtonName(${index}, this.value)" />
+                        <span class="status-indicator ${button.pressed ? 'status-pressed' : 'status-released'}"></span>
+                    </div>`;
+            });
+        }
+
+        function updateThumbsticks(controller) {
+            const leftStick = controller.axes.slice(0, 2);
+            const rightStick = controller.axes.slice(2, 4);
+            thumbstickElement.innerHTML = `
+                <div class="thumbstick-display">
+                    Left Stick: X: ${leftStick[0].toFixed(2)}, Y: ${leftStick[1].toFixed(2)}
+                </div>
+                <div class="thumbstick-display">
+                    Right Stick: X: ${rightStick[0].toFixed(2)}, Y: ${rightStick[1].toFixed(2)}
+                </div>`;
+        }
+
+        function updateButtonName(index, name) {
+            buttonNames[index] = name;
+        }
+
+        // Game logic
+        function updateGameState(controller) {
+            // Movement with left stick
+            const deadzone = 0.1;
+            const leftX = Math.abs(controller.axes[0]) > deadzone ? controller.axes[0] : 0;
+            const leftY = Math.abs(controller.axes[1]) > deadzone ? controller.axes[1] : 0;
+            
+            player.x += leftX * player.speed;
+            player.y += leftY * player.speed;
+
+            // Keep player in bounds
+            player.x = Math.max(player.size/2, Math.min(canvas.width - player.size/2, player.x));
+            player.y = Math.max(player.size/2, Math.min(canvas.height - player.size/2, player.y));
+
+            // Jump (A Button)
+            if (controller.buttons[0].pressed && !player.isJumping) {
+                player.velocityY = -10;
+                player.isJumping = true;
+            }
+
+            // Apply gravity
+            player.velocityY += 0.5;
+            player.y += player.velocityY;
+
+            // Ground collision
+            if (player.y > canvas.height - player.size/2) {
+                player.y = canvas.height - player.size/2;
+                player.velocityY = 0;
+                player.isJumping = false;
+            }
+
+            // Change color (B Button)
+            if (controller.buttons[1].pressed) {
+                player.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            }
+
+            // Shrink (X Button)
+            if (controller.buttons[2].pressed) {
+                player.size = Math.max(10, player.size - 1);
+            }
+
+            // Grow (Y Button)
+            if (controller.buttons[3].pressed) {
+                player.size = Math.min(50, player.size + 1);
+            }
+
+            // Check collectible collisions
+            collectibles = collectibles.filter(collectible => {
+                const dx = collectible.x - player.x;
+                const dy = collectible.y - player.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < (player.size + collectible.size) / 2) {
+                    score += 10;
+                    return false;
+                }
+                return true;
+            });
+
+            // Respawn collectibles if all collected
+            if (collectibles.length === 0) {
+                initCollectibles();
+            }
+
+            drawGame();
+        }
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw player
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.size/2, 0, Math.PI * 2);
+            ctx.fillStyle = player.color;
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.stroke();
+
+            // Draw collectibles
+            collectibles.forEach(collectible => {
+                ctx.beginPath();
+                ctx.arc(collectible.x, collectible.y, collectible.size/2, 0, Math.PI * 2);
+                ctx.fillStyle = '#ff0';
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.stroke();
+            });
+
+            // Draw score
+            ctx.fillStyle = '#fff';
+            ctx.font = '20px Arial';
+            ctx.fillText(`Score: ${score}`, 10, 30);
+        }
+
+        // Start the game loop
+        updateControllerState();
+    </script>
+</body>
+</html>
