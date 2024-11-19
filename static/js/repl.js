@@ -1,6 +1,6 @@
 // IIFE to prevent global scope pollution
 (function() {
-    // Configuration object (single declaration)
+    // Configuration object for commands and endpoints
     const config = {
         commands: {
             'ask': {
@@ -40,6 +40,73 @@
                 placeholderText: ''
             }
         },
+        endpoints: {
+            'execute': {
+                method: 'POST',
+                path: '/api/v1/execute',
+                template: '{\n    "code": "let x = 42\\nask \\"What is x?\\""}\n}'
+            },
+            'status': {
+                method: 'GET',
+                path: '/api/v1/status',
+                template: ''
+            },
+            'variables': {
+                method: 'GET',
+                path: '/api/v1/variables',
+                template: ''
+            },
+            'analyze-content': {
+                method: 'POST',
+                path: '/api/v1/chains/analyze-content',
+                template: '{\n    "text": "Your content here"\n}'
+            },
+            'sentiment-analysis': {
+                method: 'POST',
+                path: '/api/v1/chains/sentiment-analysis',
+                template: '{\n    "text": "Your text for sentiment analysis"\n}'
+            },
+            'entity-recognition': {
+                method: 'POST',
+                path: '/api/v1/chains/entity-recognition',
+                template: '{\n    "text": "Your text for entity recognition"\n}'
+            },
+            'review-code': {
+                method: 'POST',
+                path: '/api/v1/chains/review-code',
+                template: '{\n    "code": "Your code for review"\n}'
+            },
+            'language-tutor': {
+                method: 'POST',
+                path: '/api/v1/chains/language-tutor',
+                template: '{\n    "text": "Text to translate",\n    "target_language": "Spanish"\n}'
+            },
+            'text-classification': {
+                method: 'POST',
+                path: '/api/v1/chains/text-classification',
+                template: '{\n    "text": "Your text to classify",\n    "categories": "category1,category2,category3"\n}'
+            },
+            'data-analysis': {
+                method: 'POST',
+                path: '/api/v1/chains/data-analysis',
+                template: '{\n    "data": "Your data for analysis"\n}'
+            },
+            'data-validation': {
+                method: 'POST',
+                path: '/api/v1/chains/data-validation',
+                template: '{\n    "data": "Your data",\n    "schema": "Your schema"\n}'
+            },
+            'analyze-business': {
+                method: 'POST',
+                path: '/api/v1/chains/analyze-business',
+                template: '{\n    "description": "Your business idea description"\n}'
+            },
+            'story-developer': {
+                method: 'POST',
+                path: '/api/v1/chains/story-developer',
+                template: '{\n    "premise": "Your story premise"\n}'
+            }
+        },
         errorTypes: {
             SYNTAX_ERROR: 'Syntax Error',
             RUNTIME_ERROR: 'Runtime Error',
@@ -54,6 +121,16 @@
             CONSOLE_ERROR: 'Console Error'
         }
     };
+
+    function insertEndpoint(endpointName) {
+        const input = document.getElementById('input');
+        if (!input || !config.endpoints[endpointName]) return;
+
+        const endpoint = config.endpoints[endpointName];
+        const template = `// ${endpoint.method} ${endpoint.path}\n${endpoint.template}`;
+        input.value = template;
+        input.focus();
+    }
 
     function classifyError(error) {
         if (!error) return config.errorTypes.UNKNOWN_ERROR;
@@ -94,7 +171,6 @@
 
     function highlightCode(code) {
         if (!code) return '';
-        // Simple syntax highlighting
         return code.replace(/\b(let|ask|if|else|try|catch|ls|mkdir|rmdir|checkConsole|listErrors)\b/g, '<span class="keyword">$1</span>')
                   .replace(/"([^"]*)"/g, '<span class="string">"$1"</span>')
                   .replace(/\b(\d+(\.\d+)?)\b/g, '<span class="number">$1</span>')
@@ -115,6 +191,38 @@
                 if (path) {
                     validatePath(path);
                 }
+            }
+
+            // Handle API endpoint templates
+            if (code.startsWith('//')) {
+                const lines = code.split('\n');
+                const endpointLine = lines[0].substring(3);
+                const [method, path] = endpointLine.split(' ');
+                
+                const formData = new FormData();
+                formData.append('endpoint', path);
+                formData.append('method', method);
+                formData.append('data', lines.slice(1).join('\n'));
+
+                fetch(path, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: lines.slice(1).join('\n')
+                })
+                .then(response => response.json())
+                .then(data => {
+                    appendToOutput(output, code, JSON.stringify(data, null, 2));
+                    input.value = '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const errorType = classifyError(error.message);
+                    appendError(output, code, 'Failed to execute API request', errorType);
+                    input.value = '';
+                });
+                return;
             }
         } catch (error) {
             appendError(output, code, error.message, config.errorTypes.FILE_SYSTEM_ERROR);
@@ -258,7 +366,8 @@
         output.scrollTop = output.scrollHeight;
     });
 
-    // Export only necessary functions to global scope
+    // Export necessary functions to global scope
     window.executeCode = executeCode;
     window.insertCommand = insertCommand;
+    window.insertEndpoint = insertEndpoint;
 })();

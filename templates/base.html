@@ -12,7 +12,137 @@
 <body>
     {% include "organisms/navbar.html" %}
 
-    <div class="container mt-4">
+    <!-- API Endpoints Sidebar -->
+    <div class="api-sidebar">
+        <!-- Basic Operations -->
+        <div class="endpoint-group">
+            <div class="endpoint-group-title">Basic Operations</div>
+            <ul class="endpoint-list">
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('execute')">
+                        POST /execute
+                    </button>
+                    <div class="endpoint-tooltip">Execute Konomi code and return results</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button get" onclick="insertEndpoint('status')">
+                        GET /status
+                    </button>
+                    <div class="endpoint-tooltip">Get interpreter status and version</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button get" onclick="insertEndpoint('variables')">
+                        GET /variables
+                    </button>
+                    <div class="endpoint-tooltip">Get all currently defined variables</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Content Analysis -->
+        <div class="endpoint-group">
+            <div class="endpoint-group-title">Content Analysis</div>
+            <ul class="endpoint-list">
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('analyze-content')">
+                        POST /chains/analyze-content
+                    </button>
+                    <div class="endpoint-tooltip">Analyze content and extract insights</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('sentiment-analysis')">
+                        POST /chains/sentiment-analysis
+                    </button>
+                    <div class="endpoint-tooltip">Analyze text sentiment and emotional tones</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('entity-recognition')">
+                        POST /chains/entity-recognition
+                    </button>
+                    <div class="endpoint-tooltip">Extract and categorize named entities</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Code Operations -->
+        <div class="endpoint-group">
+            <div class="endpoint-group-title">Code Operations</div>
+            <ul class="endpoint-list">
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('review-code')">
+                        POST /chains/review-code
+                    </button>
+                    <div class="endpoint-tooltip">Review and analyze code</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Language Processing -->
+        <div class="endpoint-group">
+            <div class="endpoint-group-title">Language Processing</div>
+            <ul class="endpoint-list">
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('language-tutor')">
+                        POST /chains/language-tutor
+                    </button>
+                    <div class="endpoint-tooltip">Get language learning assistance</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('text-classification')">
+                        POST /chains/text-classification
+                    </button>
+                    <div class="endpoint-tooltip">Classify text into categories</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Data Analysis -->
+        <div class="endpoint-group">
+            <div class="endpoint-group-title">Data Analysis</div>
+            <ul class="endpoint-list">
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('data-analysis')">
+                        POST /chains/data-analysis
+                    </button>
+                    <div class="endpoint-tooltip">Analyze data patterns and trends</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('data-validation')">
+                        POST /chains/data-validation
+                    </button>
+                    <div class="endpoint-tooltip">Validate data against schema</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Business Analysis -->
+        <div class="endpoint-group">
+            <div class="endpoint-group-title">Business Analysis</div>
+            <ul class="endpoint-list">
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('analyze-business')">
+                        POST /chains/analyze-business
+                    </button>
+                    <div class="endpoint-tooltip">Analyze business ideas and strategies</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Story Development -->
+        <div class="endpoint-group">
+            <div class="endpoint-group-title">Story Development</div>
+            <ul class="endpoint-list">
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('story-developer')">
+                        POST /chains/story-developer
+                    </button>
+                    <div class="endpoint-tooltip">Generate and develop stories</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container with-sidebar mt-4">
         {% block content %}{% endblock %}
     </div>
 

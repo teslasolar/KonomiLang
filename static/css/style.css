@@ -8,9 +8,74 @@ pre code {
     margin-bottom: 1rem;
 }
 
-#output {
-    font-family: monospace;
-    white-space: pre-wrap;
+/* Left Sidebar */
+.api-sidebar {
+    position: fixed;
+    left: 0;
+    top: 56px; /* Account for navbar height */
+    width: 250px;
+    height: calc(100vh - 56px);
+    background-color: var(--bs-dark);
+    border-right: 1px solid var(--bs-border-color);
+    overflow-y: auto;
+    padding: 1rem 0;
+    z-index: 1000;
+}
+
+.api-sidebar .endpoint-group {
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.api-sidebar .endpoint-group-title {
+    color: var(--bs-light);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.api-sidebar .endpoint-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.api-sidebar .endpoint-item {
+    margin: 0.25rem 0;
+}
+
+.api-sidebar .endpoint-button {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    color: var(--bs-light);
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 0.875rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    text-decoration: none;
+}
+
+.api-sidebar .endpoint-button:hover {
+    background-color: var(--bs-gray-700);
+}
+
+.api-sidebar .endpoint-button.get {
+    color: #61affe;
+}
+
+.api-sidebar .endpoint-button.post {
+    color: #49cc90;
+}
+
+/* Adjust main content area */
+.container.with-sidebar {
+    margin-left: 250px;
+    width: calc(100% - 250px);
 }
 
 /* Input group styling */
@@ -121,3 +186,20 @@ pre code {
 .codehilite .o { color: #d4d4d4; } /* Operator */
 .codehilite .m { color: #b5cea8; } /* Number */
 .codehilite .c { color: #6a9955; } /* Comment */
+
+/* Tooltip styling */
+.endpoint-tooltip {
+    position: absolute;
+    background: var(--bs-dark);
+    border: 1px solid var(--bs-border-color);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    max-width: 300px;
+    z-index: 1001;
+    display: none;
+}
+
+.endpoint-button:hover + .endpoint-tooltip {
+    display: block;
+}
