@@ -1,3 +1,5 @@
+import os
+from openai import OpenAI
 from .lexer import Lexer
 from .parser import Parser, VariableDeclaration, AskCommand
 from .errors import RuntimeError
@@ -5,14 +7,23 @@ from .errors import RuntimeError
 class Interpreter:
     def __init__(self):
         self.variables = {}
+        self.client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
     def visit_variable_declaration(self, node):
         self.variables[node.name] = node.value
         return f"Variable {node.name} set to: {node.value}"
 
     def visit_ask_command(self, node):
-        # In a real implementation, this would connect to an AI model
-        return f"AI Response to: {node.prompt}"
+        try:
+            response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": node.prompt}
+                ]
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            raise RuntimeError(f"AI Error: {str(e)}")
 
     def execute(self, code):
         lexer = Lexer(code)
