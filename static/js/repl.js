@@ -8,19 +8,17 @@ const commands = {
 function executeCode() {
     const input = document.getElementById('input');
     const output = document.getElementById('output');
-    const code = input.value;
+    const code = input.value.trim();
 
     if (!code) return;
 
-    // Properly encode the code for transmission
-    const encodedCode = encodeURIComponent(code).replace(/%20/g, '+');
+    // Create FormData for proper encoding
+    const formData = new FormData();
+    formData.append('code', code);
 
     fetch('/execute', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `code=${encodedCode}`
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
@@ -33,20 +31,24 @@ function executeCode() {
         output.scrollTop = output.scrollHeight;
     })
     .catch(error => {
-        output.innerHTML += `\n> ${escapeHtml(code)}\nError: ${escapeHtml(error)}`;
+        console.error('Error:', error);
+        output.innerHTML += `\n> ${escapeHtml(code)}\nError: Failed to execute code`;
         input.value = '';
     });
 }
 
-// Add HTML escaping function
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 document.getElementById('input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
         executeCode();
     }
 });
@@ -74,7 +76,6 @@ document.getElementById('input').addEventListener('input', function(e) {
     }
 });
 
-// Update the insertCommand function
 function insertCommand(template) {
     const input = document.getElementById('input');
     input.value = template;

@@ -32,6 +32,9 @@ class Interpreter:
         right = self.visit(node.right)
         
         if node.op == TokenType.PLUS:
+            # Handle string concatenation
+            if isinstance(left, str) or isinstance(right, str):
+                return str(left) + str(right)
             return left + right
         elif node.op == TokenType.MINUS:
             return left - right
@@ -68,12 +71,12 @@ class Interpreter:
             results = []
             for statement in node.if_body:
                 results.append(self.visit(statement))
-            return '\n'.join(results)
+            return '\n'.join(str(r) for r in results if r is not None)
         elif node.else_body:
             results = []
             for statement in node.else_body:
                 results.append(self.visit(statement))
-            return '\n'.join(results)
+            return '\n'.join(str(r) for r in results if r is not None)
         return ""
 
     def visit_trycatch(self, node):
@@ -81,12 +84,12 @@ class Interpreter:
             results = []
             for statement in node.try_body:
                 results.append(self.visit(statement))
-            return '\n'.join(results)
+            return '\n'.join(str(r) for r in results if r is not None)
         except Exception as e:
             results = []
             for statement in node.catch_body:
                 results.append(self.visit(statement))
-            return '\n'.join(results)
+            return '\n'.join(str(r) for r in results if r is not None)
 
     def visit(self, node):
         method_name = f'visit_{type(node).__name__.lower()}'
