@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block scripts %}
+{% include "atoms/api/api_caller.html" %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('generation-form');
@@ -47,45 +48,56 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveTemplateButton = document.getElementById('save-template');
     const loadTemplateButton = document.getElementById('load-template');
 
-    function loadTemplates() {
-        const templates = JSON.parse(localStorage.getItem('promptTemplates') || '{}');
-        templateSelector.innerHTML = '<option value="">Select a template...</option>';
-        Object.keys(templates).forEach(name => {
-            const option = document.createElement('option');
-            option.value = name;
-            option.textContent = name;
-            templateSelector.appendChild(option);
-        });
+    async function loadTemplates() {
+        try {
+            const templates = await apiCaller.listTemplates();
+            templateSelector.innerHTML = '<option value="">Select a template...</option>';
+            templates.forEach(template => {
+                const option = document.createElement('option');
+                option.value = template.name;
+                option.textContent = template.name;
+                templateSelector.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error loading templates:', error);
+        }
     }
 
-    saveTemplateButton.addEventListener('click', () => {
+    saveTemplateButton.addEventListener('click', async () => {
         const name = prompt('Enter template name:');
         if (name) {
-            const templates = JSON.parse(localStorage.getItem('promptTemplates') || '{}');
-            templates[name] = {
-                prompt: document.getElementById('generation-prompt').value,
-                type: document.getElementById('generation-type').value,
-                params: {
-                    maxTokens: document.getElementById('max-tokens').value,
-                    temperature: document.getElementById('temperature').value,
-                    topP: document.getElementById('top-p').value
-                }
-            };
-            localStorage.setItem('promptTemplates', JSON.stringify(templates));
-            loadTemplates();
+            try {
+                const template = {
+                    prompt: document.getElementById('generation-prompt').value,
+                    type: document.getElementById('generation-type').value,
+                    params: {
+                        maxTokens: document.getElementById('max-tokens').value,
+                        temperature: document.getElementById('temperature').value,
+                        topP: document.getElementById('top-p').value
+                    }
+                };
+                await apiCaller.saveTemplate(name, template);
+                await loadTemplates();
+            } catch (error) {
+                alert('Error saving template: ' + error.message);
+            }
         }
     });
 
-    loadTemplateButton.addEventListener('click', () => {
-        const templates = JSON.parse(localStorage.getItem('promptTemplates') || '{}');
-        const template = templates[templateSelector.value];
-        if (template) {
-            document.getElementById('generation-prompt').value = template.prompt;
-            document.getElementById('generation-type').value = template.type;
-            document.getElementById('max-tokens').value = template.params.maxTokens;
-            document.getElementById('temperature').value = template.params.temperature;
-            document.getElementById('top-p').value = template.params.topP;
-            updateRangeValues();
+    loadTemplateButton.addEventListener('click', async () => {
+        const templateName = templateSelector.value;
+        if (templateName) {
+            try {
+                const template = await apiCaller.loadTemplate(templateName);
+                document.getElementById('generation-prompt').value = template.prompt;
+                document.getElementById('generation-type').value = template.type;
+                document.getElementById('max-tokens').value = template.params.maxTokens;
+                document.getElementById('temperature').value = template.params.temperature;
+                document.getElementById('top-p').value = template.params.topP;
+                updateRangeValues();
+            } catch (error) {
+                alert('Error loading template: ' + error.message);
+            }
         }
     });
 
@@ -127,15 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            const response = await fetch('/api/v1/test-api-key', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ api_key: apiKey })
-            });
-            const data = await response.json();
-            alert(data.success ? 'API key is valid!' : 'Invalid API key!');
+            const result = await apiCaller.testApiKey(apiKey);
+            alert(result.success ? 'API key is valid!' : 'Invalid API key!');
         } catch (error) {
             alert('Error testing API key: ' + error.message);
         }
@@ -148,30 +153,9 @@ document.addEventListener('DOMContentLoaded', function() {
         errorDisplay.classList.add('hidden');
         
         const formData = new FormData(form);
-        const apiKey = localStorage.getItem('openai_api_key');
         
         try {
-            const response = await fetch('/api/v1/generate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
-                },
-                body: JSON.stringify({
-                    prompt: formData.get('prompt'),
-                    type: formData.get('generation_type'),
-                    params: {
-                        max_tokens: parseInt(formData.get('max_tokens')),
-                        temperature: parseFloat(formData.get('temperature')),
-                        top_p: parseFloat(formData.get('top_p'))
-                    }
-                })
-            });
-            
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.error || 'Generation failed');
-            }
+            const data = await apiCaller.generate(formData);
 
             // Update result
             outputDiv.innerHTML = `<pre>${data.result}</pre>`;

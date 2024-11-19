@@ -1,0 +1,83 @@
+<script>
+// Reusable API call function
+const apiCaller = {
+    headers: {
+        'Content-Type': 'application/json'
+    },
+
+    // Set authentication header
+    setAuthHeader(apiKey) {
+        if (apiKey) {
+            this.headers['Authorization'] = `Bearer ${apiKey}`;
+        }
+    },
+
+    // Generic API call function
+    async call(endpoint, method = 'GET', data = null) {
+        const apiKey = localStorage.getItem('openai_api_key');
+        this.setAuthHeader(apiKey);
+
+        try {
+            const options = {
+                method,
+                headers: this.headers,
+            };
+
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+
+            const response = await fetch(endpoint, options);
+            const responseData = await response.json();
+
+            if (!response.ok) {
+                throw new Error(responseData.error || 'API call failed');
+            }
+
+            return responseData;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    // Generation API call
+    async generate(formData) {
+        const data = {
+            prompt: formData.get('prompt'),
+            type: formData.get('generation_type'),
+            params: {
+                max_tokens: parseInt(formData.get('max_tokens')),
+                temperature: parseFloat(formData.get('temperature')),
+                top_p: parseFloat(formData.get('top_p'))
+            }
+        };
+
+        return this.call('/api/v1/generate', 'POST', data);
+    },
+
+    // Test API key
+    async testApiKey(apiKey) {
+        return this.call('/api/v1/test-api-key', 'POST', { api_key: apiKey });
+    },
+
+    // Template management API calls
+    async saveTemplate(name, template) {
+        return this.call('/api/v1/templates', 'POST', { name, template });
+    },
+
+    async loadTemplate(name) {
+        return this.call(`/api/v1/templates/${name}`, 'GET');
+    },
+
+    async listTemplates() {
+        return this.call('/api/v1/templates', 'GET');
+    },
+
+    async deleteTemplate(name) {
+        return this.call(`/api/v1/templates/${name}`, 'DELETE');
+    }
+};
+
+// Export the API caller
+window.apiCaller = apiCaller;
+</script>
