@@ -35,6 +35,10 @@ args = "DB Population"
 task = "workflow.run"
 args = "DB Monitor"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Test Connection Manager"
+
 [[workflows.workflow]]
 name = "Konomi Server"
 author = "agent"
@@ -119,6 +123,20 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python db_monitor_service.py"
+
+[[workflows.workflow]]
+name = "Test Connection Manager"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python -m pytest tests/test_connection_manager.py -v"
 
 [deployment]
 run = ["sh", "-c", "python main.py"]
