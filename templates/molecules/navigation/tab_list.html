@@ -1,0 +1,13 @@
+{% from "atoms/navigation/tab_item.html" import tab_item %}
+
+{% macro tab_list(items) %}
+<nav>
+    <div class="nav nav-tabs" role="tablist">
+        {% for item in items %}
+            <div class="nav-item" role="presentation">
+                {{ tab_item(item.id, item.text, item.active) }}
+            </div>
+        {% endfor %}
+    </div>
+</nav>
+{% endmacro %}

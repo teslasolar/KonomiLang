@@ -1,0 +1,8 @@
+{% macro label(text, for_id="", required=false) %}
+<label class="form-label" {% if for_id %}for="{{ for_id }}"{% endif %}>
+    {{ text }}
+    {% if required %}
+    <span class="text-danger">*</span>
+    {% endif %}
+</label>
+{% endmacro %}

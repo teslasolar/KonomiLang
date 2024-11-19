@@ -1,0 +1,7 @@
+{% macro spinner(size="", type="border", text="Loading...") %}
+<div class="d-flex align-items-center">
+    <div class="spinner-{{ type }} {% if size %}spinner-{{ type }}-{{ size }}{% endif %}" role="status">
+        <span class="visually-hidden">{{ text }}</span>
+    </div>
+</div>
+{% endmacro %}

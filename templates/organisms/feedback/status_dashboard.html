@@ -1,0 +1,9 @@
+{% from "atoms/feedback/alert.html" import alert %}
+
+{% macro status_dashboard(alerts=[]) %}
+<div class="status-dashboard">
+    {% for alert_item in alerts %}
+        {{ alert(alert_item.message, alert_item.type|default('info'), alert_item.dismissible|default(true)) }}
+    {% endfor %}
+</div>
+{% endmacro %}

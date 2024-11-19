@@ -1,0 +1,24 @@
+{% macro stat_card(label, value, change=none, icon=none) %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h6 class="card-subtitle mb-2 text-muted">{{ label }}</h6>
+                <h2 class="card-title mb-0">{{ value }}</h2>
+            </div>
+            {% if icon %}
+            <div class="text-muted">
+                {{ icon|safe }}
+            </div>
+            {% endif %}
+        </div>
+        {% if change is not none %}
+        <p class="card-text mt-2 mb-0">
+            <small class="{% if change >= 0 %}text-success{% else %}text-danger{% endif %}">
+                {{ change }}% from last period
+            </small>
+        </p>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}

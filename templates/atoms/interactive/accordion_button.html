@@ -1,0 +1,10 @@
+{% macro accordion_button(target_id, text, expanded=false) %}
+<button class="accordion-button {% if not expanded %}collapsed{% endif %}" 
+        type="button" 
+        data-bs-toggle="collapse" 
+        data-bs-target="#{{ target_id }}" 
+        aria-expanded="{{ 'true' if expanded else 'false' }}" 
+        aria-controls="{{ target_id }}">
+    {{ text }}
+</button>
+{% endmacro %}

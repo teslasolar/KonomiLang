@@ -1,0 +1,5 @@
+{% macro tooltip(text, tooltip_text, placement="top") %}
+<span data-bs-toggle="tooltip" data-bs-placement="{{ placement }}" title="{{ tooltip_text }}">
+    {{ text }}
+</span>
+{% endmacro %}

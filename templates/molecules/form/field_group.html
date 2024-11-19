@@ -1,0 +1,15 @@
+{% from "atoms/form/label.html" import label %}
+
+{% macro field_group(input_type="text", id="", name="", label_text="", required=false, placeholder="", class="") %}
+<div class="mb-3">
+    {{ label(label_text, id, required) }}
+    <input 
+        type="{{ input_type }}"
+        class="form-control {{ class }}"
+        id="{{ id }}"
+        name="{{ name }}"
+        placeholder="{{ placeholder }}"
+        {% if required %}required{% endif %}
+    >
+</div>
+{% endmacro %}

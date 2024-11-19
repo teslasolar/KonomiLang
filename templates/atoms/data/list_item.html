@@ -1,0 +1,6 @@
+{% macro list_item(content, active=false, disabled=false, class="") %}
+<li class="list-group-item {% if active %}active{% endif %} 
+           {% if disabled %}disabled{% endif %} {{ class }}">
+    {{ content }}
+</li>
+{% endmacro %}

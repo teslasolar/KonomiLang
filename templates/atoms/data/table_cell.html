@@ -1,0 +1,7 @@
+{% macro table_cell(content, header=false, align="", class="") %}
+{% if header %}
+<th class="{{ class }} {% if align %}text-{{ align }}{% endif %}" scope="col">{{ content }}</th>
+{% else %}
+<td class="{{ class }} {% if align %}text-{{ align }}{% endif %}">{{ content }}</td>
+{% endif %}
+{% endmacro %}

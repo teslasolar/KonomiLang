@@ -1,0 +1,9 @@
+{% from "atoms/data/table_cell.html" import table_cell %}
+
+{% macro table_row(cells, header=false, class="") %}
+<tr class="{{ class }}">
+    {% for cell in cells %}
+        {{ table_cell(cell.content, header, cell.align|default(""), cell.class|default("")) }}
+    {% endfor %}
+</tr>
+{% endmacro %}

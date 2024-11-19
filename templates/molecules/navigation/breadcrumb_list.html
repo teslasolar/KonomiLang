@@ -1,0 +1,11 @@
+{% from "atoms/navigation/breadcrumb_item.html" import breadcrumb_item %}
+
+{% macro breadcrumb_list(items) %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        {% for item in items %}
+            {{ breadcrumb_item(item.text, item.href, item.active) }}
+        {% endfor %}
+    </ol>
+</nav>
+{% endmacro %}

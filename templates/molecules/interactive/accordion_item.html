@@ -1,0 +1,14 @@
+{% from "atoms/interactive/accordion_button.html" import accordion_button %}
+
+{% macro accordion_item(item_id, header_text, content, expanded=false) %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        {{ accordion_button(item_id, header_text, expanded) }}
+    </h2>
+    <div id="{{ item_id }}" class="accordion-collapse collapse {% if expanded %}show{% endif %}">
+        <div class="accordion-body">
+            {{ content }}
+        </div>
+    </div>
+</div>
+{% endmacro %}

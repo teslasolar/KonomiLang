@@ -1,0 +1,9 @@
+{% macro breadcrumb_item(text, href="#", active=false) %}
+<li class="breadcrumb-item {% if active %}active{% endif %}" {% if active %}aria-current="page"{% endif %}>
+    {% if not active %}
+    <a href="{{ href }}">{{ text }}</a>
+    {% else %}
+    {{ text }}
+    {% endif %}
+</li>
+{% endmacro %}

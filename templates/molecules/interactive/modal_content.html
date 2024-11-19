@@ -1,0 +1,10 @@
+{% macro modal_content(body_content="", footer_content="") %}
+<div class="modal-body">
+    {{ body_content }}
+</div>
+{% if footer_content %}
+<div class="modal-footer">
+    {{ footer_content }}
+</div>
+{% endif %}
+{% endmacro %}

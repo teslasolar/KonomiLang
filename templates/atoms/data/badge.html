@@ -1,0 +1,3 @@
+{% macro badge(text, type="secondary", pill=false) %}
+<span class="badge {% if pill %}rounded-pill{% endif %} bg-{{ type }}">{{ text }}</span>
+{% endmacro %}

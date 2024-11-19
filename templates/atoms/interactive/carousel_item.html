@@ -1,0 +1,11 @@
+{% macro carousel_item(content, active=false, caption_title="", caption_text="") %}
+<div class="carousel-item {% if active %}active{% endif %}">
+    {{ content }}
+    {% if caption_title or caption_text %}
+    <div class="carousel-caption d-none d-md-block">
+        {% if caption_title %}<h5>{{ caption_title }}</h5>{% endif %}
+        {% if caption_text %}<p>{{ caption_text }}</p>{% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endmacro %}

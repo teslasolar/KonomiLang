@@ -1,0 +1,16 @@
+{% from "molecules/data/table_row.html" import table_row %}
+
+{% macro data_table(headers, rows, class="") %}
+<div class="table-responsive">
+    <table class="table {{ class }}">
+        <thead>
+            {{ table_row(headers, true) }}
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                {{ table_row(row) }}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endmacro %}

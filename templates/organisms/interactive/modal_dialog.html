@@ -1,0 +1,15 @@
+{% from "atoms/interactive/modal_header.html" import modal_header %}
+{% from "molecules/interactive/modal_content.html" import modal_content %}
+
+{% macro modal_dialog(id, title, body_content="", footer_content="", size="", scrollable=false, centered=false) %}
+<div class="modal fade" id="{{ id }}" tabindex="-1" aria-labelledby="{{ id }}-label" aria-hidden="true">
+    <div class="modal-dialog {% if size %}modal-{{ size }}{% endif %} 
+                          {% if scrollable %}modal-dialog-scrollable{% endif %}
+                          {% if centered %}modal-dialog-centered{% endif %}">
+        <div class="modal-content">
+            {{ modal_header(title) }}
+            {{ modal_content(body_content, footer_content) }}
+        </div>
+    </div>
+</div>
+{% endmacro %}

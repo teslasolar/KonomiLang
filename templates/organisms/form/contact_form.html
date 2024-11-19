@@ -1,0 +1,46 @@
+{% from "atoms/form/label.html" import label %}
+{% from "atoms/form/textarea.html" import textarea %}
+{% from "molecules/form/field_group.html" import field_group %}
+{% from "atoms/form/checkbox.html" import checkbox %}
+
+{% macro contact_form() %}
+<form class="needs-validation" novalidate>
+    {{ field_group(
+        input_type="text",
+        id="name",
+        name="name",
+        label_text="Name",
+        required=true,
+        placeholder="Enter your name"
+    ) }}
+    
+    {{ field_group(
+        input_type="email",
+        id="email",
+        name="email",
+        label_text="Email",
+        required=true,
+        placeholder="Enter your email"
+    ) }}
+    
+    <div class="mb-3">
+        {{ label("Message", "message", true) }}
+        {{ textarea(
+            id="message",
+            name="message",
+            rows=5,
+            placeholder="Enter your message",
+            required=true
+        ) }}
+    </div>
+    
+    {{ checkbox(
+        id="subscribe",
+        name="subscribe",
+        label="Subscribe to newsletter",
+        checked=false
+    ) }}
+    
+    <button type="submit" class="btn btn-primary">Send Message</button>
+</form>
+{% endmacro %}

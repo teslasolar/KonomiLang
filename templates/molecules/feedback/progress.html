@@ -1,0 +1,13 @@
+{% macro progress(value, max=100, label="", striped=false, animated=false) %}
+<div class="progress">
+    <div class="progress-bar {% if striped %}progress-bar-striped{% endif %} 
+                          {% if animated %}progress-bar-animated{% endif %}" 
+         role="progressbar" 
+         style="width: {{ (value/max * 100)|round }}%" 
+         aria-valuenow="{{ value }}" 
+         aria-valuemin="0" 
+         aria-valuemax="{{ max }}">
+        {% if label %}{{ label }}{% endif %}
+    </div>
+</div>
+{% endmacro %}

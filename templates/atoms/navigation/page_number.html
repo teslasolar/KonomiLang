@@ -1,0 +1,7 @@
+{% macro page_number(number, active=false, disabled=false) %}
+<li class="page-item {% if active %}active{% endif %} {% if disabled %}disabled{% endif %}">
+    <a class="page-link" href="#" {% if disabled %}tabindex="-1" aria-disabled="true"{% endif %}>
+        {{ number }}
+    </a>
+</li>
+{% endmacro %}
