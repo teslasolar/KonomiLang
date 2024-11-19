@@ -363,5 +363,107 @@ def replace_code():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@app.route('/api/v1/chains/analyze-media', methods=['POST'])
+def analyze_media():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    media_url = request.json.get('media_url')
+    analysis_type = request.json.get('analysis_type', 'full')
+    
+    if not media_url:
+        return jsonify({'success': False, 'error': 'Media URL parameter is required'}), 400
+    
+    try:
+        result = program_library.media_analyzer(media_url, analysis_type)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/generate-tutorial', methods=['POST'])
+def generate_tutorial():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    topic = request.json.get('topic')
+    skill_level = request.json.get('skill_level', 'beginner')
+    
+    if not topic:
+        return jsonify({'success': False, 'error': 'Topic parameter is required'}), 400
+    
+    try:
+        result = program_library.tutorial_generator(topic, skill_level)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/build-knowledge-graph', methods=['POST'])
+def build_knowledge_graph():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    domain = request.json.get('domain')
+    concepts = request.json.get('concepts')
+    
+    if not domain or not concepts:
+        return jsonify({'success': False, 'error': 'Domain and concepts parameters are required'}), 400
+    
+    try:
+        result = program_library.knowledge_graph_builder(domain, concepts)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/generate-code', methods=['POST'])
+def generate_code():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    specifications = request.json.get('specifications')
+    language = request.json.get('language', 'python')
+    
+    if not specifications:
+        return jsonify({'success': False, 'error': 'Specifications parameter is required'}), 400
+    
+    try:
+        result = program_library.code_generator(specifications, language)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/recognize-patterns', methods=['POST'])
+def recognize_patterns():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    data_sample = request.json.get('data_sample')
+    pattern_type = request.json.get('pattern_type', 'general')
+    
+    if not data_sample:
+        return jsonify({'success': False, 'error': 'Data sample parameter is required'}), 400
+    
+    try:
+        result = program_library.pattern_recognizer(data_sample, pattern_type)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/debug-interactive', methods=['POST'])
+def debug_interactive():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    code = request.json.get('code')
+    error_message = request.json.get('error_message')
+    
+    if not code or not error_message:
+        return jsonify({'success': False, 'error': 'Code and error message parameters are required'}), 400
+    
+    try:
+        result = program_library.interactive_debugger(code, error_message)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

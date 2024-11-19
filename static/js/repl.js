@@ -142,6 +142,47 @@
                 method: 'POST',
                 path: '/api/v1/chains/replace-code',
                 template: '{\n    "validated_code": "Validated modularized code"\n}'
+            },
+            // Media Analysis
+            'analyze-media': {
+                method: 'POST',
+                path: '/api/v1/chains/analyze-media',
+                template: '{\n    "media_url": "URL to media content",\n    "analysis_type": "full"\n}'
+            },
+            
+            // Interactive Tutorial
+            'generate-tutorial': {
+                method: 'POST',
+                path: '/api/v1/chains/generate-tutorial',
+                template: '{\n    "topic": "Your tutorial topic",\n    "skill_level": "beginner"\n}'
+            },
+            
+            // Knowledge Graph
+            'build-knowledge-graph': {
+                method: 'POST',
+                path: '/api/v1/chains/build-knowledge-graph',
+                template: '{\n    "domain": "Domain name",\n    "concepts": "List of key concepts"\n}'
+            },
+            
+            // Code Generation
+            'generate-code': {
+                method: 'POST',
+                path: '/api/v1/chains/generate-code',
+                template: '{\n    "specifications": "Your code specifications",\n    "language": "python"\n}'
+            },
+            
+            // Pattern Recognition
+            'recognize-patterns': {
+                method: 'POST',
+                path: '/api/v1/chains/recognize-patterns',
+                template: '{\n    "data_sample": "Your data sample",\n    "pattern_type": "general"\n}'
+            },
+            
+            // Interactive Debugger
+            'debug-interactive': {
+                method: 'POST',
+                path: '/api/v1/chains/debug-interactive',
+                template: '{\n    "code": "Your code with error",\n    "error_message": "Error message to analyze"\n}'
             }
         },
         errorTypes: {
@@ -245,14 +286,25 @@
         const endpointLine = lines[0].substring(3);
         const [method, path] = endpointLine.split(' ');
         
-        fetch(path, {
+        const options = {
             method: method,
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: lines.slice(1).join('\n')
+            }
+        };
+
+        // Only add body for POST/PUT/PATCH methods
+        if (['POST', 'PUT', 'PATCH'].includes(method.toUpperCase())) {
+            options.body = lines.slice(1).join('\n');
+        }
+
+        fetch(path, options)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
         })
-        .then(response => response.json())
         .then(data => {
             appendToOutput(output, code, JSON.stringify(data, null, 2));
             document.getElementById('input').value = '';
@@ -260,10 +312,19 @@
         .catch(error => {
             console.error('Error:', error);
             const errorType = classifyError(error.message);
-            appendError(output, code, 'Failed to execute API request', errorType);
+            appendError(output, code, `Request failed: ${error.message}`, errorType);
             document.getElementById('input').value = '';
         });
     }
+
+    // Add global error handler for unhandled rejections
+    window.addEventListener('unhandledrejection', function(event) {
+        const output = document.getElementById('output');
+        if (output) {
+            const errorType = classifyError(event.reason);
+            appendError(output, 'Unhandled Promise Rejection', event.reason.message || 'Unknown error occurred', errorType);
+        }
+    });
 
     function executeStandardCode(code, input, output) {
         const formData = new FormData();
