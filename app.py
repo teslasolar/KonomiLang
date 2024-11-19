@@ -33,6 +33,14 @@ logger = logging.getLogger(__name__)
 # Initialize Flask application
 app = Flask(__name__)
 
+# Configure Flask application
+app.config['MARKDOWN_EXTENSIONS'] = [
+    'fenced_code',
+    'codehilite',
+    'tables',
+    'attr_list'
+]
+
 # Register monitoring API blueprint
 app.register_blueprint(monitor_api, url_prefix='/api/v1/monitor')
 
@@ -44,14 +52,6 @@ doc_generator = DocumentationGenerator()
 # Setup modular routes
 setup_core_routes(app, interpreter)
 setup_chain_routes(app, program_library)
-
-# Configure Markdown extensions
-markdown_extensions = [
-    'fenced_code',
-    'codehilite',
-    'tables',
-    'attr_list'
-]
 
 # Ensure docs directory exists
 docs_dir = Path('docs')
