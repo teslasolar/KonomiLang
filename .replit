@@ -39,6 +39,14 @@ args = "DB Monitor"
 task = "workflow.run"
 args = "Test Connection Manager"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Backup Test"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "List Backups"
+
 [[workflows.workflow]]
 name = "Konomi Server"
 author = "agent"
@@ -137,6 +145,34 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python -m pytest tests/test_connection_manager.py -v"
+
+[[workflows.workflow]]
+name = "Backup Test"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python backup_cli.py backup"
+
+[[workflows.workflow]]
+name = "List Backups"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python backup_cli.py list"
 
 [deployment]
 run = ["sh", "-c", "python main.py"]

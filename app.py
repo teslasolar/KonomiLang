@@ -15,8 +15,8 @@ from konomi.nlp_chains import NLPChains
 
 app = Flask(__name__)
 
-# Register monitoring API blueprint
-app.register_blueprint(monitor_api)
+# Register monitoring API blueprint with the correct URL prefix
+app.register_blueprint(monitor_api, url_prefix='/api/v1/monitor')
 
 interpreter = Interpreter()
 

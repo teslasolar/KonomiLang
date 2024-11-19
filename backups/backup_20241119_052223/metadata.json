@@ -1,0 +1,15 @@
+{
+  "timestamp": "2024-11-19T05:22:23.556358",
+  "databases": [
+    "A1",
+    "B1",
+    "C1"
+  ],
+  "total_size": 40960,
+  "checksums": {
+    "A1": "d1016f479ffc9a09eca1d9780336dace68ce9367dcd261dda9a090291ef634f5",
+    "B1": "3522117f79456472d799a94df7d875a9303278da689324777f9cff028e44892b",
+    "C1": "79aab0313dcb98ed69c037336ffc4220fc9c4bb7fb59fd973cc63f0df43bdb87"
+  },
+  "version": "1.0"
+}

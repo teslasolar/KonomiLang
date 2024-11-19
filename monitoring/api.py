@@ -1,15 +1,17 @@
 """
 Flask API endpoints for the database monitoring system.
 """
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from . import utils
 from .service import MonitoringService
+from database.backup_manager import BackupManager
 
 # Create Blueprint for monitoring API
 monitor_api = Blueprint('monitor_api', __name__, url_prefix='/api/v1/monitor')
 
-# Initialize monitoring service
+# Initialize services
 monitoring_service = MonitoringService(interval=300)
+backup_manager = BackupManager()
 monitoring_service.start()
 
 @monitor_api.route('/status', methods=['GET'])
@@ -68,3 +70,43 @@ def trigger_check():
     """Manually trigger a monitoring check."""
     status = monitoring_service.trigger_check()
     return jsonify(status)
+
+@monitor_api.route('/backups', methods=['GET'])
+def list_backups():
+    """List all available backups."""
+    backups = backup_manager.list_backups()
+    return jsonify({"backups": backups})
+
+@monitor_api.route('/backups', methods=['POST'])
+def create_backup():
+    """Create a new backup."""
+    data = request.get_json()
+    databases = data.get('databases') if data else None
+    
+    try:
+        backup_path = backup_manager.create_backup(databases)
+        return jsonify({
+            "message": "Backup created successfully",
+            "backup_path": backup_path
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@monitor_api.route('/backups/restore', methods=['POST'])
+def restore_backup():
+    """Restore from a backup."""
+    data = request.get_json()
+    if not data or 'backup_path' not in data:
+        return jsonify({"error": "backup_path is required"}), 400
+        
+    try:
+        restored = backup_manager.restore_backup(
+            data['backup_path'],
+            data.get('databases')
+        )
+        return jsonify({
+            "message": "Backup restored successfully",
+            "restored_databases": restored
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
