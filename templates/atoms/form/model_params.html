@@ -43,4 +43,36 @@
             <span id="top-p-value" class="text-sm text-gray-500">1.0</span>
         </div>
     </div>
+    <!-- Complexity Analysis Parameters -->
+    <div class="complexity-analysis-params hidden">
+        <div>
+            <label for="complexity-level" class="block text-sm font-medium text-gray-700">Complexity Level</label>
+            <select
+                id="complexity-level"
+                name="complexity_level"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            >
+                <option value="basic">Basic</option>
+                <option value="detailed">Detailed</option>
+                <option value="comprehensive">Comprehensive</option>
+            </select>
+        </div>
+        <div class="mt-4">
+            <label for="analysis-metrics" class="block text-sm font-medium text-gray-700">Analysis Metrics</label>
+            <div class="mt-2 space-y-2">
+                <div class="flex items-center">
+                    <input type="checkbox" id="cyclomatic-complexity" name="metrics[]" value="cyclomatic" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="cyclomatic-complexity" class="ml-2 text-sm text-gray-700">Cyclomatic Complexity</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="cognitive-complexity" name="metrics[]" value="cognitive" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="cognitive-complexity" class="ml-2 text-sm text-gray-700">Cognitive Complexity</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="maintainability-index" name="metrics[]" value="maintainability" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="maintainability-index" class="ml-2 text-sm text-gray-700">Maintainability Index</label>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
