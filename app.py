@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from konomi.interpreter import Interpreter
 from konomi.errors import KonomiError
+import markdown
+import os
 
 app = Flask(__name__)
 interpreter = Interpreter()
@@ -11,7 +13,24 @@ def index():
 
 @app.route('/docs')
 def docs():
-    return render_template('docs.html')
+    # Read and convert README.md
+    with open('docs/README.md', 'r') as f:
+        content = markdown.markdown(f.read(), extensions=['fenced_code', 'tables'])
+    return render_template('markdown.html', content=content, title="Documentation")
+
+@app.route('/docs/api')
+def api_docs():
+    # Read and convert api.md
+    with open('docs/api.md', 'r') as f:
+        content = markdown.markdown(f.read(), extensions=['fenced_code', 'tables'])
+    return render_template('markdown.html', content=content, title="API Documentation")
+
+@app.route('/docs/endpoints')
+def endpoints_docs():
+    # Read and convert endpoints.md
+    with open('docs/endpoints.md', 'r') as f:
+        content = markdown.markdown(f.read(), extensions=['fenced_code', 'tables'])
+    return render_template('markdown.html', content=content, title="API Endpoints")
 
 @app.route('/examples')
 def examples():
@@ -27,7 +46,7 @@ def execute():
     except KonomiError as e:
         return jsonify({'success': False, 'error': str(e)})
 
-# New API Routes
+# API Routes
 @app.route('/api/v1/execute', methods=['POST'])
 def api_execute():
     if not request.is_json:
