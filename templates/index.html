@@ -13,6 +13,17 @@
                     > ask "What is the weather?"
                 </div>
                 <div class="input-group">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            Commands
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="insertCommand('ask ""')">ask ""</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="insertCommand('let name = ""')">let name = ""</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="insertCommand('if () {\n\n}')">if statement</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="insertCommand('try {\n\n} catch {\n\n}')">try-catch</a></li>
+                        </ul>
+                    </div>
                     <input type="text" id="input" class="form-control" placeholder="Enter Konomi code...">
                     <button class="btn btn-primary" onclick="executeCode()">Run</button>
                 </div>

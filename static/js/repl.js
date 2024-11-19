@@ -33,3 +33,15 @@ document.getElementById('input').addEventListener('keypress', function(e) {
         executeCode();
     }
 });
+
+function insertCommand(template) {
+    const input = document.getElementById('input');
+    input.value = template;
+    input.focus();
+    
+    // If the template contains quotes, place cursor between them
+    if (template.includes('""')) {
+        const cursorPos = input.value.indexOf('""') + 1;
+        input.setSelectionRange(cursorPos, cursorPos);
+    }
+}
