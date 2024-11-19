@@ -529,13 +529,13 @@ def setup_database():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/v1/chains/database-migration', methods=['POST'])
-def migrate_database():
+def database_migration():
     if not request.is_json:
         return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
     
     schema = request.json.get('schema')
     if not schema:
-        return jsonify({'success': False, 'error': 'Database schema is required'}), 400
+        return jsonify({'success': False, 'error': 'Schema parameter is required'}), 400
     
     try:
         result = program_library.database_migration(schema)
@@ -544,13 +544,13 @@ def migrate_database():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/v1/chains/database-backup', methods=['POST'])
-def backup_database():
+def database_backup():
     if not request.is_json:
         return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
     
     data = request.json.get('data')
     if not data:
-        return jsonify({'success': False, 'error': 'Database data is required'}), 400
+        return jsonify({'success': False, 'error': 'Data parameter is required'}), 400
     
     try:
         result = program_library.database_backup(data)
@@ -559,31 +559,31 @@ def backup_database():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/v1/chains/database-validate', methods=['POST'])
-def validate_database():
+def database_validate():
     if not request.is_json:
         return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
     
     queries = request.json.get('queries')
     if not queries:
-        return jsonify({'success': False, 'error': 'Database queries are required'}), 400
+        return jsonify({'success': False, 'error': 'Queries parameter is required'}), 400
     
     try:
-        result = program_library.database_validator(queries)
+        result = program_library.database_validate(queries)
         return jsonify(result)
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/v1/chains/database-restore', methods=['POST'])
-def restore_database():
+def database_restore():
     if not request.is_json:
         return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
     
     backup = request.json.get('backup')
     if not backup:
-        return jsonify({'success': False, 'error': 'Backup data is required'}), 400
+        return jsonify({'success': False, 'error': 'Backup parameter is required'}), 400
     
     try:
-        result = program_library.database_restorer(backup)
+        result = program_library.database_restore(backup)
         return jsonify(result)
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500

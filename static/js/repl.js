@@ -312,22 +312,36 @@
         const endpointLine = lines[0].substring(3);
         const [method, path] = endpointLine.split(' ');
         
+        let jsonData;
+        try {
+            // Parse JSON body for POST/PUT/PATCH methods
+            if (['POST', 'PUT', 'PATCH'].includes(method.toUpperCase())) {
+                jsonData = JSON.parse(lines.slice(1).join('\n'));
+            }
+        } catch (error) {
+            appendError(output, code, `Invalid JSON format: ${error.message}`, config.errorTypes.SYNTAX_ERROR);
+            return;
+        }
+        
         const options = {
             method: method,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             }
         };
 
         // Only add body for POST/PUT/PATCH methods
-        if (['POST', 'PUT', 'PATCH'].includes(method.toUpperCase())) {
-            options.body = lines.slice(1).join('\n');
+        if (jsonData) {
+            options.body = JSON.stringify(jsonData);
         }
 
         fetch(path, options)
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json().then(errorData => {
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                });
             }
             return response.json();
         })
