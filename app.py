@@ -11,6 +11,7 @@ from konomi.chained_programs import ProgramLibrary
 from konomi.routes.core import setup_core_routes
 from konomi.routes.chains import setup_chain_routes
 from monitoring.api import monitor_api
+from generation.functions import DocumentationGenerator
 import markdown
 import os
 from pygments import highlight
@@ -26,6 +27,7 @@ app.register_blueprint(monitor_api, url_prefix='/api/v1/monitor')
 # Initialize core components
 interpreter = Interpreter()
 program_library = ProgramLibrary(interpreter)
+doc_generator = DocumentationGenerator()
 
 # Setup modular routes
 setup_core_routes(app, interpreter)
@@ -64,6 +66,10 @@ def generation():
 @app.route('/docs')
 def docs():
     """Render documentation page."""
+    # Auto-generate API documentation
+    endpoints = doc_generator.discover_endpoints(app)
+    doc_generator.generate_api_docs(endpoints, 'docs/api.md')
+    
     with open('docs/README.md', 'r') as f:
         content = markdown.markdown(f.read(), extensions=markdown_extensions)
     return render_template('markdown.html', content=content, title="Documentation")
@@ -93,6 +99,33 @@ def syntax_docs():
 def examples():
     """Render examples page."""
     return render_template('examples.html')
+
+# API Management endpoints
+@app.route('/api/v1/docs/generate', methods=['POST'])
+def generate_docs():
+    """Generate documentation based on current API endpoints."""
+    try:
+        endpoints = doc_generator.discover_endpoints(app)
+        doc_generator.generate_api_docs(endpoints)
+        return jsonify({"success": True, "message": "Documentation generated successfully"})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/v1/structure/generate', methods=['POST'])
+def generate_structure():
+    """Generate directory structure based on template."""
+    try:
+        template = request.json.get('template')
+        if not template:
+            return jsonify({"success": False, "error": "Template is required"}), 400
+            
+        if not doc_generator.validate_template(template):
+            return jsonify({"success": False, "error": "Invalid template format"}), 400
+            
+        doc_generator.generate_directory_structure(template)
+        return jsonify({"success": True, "message": "Directory structure generated successfully"})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 # Web interface execute endpoint
 @app.route('/execute', methods=['POST'])
