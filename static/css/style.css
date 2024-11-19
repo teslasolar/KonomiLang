@@ -1,4 +1,159 @@
 /* Base styles */
+:root {
+    --sidebar-width: 300px;
+    --navbar-height: 56px;
+    --accordion-transition: 0.3s ease-in-out;
+}
+
+/* Left Sidebar */
+.api-sidebar {
+    position: fixed;
+    left: 0;
+    top: var(--navbar-height);
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--navbar-height));
+    background-color: var(--bs-dark);
+    border-right: 1px solid var(--bs-border-color);
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+/* Accordion Styling */
+.api-sidebar .accordion {
+    background-color: transparent;
+}
+
+.api-sidebar .accordion-item {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.api-sidebar .accordion-button {
+    background-color: transparent;
+    color: var(--bs-light);
+    padding: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color var(--accordion-transition);
+}
+
+.api-sidebar .accordion-button:not(.collapsed) {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--bs-light);
+    box-shadow: none;
+}
+
+.api-sidebar .accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    transition: transform var(--accordion-transition);
+}
+
+.api-sidebar .accordion-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.api-sidebar .accordion-body {
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Endpoint List Styling */
+.api-sidebar .endpoint-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.api-sidebar .endpoint-item {
+    margin: 0;
+    position: relative;
+}
+
+.api-sidebar .endpoint-button {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    color: var(--bs-light);
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color var(--accordion-transition);
+    text-decoration: none;
+    border-radius: 0;
+}
+
+.api-sidebar .endpoint-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.api-sidebar .endpoint-button.get {
+    color: #61affe;
+}
+
+.api-sidebar .endpoint-button.post {
+    color: #49cc90;
+}
+
+/* Tooltip styling */
+.endpoint-tooltip {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--bs-dark);
+    border: 1px solid var(--bs-border-color);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    max-width: 200px;
+    z-index: 1001;
+    display: none;
+    margin-left: var(--sidebar-width);
+    pointer-events: none;
+}
+
+.endpoint-button:hover + .endpoint-tooltip {
+    display: block;
+}
+
+/* Main content adjustment */
+.container.with-sidebar {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    padding: 2rem;
+}
+
+/* Icons */
+.accordion-button i {
+    font-size: 1.1rem;
+    width: 1.5rem;
+    text-align: center;
+}
+
+/* Collapse/Expand Animation */
+.accordion-collapse {
+    transition: all var(--accordion-transition);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .api-sidebar {
+        width: 100%;
+        position: static;
+        height: auto;
+        max-height: 300px;
+    }
+
+    .container.with-sidebar {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* Base styles */
 pre code {
     display: block;
     padding: 1rem;
