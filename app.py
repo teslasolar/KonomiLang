@@ -14,11 +14,21 @@ from monitoring.api import monitor_api
 from generation.functions import DocumentationGenerator
 import markdown
 import os
+import logging
+import aiofiles
+from pathlib import Path
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 import asyncio
 from functools import wraps
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -43,10 +53,35 @@ markdown_extensions = [
     'attr_list'
 ]
 
+# Ensure docs directory exists
+docs_dir = Path('docs')
+docs_dir.mkdir(exist_ok=True)
+
+# Default documentation content
+DEFAULT_DOC_CONTENT = """
+# Documentation Not Found
+
+The requested documentation is currently being generated or is not available.
+Please try again in a few moments or contact the system administrator.
+
+## Available Documentation Sections:
+- [API Documentation](/docs/api)
+- [Endpoints Documentation](/docs/endpoints)
+- [Basic Syntax](/docs/syntax)
+"""
+
 def async_route(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        return asyncio.run(f(*args, **kwargs))
+        try:
+            return asyncio.run(f(*args, **kwargs))
+        except Exception as e:
+            logger.error(f"Error in async route {f.__name__}: {str(e)}")
+            return render_template(
+                'markdown.html',
+                content=f"Error: {str(e)}",
+                title="Error"
+            ), 500
     return wrapper
 
 def highlight_code(code, language='konomi'):
@@ -55,7 +90,8 @@ def highlight_code(code, language='konomi'):
         lexer = get_lexer_by_name(language)
         formatter = HtmlFormatter(style='monokai', cssclass='highlight')
         return highlight(code, lexer, formatter)
-    except:
+    except Exception as e:
+        logger.warning(f"Failed to highlight code: {str(e)}")
         return code
 
 app.jinja_env.globals.update(highlight_code=highlight_code)
@@ -71,57 +107,60 @@ def generation():
     """Render code generation page."""
     return render_template('generation.html')
 
+async def load_markdown_file(filepath: str, cache_key: str) -> tuple[str, int]:
+    """Load and process markdown file with error handling."""
+    try:
+        if not os.path.exists(filepath):
+            logger.warning(f"Documentation file not found: {filepath}")
+            return await doc_generator.process_markdown(DEFAULT_DOC_CONTENT, 'default'), 404
+
+        async with aiofiles.open(filepath, 'r') as f:
+            content = await f.read()
+            processed_content = await doc_generator.process_markdown(content, cache_key)
+            return processed_content, 200
+    except Exception as e:
+        logger.error(f"Error loading markdown file {filepath}: {str(e)}")
+        return f"Error loading documentation: {str(e)}", 500
+
 @app.route('/docs')
 @async_route
 async def docs():
     """Render documentation page."""
-    # Auto-generate API documentation
-    endpoints = doc_generator.discover_endpoints(app)
-    await doc_generator.generate_api_docs(endpoints, 'docs/api.md')
-    
     try:
-        async with aiofiles.open('docs/README.md', 'r') as f:
-            content = await f.read()
-            processed_content = await doc_generator.process_markdown(content, 'readme')
-        return render_template('markdown.html', content=processed_content, title="Documentation")
+        # Auto-generate API documentation
+        endpoints = doc_generator.discover_endpoints(app)
+        await doc_generator.generate_api_docs(endpoints, 'docs/api.md')
+        
+        content, status = await load_markdown_file('docs/README.md', 'readme')
+        return render_template('markdown.html', content=content, title="Documentation"), status
     except Exception as e:
-        return f"Error loading documentation: {str(e)}", 500
+        logger.error(f"Error in docs route: {str(e)}")
+        return render_template(
+            'markdown.html',
+            content=await doc_generator.process_markdown(DEFAULT_DOC_CONTENT, 'default'),
+            title="Documentation"
+        ), 500
 
 @app.route('/docs/api')
 @async_route
 async def api_docs():
     """Render API documentation page."""
-    try:
-        async with aiofiles.open('docs/api.md', 'r') as f:
-            content = await f.read()
-            processed_content = await doc_generator.process_markdown(content, 'api')
-        return render_template('markdown.html', content=processed_content, title="API Documentation")
-    except Exception as e:
-        return f"Error loading API documentation: {str(e)}", 500
+    content, status = await load_markdown_file('docs/api.md', 'api')
+    return render_template('markdown.html', content=content, title="API Documentation"), status
 
 @app.route('/docs/endpoints')
 @async_route
 async def endpoints_docs():
     """Render endpoints documentation page."""
-    try:
-        async with aiofiles.open('docs/endpoints.md', 'r') as f:
-            content = await f.read()
-            processed_content = await doc_generator.process_markdown(content, 'endpoints')
-        return render_template('markdown.html', content=processed_content, title="API Endpoints")
-    except Exception as e:
-        return f"Error loading endpoints documentation: {str(e)}", 500
+    content, status = await load_markdown_file('docs/endpoints.md', 'endpoints')
+    return render_template('markdown.html', content=content, title="API Endpoints"), status
 
 @app.route('/docs/syntax')
 @async_route
 async def syntax_docs():
     """Render syntax documentation page."""
-    try:
-        async with aiofiles.open('docs/basic_syntax.md', 'r') as f:
-            content = await f.read()
-            processed_content = await doc_generator.process_markdown(content, 'syntax')
-        return render_template('markdown.html', content=processed_content, title="Basic Syntax")
-    except Exception as e:
-        return f"Error loading syntax documentation: {str(e)}", 500
+    content, status = await load_markdown_file('docs/basic_syntax.md', 'syntax')
+    return render_template('markdown.html', content=content, title="Basic Syntax"), status
 
 @app.route('/examples')
 def examples():
@@ -138,6 +177,7 @@ async def generate_docs():
         await doc_generator.generate_api_docs(endpoints)
         return jsonify({"success": True, "message": "Documentation generated successfully"})
     except Exception as e:
+        logger.error(f"Error generating documentation: {str(e)}")
         return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/api/v1/structure/generate', methods=['POST'])
@@ -154,6 +194,7 @@ def generate_structure():
         doc_generator.generate_directory_structure(template)
         return jsonify({"success": True, "message": "Directory structure generated successfully"})
     except Exception as e:
+        logger.error(f"Error generating directory structure: {str(e)}")
         return jsonify({"success": False, "error": str(e)}), 500
 
 # Web interface execute endpoint
@@ -165,6 +206,7 @@ def execute():
         result = interpreter.execute(code)
         return jsonify({'success': True, 'result': result})
     except KonomiError as e:
+        logger.error(f"Error executing code: {str(e)}")
         return jsonify({'success': False, 'error': str(e)})
 
 if __name__ == "__main__":
