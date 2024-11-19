@@ -305,3 +305,53 @@ class ProgramLibrary:
             'let prevention = ask "Suggest best practices to prevent similar errors"'
         ]
         return self.chain.execute_chain(steps)
+
+    def database_setup(self, config):
+        steps = [
+            f'let config = """{config}"""',
+            'let validation = ask "Validate database configuration parameters: " + config',
+            'let setup_plan = ask "Generate database setup plan with safety checks"',
+            'let initialization = ask "Create database initialization commands"',
+            'let verification = ask "Generate verification queries for database setup"'
+        ]
+        return self.chain.execute_chain(steps)
+
+    def database_migration(self, schema):
+        steps = [
+            f'let schema = """{schema}"""',
+            'let analysis = ask "Analyze schema changes and create migration plan: " + schema',
+            'let safety_check = ask "Identify potential data loss or breaking changes"',
+            'let migration_steps = ask "Generate step-by-step migration commands"',
+            'let rollback_plan = ask "Create rollback plan for this migration"'
+        ]
+        return self.chain.execute_chain(steps)
+
+    def database_backup(self, data):
+        steps = [
+            f'let data = """{data}"""',
+            'let backup_plan = ask "Create backup strategy for: " + data',
+            'let compression = ask "Determine optimal compression method"',
+            'let integrity = ask "Generate integrity check queries"',
+            'let metadata = ask "Create backup metadata and documentation"'
+        ]
+        return self.chain.execute_chain(steps)
+
+    def database_validator(self, queries):
+        steps = [
+            f'let queries = """{queries}"""',
+            'let analysis = ask "Analyze and validate these database queries: " + queries',
+            'let optimization = ask "Suggest query optimizations"',
+            'let security = ask "Identify potential security risks"',
+            'let performance = ask "Evaluate performance impact"'
+        ]
+        return self.chain.execute_chain(steps)
+
+    def database_restorer(self, backup):
+        steps = [
+            f'let backup = """{backup}"""',
+            'let validation = ask "Validate backup integrity and structure: " + backup',
+            'let restore_plan = ask "Generate step-by-step restoration plan"',
+            'let dependencies = ask "Check and verify database dependencies"',
+            'let verification = ask "Create verification steps for restored data"'
+        ]
+        return self.chain.execute_chain(steps)

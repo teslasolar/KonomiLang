@@ -183,7 +183,33 @@
                 method: 'POST',
                 path: '/api/v1/chains/debug-interactive',
                 template: '{\n    "code": "Your code with error",\n    "error_message": "Error message to analyze"\n}'
-            }
+            },
+            // Database Operations
+            'database-setup': {
+                method: 'POST',
+                path: '/api/v1/chains/database-setup',
+                template: '{\n    "config": {\n        "host": "localhost",\n        "port": 5432,\n        "database": "mydb",\n        "user": "dbuser"\n    }\n}'
+            },
+            'database-migration': {
+                method: 'POST',
+                path: '/api/v1/chains/database-migration',
+                template: '{\n    "schema": {\n        "table": "users",\n        "changes": [\n            "ADD COLUMN email VARCHAR(255)",\n            "ADD COLUMN created_at TIMESTAMP"\n        ]\n    }\n}'
+            },
+            'database-backup': {
+                method: 'POST',
+                path: '/api/v1/chains/database-backup',
+                template: '{\n    "data": {\n        "tables": ["users", "posts", "comments"],\n        "compression": "gzip"\n    }\n}'
+            },
+            'database-validate': {
+                method: 'POST',
+                path: '/api/v1/chains/database-validate',
+                template: '{\n    "queries": [\n        "SELECT * FROM users WHERE id > 1000",\n        "UPDATE posts SET status = \'published\'"\n    ]\n}'
+            },
+            'database-restore': {
+                method: 'POST',
+                path: '/api/v1/chains/database-restore',
+                template: '{\n    "backup": {\n        "file": "backup_2024_11_19.sql",\n        "type": "full"\n    }\n}'
+            },
         },
         errorTypes: {
             SYNTAX_ERROR: 'Syntax Error',

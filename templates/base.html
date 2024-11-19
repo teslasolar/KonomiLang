@@ -362,6 +362,43 @@
                 </li>
             </ul>
         </div>
+
+        <!-- Database Operations -->
+        <div class="endpoint-group">
+            <div class="endpoint-group-title">Database Operations</div>
+            <ul class="endpoint-list">
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('database-setup')">
+                        POST /chains/database-setup
+                    </button>
+                    <div class="endpoint-tooltip">Set up and configure database</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('database-migration')">
+                        POST /chains/database-migration
+                    </button>
+                    <div class="endpoint-tooltip">Handle database schema migrations</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('database-backup')">
+                        POST /chains/database-backup
+                    </button>
+                    <div class="endpoint-tooltip">Create database backups</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('database-validate')">
+                        POST /chains/database-validate
+                    </button>
+                    <div class="endpoint-tooltip">Validate database operations</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('database-restore')">
+                        POST /chains/database-restore
+                    </button>
+                    <div class="endpoint-tooltip">Restore database from backup</div>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="container with-sidebar mt-4">

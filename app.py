@@ -465,5 +465,80 @@ def debug_interactive():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@app.route('/api/v1/chains/database-setup', methods=['POST'])
+def setup_database():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    config = request.json.get('config')
+    if not config:
+        return jsonify({'success': False, 'error': 'Database configuration is required'}), 400
+    
+    try:
+        result = program_library.database_setup(config)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/database-migration', methods=['POST'])
+def migrate_database():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    schema = request.json.get('schema')
+    if not schema:
+        return jsonify({'success': False, 'error': 'Database schema is required'}), 400
+    
+    try:
+        result = program_library.database_migration(schema)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/database-backup', methods=['POST'])
+def backup_database():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    data = request.json.get('data')
+    if not data:
+        return jsonify({'success': False, 'error': 'Database data is required'}), 400
+    
+    try:
+        result = program_library.database_backup(data)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/database-validate', methods=['POST'])
+def validate_database():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    queries = request.json.get('queries')
+    if not queries:
+        return jsonify({'success': False, 'error': 'Database queries are required'}), 400
+    
+    try:
+        result = program_library.database_validator(queries)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/database-restore', methods=['POST'])
+def restore_database():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    backup = request.json.get('backup')
+    if not backup:
+        return jsonify({'success': False, 'error': 'Backup data is required'}), 400
+    
+    try:
+        result = program_library.database_restorer(backup)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
