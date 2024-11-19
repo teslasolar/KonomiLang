@@ -1,3 +1,4 @@
+// IIFE to prevent global scope pollution
 (function() {
     // Configuration
     const config = {
@@ -54,7 +55,7 @@
         }
     };
 
-    // Error classification function
+    // Helper functions
     function classifyError(error) {
         if (!error) return config.errorTypes.UNKNOWN_ERROR;
         const errorStr = String(error);
@@ -146,7 +147,7 @@
         const entry = document.createElement('div');
         entry.className = 'repl-entry';
         entry.innerHTML = `
-            <div class="repl-input">&gt; ${safeCode}</div>
+            <div class="repl-input highlight">&gt; ${safeCode}</div>
             <div class="repl-result">${safeResult}</div>
         `;
         output.appendChild(entry);
@@ -160,7 +161,7 @@
         const entry = document.createElement('div');
         entry.className = 'repl-entry';
         entry.innerHTML = `
-            <div class="repl-input">&gt; ${safeCode}</div>
+            <div class="repl-input highlight">&gt; ${safeCode}</div>
             <div class="repl-error">${safeErrorType}: ${safeError}</div>
         `;
         output.appendChild(entry);
@@ -201,9 +202,9 @@
         }
     }
 
-    // Command completion with debouncing
-    let inputTimeout = null;
+    // Event listeners
     const input = document.getElementById('input');
+    let inputTimeout = null;
 
     input.addEventListener('input', function(e) {
         clearTimeout(inputTimeout);
@@ -247,7 +248,7 @@
         }
     });
 
-    // Make functions globally available
+    // Export functions to global scope
     window.executeCode = executeCode;
     window.insertCommand = insertCommand;
 })();
