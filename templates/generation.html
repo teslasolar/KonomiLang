@@ -13,20 +13,174 @@ document.addEventListener('DOMContentLoaded', function() {
     const generateButton = document.getElementById('generate-button');
     const outputDiv = document.getElementById('generation-output');
     const historyDiv = document.getElementById('generation-history');
+    const errorDisplay = document.getElementById('error-display');
+    const errorMessage = document.getElementById('error-message');
 
+    // Tab Handling
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tab = button.dataset.tab;
+            
+            // Update button states
+            tabButtons.forEach(btn => {
+                btn.classList.remove('border-indigo-500', 'text-indigo-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            button.classList.remove('border-transparent', 'text-gray-500');
+            button.classList.add('border-indigo-500', 'text-indigo-600');
+
+            // Update content visibility
+            tabContents.forEach(content => {
+                content.classList.add('hidden');
+                if (content.dataset.tabContent === tab) {
+                    content.classList.remove('hidden');
+                }
+            });
+        });
+    });
+
+    // Template Management
+    const templateSelector = document.getElementById('template-selector');
+    const saveTemplateButton = document.getElementById('save-template');
+    const loadTemplateButton = document.getElementById('load-template');
+
+    function loadTemplates() {
+        const templates = JSON.parse(localStorage.getItem('promptTemplates') || '{}');
+        templateSelector.innerHTML = '<option value="">Select a template...</option>';
+        Object.keys(templates).forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            templateSelector.appendChild(option);
+        });
+    }
+
+    saveTemplateButton.addEventListener('click', () => {
+        const name = prompt('Enter template name:');
+        if (name) {
+            const templates = JSON.parse(localStorage.getItem('promptTemplates') || '{}');
+            templates[name] = {
+                prompt: document.getElementById('generation-prompt').value,
+                type: document.getElementById('generation-type').value,
+                params: {
+                    maxTokens: document.getElementById('max-tokens').value,
+                    temperature: document.getElementById('temperature').value,
+                    topP: document.getElementById('top-p').value
+                }
+            };
+            localStorage.setItem('promptTemplates', JSON.stringify(templates));
+            loadTemplates();
+        }
+    });
+
+    loadTemplateButton.addEventListener('click', () => {
+        const templates = JSON.parse(localStorage.getItem('promptTemplates') || '{}');
+        const template = templates[templateSelector.value];
+        if (template) {
+            document.getElementById('generation-prompt').value = template.prompt;
+            document.getElementById('generation-type').value = template.type;
+            document.getElementById('max-tokens').value = template.params.maxTokens;
+            document.getElementById('temperature').value = template.params.temperature;
+            document.getElementById('top-p').value = template.params.topP;
+            updateRangeValues();
+        }
+    });
+
+    // Advanced Parameter Handling
+    function updateRangeValues() {
+        document.getElementById('temperature-value').textContent = 
+            document.getElementById('temperature').value;
+        document.getElementById('top-p-value').textContent = 
+            document.getElementById('top-p').value;
+    }
+
+    document.getElementById('temperature').addEventListener('input', updateRangeValues);
+    document.getElementById('top-p').addEventListener('input', updateRangeValues);
+
+    // API Key Configuration
+    const apiKeyInput = document.getElementById('api-key');
+    const toggleApiKeyButton = document.getElementById('toggle-api-key');
+    const saveApiKeyButton = document.getElementById('save-api-key');
+    const testApiKeyButton = document.getElementById('test-api-key');
+
+    toggleApiKeyButton.addEventListener('click', () => {
+        const type = apiKeyInput.type === 'password' ? 'text' : 'password';
+        apiKeyInput.type = type;
+    });
+
+    saveApiKeyButton.addEventListener('click', () => {
+        const apiKey = apiKeyInput.value;
+        if (apiKey) {
+            localStorage.setItem('openai_api_key', apiKey);
+            alert('API key saved successfully!');
+        }
+    });
+
+    testApiKeyButton.addEventListener('click', async () => {
+        const apiKey = apiKeyInput.value || localStorage.getItem('openai_api_key');
+        if (!apiKey) {
+            alert('Please enter an API key first.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/v1/test-api-key', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ api_key: apiKey })
+            });
+            const data = await response.json();
+            alert(data.success ? 'API key is valid!' : 'Invalid API key!');
+        } catch (error) {
+            alert('Error testing API key: ' + error.message);
+        }
+    });
+
+    // Form Submission
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const formData = new FormData(form);
         generateButton.disabled = true;
+        errorDisplay.classList.add('hidden');
+        
+        const formData = new FormData(form);
+        const apiKey = localStorage.getItem('openai_api_key');
         
         try {
-            const response = await fetch('/api/generate', {
+            const response = await fetch('/api/v1/generate', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    prompt: formData.get('prompt'),
+                    type: formData.get('generation_type'),
+                    params: {
+                        max_tokens: parseInt(formData.get('max_tokens')),
+                        temperature: parseFloat(formData.get('temperature')),
+                        top_p: parseFloat(formData.get('top_p'))
+                    }
+                })
             });
             
             const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || 'Generation failed');
+            }
+
+            // Update result
             outputDiv.innerHTML = `<pre>${data.result}</pre>`;
+            
+            // Update metadata
+            document.getElementById('metadata-model').textContent = data.metadata.model;
+            document.getElementById('metadata-timestamp').textContent = new Date().toLocaleString();
+            document.getElementById('metadata-tokens').textContent = data.metadata.tokens;
+            document.getElementById('metadata-time').textContent = `${data.metadata.time}ms`;
             
             // Add to history
             const historyItem = document.createElement('div');
@@ -37,11 +191,47 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             historyDiv.prepend(historyItem);
         } catch (error) {
-            outputDiv.innerHTML = `<div class="text-red-500">Error: ${error.message}</div>`;
+            errorMessage.textContent = error.message;
+            errorDisplay.classList.remove('hidden');
+            outputDiv.innerHTML = '';
         } finally {
             generateButton.disabled = false;
         }
     });
+
+    // Copy, Save, and Share Results
+    document.getElementById('copy-result').addEventListener('click', () => {
+        const result = outputDiv.textContent;
+        navigator.clipboard.writeText(result).then(() => {
+            alert('Copied to clipboard!');
+        });
+    });
+
+    document.getElementById('save-result').addEventListener('click', () => {
+        const result = outputDiv.textContent;
+        const blob = new Blob([result], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'generation-result.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('share-result').addEventListener('click', () => {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Generated Content',
+                text: outputDiv.textContent
+            }).catch(console.error);
+        } else {
+            alert('Sharing is not supported on this device/browser.');
+        }
+    });
+
+    // Initial setup
+    loadTemplates();
+    updateRangeValues();
 });
 </script>
 {% endblock %}

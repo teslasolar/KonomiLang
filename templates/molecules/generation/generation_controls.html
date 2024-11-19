@@ -1,39 +1,65 @@
-<div class="generation-controls">
-    <div class="flex space-x-4 items-center">
-        <div class="flex-1">
-            {% include "atoms/form/generation_input.html" %}
-        </div>
-        <div class="flex-none">
+<div class="generation-controls space-y-6">
+    <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
             <button
-                type="submit"
-                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                id="generate-button"
+                type="button"
+                class="tab-button border-indigo-500 text-indigo-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                data-tab="basic"
             >
-                Generate
+                Basic Settings
             </button>
+            <button
+                type="button"
+                class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                data-tab="advanced"
+            >
+                Advanced Settings
+            </button>
+            <button
+                type="button"
+                class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                data-tab="templates"
+            >
+                Templates
+            </button>
+            <button
+                type="button"
+                class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                data-tab="api"
+            >
+                API Settings
+            </button>
+        </nav>
+    </div>
+
+    <div class="tab-content" data-tab-content="basic">
+        <div class="space-y-4">
+            {% include "atoms/form/generation_type_selector.html" %}
+            {% include "atoms/form/generation_input.html" %}
+            <div class="flex justify-end">
+                <button
+                    type="submit"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    id="generate-button"
+                >
+                    Generate
+                </button>
+            </div>
         </div>
     </div>
-    <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-700">Generation Settings</label>
-        <div class="mt-2 grid grid-cols-2 gap-4">
-            <div>
-                <label class="block text-xs text-gray-500">Model</label>
-                <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <option value="gpt-4">GPT-4</option>
-                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-xs text-gray-500">Temperature</label>
-                <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value="0.7"
-                    class="mt-1 block w-full"
-                >
-            </div>
+
+    <div class="tab-content hidden" data-tab-content="advanced">
+        {% include "atoms/form/model_params.html" %}
+    </div>
+
+    <div class="tab-content hidden" data-tab-content="templates">
+        <div class="space-y-4">
+            {% include "atoms/form/prompt_template_selector.html" %}
+            {% include "atoms/form/template_actions.html" %}
         </div>
+    </div>
+
+    <div class="tab-content hidden" data-tab-content="api">
+        {% include "atoms/form/api_key_config.html" %}
     </div>
 </div>
