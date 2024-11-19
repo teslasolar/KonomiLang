@@ -12,6 +12,7 @@ from konomi.routes.core import setup_core_routes
 from konomi.routes.chains import setup_chain_routes
 from monitoring.api import monitor_api
 from generation.functions import DocumentationGenerator
+from konomi.generators.examples import generate_example_card, generate_example_chart
 import markdown
 import os
 import logging
@@ -166,6 +167,16 @@ async def syntax_docs():
 def examples():
     """Render examples page."""
     return render_template('examples.html')
+
+@app.route('/examples/html')
+def example_html():
+    """Render example HTML generation."""
+    return generate_example_card()
+
+@app.route('/examples/svg')
+def example_svg():
+    """Render example SVG generation."""
+    return generate_example_chart(), 200, {'Content-Type': 'image/svg+xml'}
 
 # API Management endpoints
 @app.route('/api/v1/docs/generate', methods=['POST'])
