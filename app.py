@@ -7,6 +7,7 @@ import os
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
+from konomi.chained_programs import ProgramLibrary  # Import ProgramLibrary
 
 app = Flask(__name__)
 interpreter = Interpreter()
@@ -112,6 +113,86 @@ def api_variables():
         'success': True,
         'variables': interpreter.variables
     })
+
+# Initialize program library
+program_library = ProgramLibrary(interpreter)  # Initialize ProgramLibrary
+
+# Complex Chained Program Endpoints
+@app.route('/api/v1/chains/analyze-content', methods=['POST'])
+def analyze_content():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    text = request.json.get('text')
+    if not text:
+        return jsonify({'success': False, 'error': 'Text parameter is required'}), 400
+    
+    try:
+        result = program_library.content_analyzer(text)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/review-code', methods=['POST'])
+def review_code():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    code = request.json.get('code')
+    if not code:
+        return jsonify({'success': False, 'error': 'Code parameter is required'}), 400
+    
+    try:
+        result = program_library.code_reviewer(code)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/analyze-business', methods=['POST'])
+def analyze_business():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    description = request.json.get('description')
+    if not description:
+        return jsonify({'success': False, 'error': 'Description parameter is required'}), 400
+    
+    try:
+        result = program_library.business_analyzer(description)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/language-tutor', methods=['POST'])
+def language_tutor():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    text = request.json.get('text')
+    target_language = request.json.get('target_language')
+    if not text or not target_language:
+        return jsonify({'success': False, 'error': 'Text and target_language parameters are required'}), 400
+    
+    try:
+        result = program_library.language_tutor(text, target_language)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/story-developer', methods=['POST'])
+def story_developer():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    premise = request.json.get('premise')
+    if not premise:
+        return jsonify({'success': False, 'error': 'Premise parameter is required'}), 400
+    
+    try:
+        result = program_library.story_developer(premise)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
