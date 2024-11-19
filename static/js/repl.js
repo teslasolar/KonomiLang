@@ -1,6 +1,6 @@
 const commands = {
     'ask': 'ask ""',
-    'let': 'let variable = ""',
+    'let': 'let name = ""',
     'if': 'if () {\n    ask ""\n}',
     'try': 'try {\n    ask ""\n} catch {\n    ask ""\n}'
 };
@@ -49,15 +49,28 @@ document.getElementById('input').addEventListener('keypress', function(e) {
 document.getElementById('input').addEventListener('input', function(e) {
     const input = e.target;
     const currentText = input.value.trim();
+    const lastWord = currentText.split(/[\s\n]/).pop(); // Only look at last word
     
-    for (const [cmd, template] of Object.entries(commands)) {
-        if (cmd.startsWith(currentText) && currentText.length > 0) {
-            input.value = template;
-            input.setSelectionRange(
-                template.indexOf('""') > -1 ? template.indexOf('""') + 1 : template.indexOf('()') + 1,
-                template.indexOf('""') > -1 ? template.indexOf('""') + 1 : template.indexOf('()') + 1
-            );
-            break;
+    // Only trigger for commands at start of line or after newline
+    if (currentText === lastWord) {
+        for (const [cmd, template] of Object.entries(commands)) {
+            if (cmd.startsWith(lastWord) && lastWord.length >= 2) { // Require at least 2 chars
+                const cursorPos = input.selectionStart;
+                input.value = currentText.slice(0, -lastWord.length) + template;
+                
+                // Smart cursor positioning
+                if (template.includes('""')) {
+                    const quotePos = input.value.indexOf('""') + 1;
+                    input.setSelectionRange(quotePos, quotePos);
+                } else if (template.includes('()')) {
+                    const parenPos = input.value.indexOf('()') + 1;
+                    input.setSelectionRange(parenPos, parenPos);
+                } else if (template.includes('{\n')) {
+                    const bracePos = input.value.indexOf('{\n') + 3;
+                    input.setSelectionRange(bracePos, bracePos);
+                }
+                break;
+            }
         }
     }
 });
