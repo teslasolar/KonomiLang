@@ -1,14 +1,8 @@
 const commands = {
     'ask': 'ask ""',
     'let': 'let name = ""',
-    'if': `if () {
-    ask ""
-}`,
-    'try': `try {
-    ask ""
-} catch {
-    ask ""
-}`
+    'if': 'if () {\n    ask ""\n}',
+    'try': 'try {\n    ask ""\n} catch {\n    ask ""\n}'
 };
 
 function executeCode() {
@@ -18,27 +12,37 @@ function executeCode() {
 
     if (!code) return;
 
+    // Properly encode the code for transmission
+    const encodedCode = encodeURIComponent(code).replace(/%20/g, '+');
+
     fetch('/execute', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `code=${encodeURIComponent(code)}`
+        body: `code=${encodedCode}`
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            output.innerHTML += `\n> ${code}\n${data.result}`;
+            output.innerHTML += `\n> ${escapeHtml(code)}\n${escapeHtml(data.result)}`;
         } else {
-            output.innerHTML += `\n> ${code}\nError: ${data.error}`;
+            output.innerHTML += `\n> ${escapeHtml(code)}\nError: ${escapeHtml(data.error)}`;
         }
         input.value = '';
         output.scrollTop = output.scrollHeight;
     })
     .catch(error => {
-        output.innerHTML += `\n> ${code}\nError: ${error}`;
+        output.innerHTML += `\n> ${escapeHtml(code)}\nError: ${escapeHtml(error)}`;
         input.value = '';
     });
+}
+
+// Add HTML escaping function
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 document.getElementById('input').addEventListener('keypress', function(e) {
@@ -70,6 +74,7 @@ document.getElementById('input').addEventListener('input', function(e) {
     }
 });
 
+// Update the insertCommand function
 function insertCommand(template) {
     const input = document.getElementById('input');
     input.value = template;
