@@ -9,16 +9,45 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h5>Variable Declaration</h5>
-                <pre><code>let name = "value"</code></pre>
+                <pre><code>let name = "value"
+let number = 42
+let result = 10 + 5 * 2</code></pre>
                 
                 <h5>AI Interaction</h5>
-                <pre><code>ask "What is the meaning of life?"</code></pre>
+                <pre><code>ask "What is the meaning of life?"
+let question = "How does photosynthesis work?"
+ask question</code></pre>
+                
+                <h5>Control Flow</h5>
+                <pre><code>if (age > 18) {
+    ask "What career advice would you give?"
+} else {
+    ask "What subjects should I focus on in school?"
+}</code></pre>
                 
                 <h5>Error Handling</h5>
                 <pre><code>try {
-    ask "Complex question"
+    ask "Complex question about quantum physics"
 } catch {
-    // Handle error
+    ask "Can you explain that in simpler terms?"
+}</code></pre>
+
+                <h5>Arithmetic Operations</h5>
+                <pre><code>let a = 10
+let b = 5
+let sum = a + b
+let product = a * b
+let complex = (a + b) * 2</code></pre>
+
+                <h5>Comparison Operations</h5>
+                <pre><code>if (value == 10) {
+    ask "Equal to 10"
+}
+if (value > 5) {
+    ask "Greater than 5"
+}
+if (value < 20) {
+    ask "Less than 20"
 }</code></pre>
             </div>
         </div>
@@ -28,7 +57,32 @@
             <div class="card-body">
                 <h5>Basic Conversation</h5>
                 <pre><code>let greeting = "Hello, AI!"
-ask "What's the weather like today?"</code></pre>
+ask greeting
+
+let age = 25
+if (age >= 18) {
+    ask "What are some good career options?"
+} else {
+    ask "What subjects should I study?"
+}</code></pre>
+
+                <h5>Error Handling Example</h5>
+                <pre><code>try {
+    let response = ask "Explain quantum entanglement"
+    if (response.length > 100) {
+        ask "Can you summarize that?"
+    }
+} catch {
+    ask "Let's try a simpler question"
+}</code></pre>
+
+                <h5>Math Operations</h5>
+                <pre><code>let price = 100
+let discount = 20
+let final_price = price - (price * discount / 100)
+if (final_price < 90) {
+    ask "This is a good deal!"
+}</code></pre>
             </div>
         </div>
     </div>
