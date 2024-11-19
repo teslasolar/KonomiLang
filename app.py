@@ -194,5 +194,98 @@ def story_developer():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+    @app.route('/api/v1/chains/sentiment-analysis', methods=['POST'])
+    def analyze_sentiment():
+        if not request.is_json:
+            return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+        
+        text = request.json.get('text')
+        if not text:
+            return jsonify({'success': False, 'error': 'Text parameter is required'}), 400
+        
+        try:
+            result = program_library.sentiment_analyzer(text)
+            return jsonify(result)
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/v1/chains/text-classification', methods=['POST'])
+    def classify_text():
+        if not request.is_json:
+            return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+        
+        text = request.json.get('text')
+        categories = request.json.get('categories')
+        if not text or not categories:
+            return jsonify({'success': False, 'error': 'Text and categories parameters are required'}), 400
+        
+        try:
+            result = program_library.text_classifier(text, categories)
+            return jsonify(result)
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/v1/chains/entity-recognition', methods=['POST'])
+    def recognize_entities():
+        if not request.is_json:
+            return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+        
+        text = request.json.get('text')
+        if not text:
+            return jsonify({'success': False, 'error': 'Text parameter is required'}), 400
+        
+        try:
+            result = program_library.entity_recognizer(text)
+            return jsonify(result)
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/v1/chains/document-summary', methods=['POST'])
+    def summarize_document():
+        if not request.is_json:
+            return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+        
+        text = request.json.get('text')
+        summary_type = request.json.get('summary_type', 'general')
+        if not text:
+            return jsonify({'success': False, 'error': 'Text parameter is required'}), 400
+        
+        try:
+            result = program_library.document_summarizer(text, summary_type)
+            return jsonify(result)
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/v1/chains/data-validation', methods=['POST'])
+    def validate_data():
+        if not request.is_json:
+            return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+        
+        data = request.json.get('data')
+        schema = request.json.get('schema')
+        if not data or not schema:
+            return jsonify({'success': False, 'error': 'Data and schema parameters are required'}), 400
+        
+        try:
+            result = program_library.data_validator(data, schema)
+            return jsonify(result)
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/v1/chains/data-analysis', methods=['POST'])
+    def analyze_data():
+        if not request.is_json:
+            return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+        
+        data = request.json.get('data')
+        if not data:
+            return jsonify({'success': False, 'error': 'Data parameter is required'}), 400
+        
+        try:
+            result = program_library.data_analyzer(data)
+            return jsonify(result)
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

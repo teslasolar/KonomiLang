@@ -72,6 +72,8 @@
     }
 
     function validatePath(path) {
+        if (!path) return '';
+        
         path = path.replace(/^["']|["']$/g, '');
         
         if (path.includes('..')) {
@@ -91,6 +93,7 @@
     }
 
     function highlightCode(code) {
+        if (!code) return '';
         // Simple syntax highlighting
         return code.replace(/\b(let|ask|if|else|try|catch|ls|mkdir|rmdir|checkConsole|listErrors)\b/g, '<span class="keyword">$1</span>')
                   .replace(/"([^"]*)"/g, '<span class="string">"$1"</span>')
@@ -101,8 +104,9 @@
     function executeCode() {
         const input = document.getElementById('input');
         const output = document.getElementById('output');
-        const code = input.value.trim();
+        if (!input || !output) return;
 
+        const code = input.value.trim();
         if (!code) return;
 
         try {
@@ -187,10 +191,9 @@
 
     function insertCommand(cmdName) {
         const input = document.getElementById('input');
-        const command = config.commands[cmdName];
-        
-        if (!command) return;
+        if (!input || !config.commands[cmdName]) return;
 
+        const command = config.commands[cmdName];
         input.value = command.template;
         input.focus();
 
@@ -210,49 +213,49 @@
     }
 
     // Event listeners
-    const input = document.getElementById('input');
-    let inputTimeout = null;
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('input');
+        const output = document.getElementById('output');
+        
+        if (!input || !output) return;
 
-    input.addEventListener('input', function(e) {
-        clearTimeout(inputTimeout);
-        inputTimeout = setTimeout(() => {
-            const currentText = e.target.value;
-            const lastWord = currentText.trim().split(/[\s\n]/).pop();
-            
-            if (lastWord && lastWord.length >= 2) {
-                const matchingCommands = Object.entries(config.commands)
-                    .filter(([cmd]) => cmd.startsWith(lastWord));
+        let inputTimeout = null;
+
+        input.addEventListener('input', function(e) {
+            clearTimeout(inputTimeout);
+            inputTimeout = setTimeout(() => {
+                const currentText = e.target.value;
+                const lastWord = currentText.trim().split(/[\s\n]/).pop();
                 
-                if (matchingCommands.length === 1 && lastWord === currentText) {
-                    const [cmdName, command] = matchingCommands[0];
-                    e.target.value = command.template;
+                if (lastWord && lastWord.length >= 2) {
+                    const matchingCommands = Object.entries(config.commands)
+                        .filter(([cmd]) => cmd.startsWith(lastWord));
                     
-                    const quoteMatch = command.template.match(/""/);
-                    if (quoteMatch && command.placeholderText) {
-                        const cursorPos = quoteMatch.index + 1;
-                        const before = command.template.slice(0, cursorPos);
-                        const after = command.template.slice(cursorPos);
-                        e.target.value = before + command.placeholderText + after;
-                        e.target.setSelectionRange(cursorPos, cursorPos + command.placeholderText.length);
+                    if (matchingCommands.length === 1 && lastWord === currentText) {
+                        const [cmdName, command] = matchingCommands[0];
+                        e.target.value = command.template;
+                        
+                        const quoteMatch = command.template.match(/""/);
+                        if (quoteMatch && command.placeholderText) {
+                            const cursorPos = quoteMatch.index + 1;
+                            const before = command.template.slice(0, cursorPos);
+                            const after = command.template.slice(cursorPos);
+                            e.target.value = before + command.placeholderText + after;
+                            e.target.setSelectionRange(cursorPos, cursorPos + command.placeholderText.length);
+                        }
                     }
                 }
+            }, 100);
+        });
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                executeCode();
             }
-        }, 100);
-    });
+        });
 
-    input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            executeCode();
-        }
-    });
-
-    // Initialize output scroll position
-    document.addEventListener('DOMContentLoaded', function() {
-        const output = document.getElementById('output');
-        if (output) {
-            output.scrollTop = output.scrollHeight;
-        }
+        output.scrollTop = output.scrollHeight;
     });
 
     // Export only necessary functions to global scope
