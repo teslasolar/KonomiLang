@@ -1,8 +1,21 @@
+// Command templates with proper escaping
 const commands = {
-    'ask': 'ask ""',
-    'let': 'let name = ""',
-    'if': 'if () {\n    ask ""\n}',
-    'try': 'try {\n    ask ""\n} catch {\n    ask ""\n}'
+    'ask': {
+        template: 'ask "Your question here"',
+        cursorOffset: -1
+    },
+    'let': {
+        template: 'let name = "value"',
+        cursorOffset: -7
+    },
+    'if': {
+        template: 'if (condition) {\n    ask "Your question here"\n}',
+        cursorOffset: -24
+    },
+    'try': {
+        template: 'try {\n    ask "Your question here"\n} catch {\n    ask "Error handler"\n}',
+        cursorOffset: -24
+    }
 };
 
 function executeCode() {
@@ -20,12 +33,17 @@ function executeCode() {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             output.innerHTML += `\n> ${escapeHtml(code)}\n${escapeHtml(data.result)}`;
         } else {
-            output.innerHTML += `\n> ${escapeHtml(code)}\nError: ${escapeHtml(data.error)}`;
+            output.innerHTML += `\n> ${escapeHtml(code)}\nError: ${escapeHtml(data.error || 'Unknown error')}`;
         }
         input.value = '';
         output.scrollTop = output.scrollHeight;
@@ -34,11 +52,14 @@ function executeCode() {
         console.error('Error:', error);
         output.innerHTML += `\n> ${escapeHtml(code)}\nError: Failed to execute code`;
         input.value = '';
+        output.scrollTop = output.scrollHeight;
     });
 }
 
 function escapeHtml(unsafe) {
+    if (unsafe == null) return '';
     return unsafe
+        .toString()
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -46,46 +67,60 @@ function escapeHtml(unsafe) {
         .replace(/'/g, "&#039;");
 }
 
-document.getElementById('input').addEventListener('keypress', function(e) {
+// Improved input handling with debounce
+let inputTimeout = null;
+document.getElementById('input').addEventListener('input', function(e) {
+    const input = e.target;
+    const currentText = input.value;
+    
+    clearTimeout(inputTimeout);
+    inputTimeout = setTimeout(() => {
+        const lastWord = currentText.trim().split(/[\s\n]/).pop();
+        
+        if (currentText === lastWord && lastWord.length >= 2) {
+            for (const [cmd, details] of Object.entries(commands)) {
+                if (cmd.startsWith(lastWord)) {
+                    const cursorPos = details.cursorOffset ? 
+                        details.template.length + details.cursorOffset : 
+                        details.template.length;
+                    
+                    input.value = details.template;
+                    input.setSelectionRange(cursorPos, cursorPos);
+                    input.focus();
+                    break;
+                }
+            }
+        }
+    }, 100);
+});
+
+document.getElementById('input').addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         executeCode();
     }
 });
 
-document.getElementById('input').addEventListener('input', function(e) {
-    const input = e.target;
-    const currentText = input.value.trim();
-    const lastWord = currentText.split(/[\s\n]/).pop();
-    
-    if (currentText === lastWord) {
-        for (const [cmd, template] of Object.entries(commands)) {
-            if (cmd.startsWith(lastWord) && lastWord.length >= 2) {
-                input.value = currentText.slice(0, -lastWord.length) + template;
-                
-                if (template.includes('""')) {
-                    const quotePos = input.value.indexOf('""') + 1;
-                    input.setSelectionRange(quotePos, quotePos);
-                } else if (template.includes('()')) {
-                    const parenPos = input.value.indexOf('()') + 1;
-                    input.setSelectionRange(parenPos, parenPos);
-                }
-                break;
-            }
-        }
-    }
-});
-
 function insertCommand(template) {
     const input = document.getElementById('input');
-    input.value = template;
-    input.focus();
+    const command = commands[template];
     
-    if (template.includes('""')) {
-        const quotePos = input.value.indexOf('""') + 1;
-        input.setSelectionRange(quotePos, quotePos);
-    } else if (template.includes('()')) {
-        const parenPos = input.value.indexOf('()') + 1;
-        input.setSelectionRange(parenPos, parenPos);
+    if (command) {
+        input.value = command.template;
+        input.focus();
+        
+        const cursorPos = command.cursorOffset ? 
+            command.template.length + command.cursorOffset : 
+            command.template.length;
+        
+        input.setSelectionRange(cursorPos, cursorPos);
     }
 }
+
+// Initialize output scroll position
+document.addEventListener('DOMContentLoaded', function() {
+    const output = document.getElementById('output');
+    if (output) {
+        output.scrollTop = output.scrollHeight;
+    }
+});
