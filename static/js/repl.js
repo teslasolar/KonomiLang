@@ -1,6 +1,6 @@
 // IIFE to prevent global scope pollution
 (function() {
-    // Configuration
+    // Configuration object (single declaration)
     const config = {
         commands: {
             'ask': {
@@ -55,7 +55,6 @@
         }
     };
 
-    // Helper functions
     function classifyError(error) {
         if (!error) return config.errorTypes.UNKNOWN_ERROR;
         const errorStr = String(error);
@@ -89,6 +88,14 @@
         }
         
         return path;
+    }
+
+    function highlightCode(code) {
+        // Simple syntax highlighting
+        return code.replace(/\b(let|ask|if|else|try|catch|ls|mkdir|rmdir|checkConsole|listErrors)\b/g, '<span class="keyword">$1</span>')
+                  .replace(/"([^"]*)"/g, '<span class="string">"$1"</span>')
+                  .replace(/\b(\d+(\.\d+)?)\b/g, '<span class="number">$1</span>')
+                  .replace(/([{}><=!+\-*/])/g, '<span class="operator">$1</span>');
     }
 
     function executeCode() {
@@ -142,12 +149,12 @@
     }
 
     function appendToOutput(output, code, result) {
-        const safeCode = escapeHtml(code);
+        const safeCode = highlightCode(escapeHtml(code));
         const safeResult = escapeHtml(result);
         const entry = document.createElement('div');
         entry.className = 'repl-entry';
         entry.innerHTML = `
-            <div class="repl-input highlight">&gt; ${safeCode}</div>
+            <div class="repl-input code-block">&gt; ${safeCode}</div>
             <div class="repl-result">${safeResult}</div>
         `;
         output.appendChild(entry);
@@ -155,13 +162,13 @@
     }
 
     function appendError(output, code, error, errorType) {
-        const safeCode = escapeHtml(code);
+        const safeCode = highlightCode(escapeHtml(code));
         const safeError = escapeHtml(error);
         const safeErrorType = escapeHtml(errorType);
         const entry = document.createElement('div');
         entry.className = 'repl-entry';
         entry.innerHTML = `
-            <div class="repl-input highlight">&gt; ${safeCode}</div>
+            <div class="repl-input code-block">&gt; ${safeCode}</div>
             <div class="repl-error">${safeErrorType}: ${safeError}</div>
         `;
         output.appendChild(entry);
@@ -248,7 +255,7 @@
         }
     });
 
-    // Export functions to global scope
+    // Export only necessary functions to global scope
     window.executeCode = executeCode;
     window.insertCommand = insertCommand;
 })();

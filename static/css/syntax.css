@@ -15,51 +15,46 @@
     line-height: 1.5;
 }
 
-.highlight .k { color: #c678dd; } /* Keyword */
-.highlight .s { color: #98c379; } /* String */
-.highlight .n { color: #e06c75; } /* Name */
-.highlight .o { color: #56b6c2; } /* Operator */
-.highlight .p { color: #abb2bf; } /* Punctuation */
-.highlight .w { color: #abb2bf; } /* Text.Whitespace */
-.highlight .nv { color: #61afef; } /* Name.Variable */
-.highlight .c { color: #5c6370; font-style: italic; } /* Comment */
-.highlight .m { color: #d19a66; } /* Number */
-.highlight .kc { color: #56b6c2; } /* Keyword.Constant */
-.highlight .gs { color: #abb2bf; } /* Generic.Strong */
-.highlight .gd { color: #be5046; } /* Generic.Deleted */
-.highlight .gi { color: #98c379; } /* Generic.Inserted */
-.highlight .err { color: #be5046; } /* Error */
+/* Code syntax highlighting */
+.keyword { color: #c678dd; }
+.string { color: #98c379; }
+.number { color: #d19a66; }
+.operator { color: #56b6c2; }
+.comment { color: #5c6370; font-style: italic; }
+.function { color: #61afef; }
+.variable { color: #e06c75; }
+
+/* Code block styling */
+.code-block {
+    background: #282c34;
+    border-radius: 4px;
+    padding: 0.75em;
+    margin: 0.5em 0;
+    font-family: 'Fira Code', monospace;
+    line-height: 1.5;
+    overflow-x: auto;
+    border: 1px solid #3e4451;
+}
 
 /* REPL-specific syntax highlighting */
 .repl-input {
     border-left: 3px solid #528bff;
     padding-left: 8px;
+    color: #abb2bf;
 }
 
 .repl-result {
     border-left: 3px solid #98c379;
     padding-left: 8px;
+    color: #98c379;
 }
 
 .repl-error {
     border-left: 3px solid #be5046;
     padding-left: 8px;
+    color: #be5046;
 }
 
-/* Code block styling */
-.code-block {
-    background-color: #282c34;
-    border-radius: 4px;
-    padding: 1em;
-    margin: 1em 0;
-    border: 1px solid #3e4451;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.code-block pre {
-    margin: 0;
-    color: #abb2bf;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    line-height: 1.5;
+.repl-entry {
+    margin-bottom: 8px;
 }
