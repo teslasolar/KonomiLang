@@ -18,6 +18,9 @@ import time
 import inspect
 from flask import current_app
 import re
+import logging
+
+logger = logging.getLogger(__name__)
 
 class DocumentationCache:
     def __init__(self):
@@ -164,6 +167,13 @@ class DocumentationGenerator:
         self.jinja_env = self._setup_jinja_env()
         self.custom_formats = {}
         self._setup_template_filters()
+        self.markdown_extensions = [
+            'fenced_code',
+            'codehilite',
+            'tables',
+            'attr_list',
+            'toc'
+        ]
 
     def _setup_jinja_env(self) -> Environment:
         """Setup Jinja environment with inheritance support"""
@@ -199,7 +209,8 @@ class DocumentationGenerator:
         """Convert markdown to HTML with extended features"""
         return markdown.markdown(
             content,
-            extensions=['fenced_code', 'codehilite', 'tables', 'attr_list', 'toc']
+            extensions=self.markdown_extensions,
+            output_format='html5'
         )
 
     def discover_endpoints(self, app) -> List[Dict]:
@@ -248,7 +259,16 @@ class DocumentationGenerator:
             raise Exception(f"API documentation generation failed: {str(e)}")
 
     async def process_markdown(self, content: str, cache_key: str) -> str:
-        """Process markdown content with caching support"""
+        """
+        Process markdown content with caching support and proper HTML formatting
+        
+        Args:
+            content: Raw markdown content to process
+            cache_key: Cache key for storing processed content
+            
+        Returns:
+            str: Processed HTML content
+        """
         try:
             if cached_content := self.cache.get_markdown(cache_key):
                 return cached_content
@@ -258,14 +278,67 @@ class DocumentationGenerator:
                 self.cache._executor,
                 lambda: markdown.markdown(
                     content,
-                    extensions=['fenced_code', 'codehilite', 'tables', 'attr_list', 'toc']
+                    extensions=self.markdown_extensions,
+                    output_format='html5'
                 )
             )
             
             self.cache.set_markdown(cache_key, processed_content)
             return processed_content
         except Exception as e:
-            raise Exception(f"Failed to process markdown: {str(e)}")
+            logger.error(f"Failed to process markdown: {str(e)}")
+            raise
+
+    def generate_directory_structure(self, template: Dict[str, Any], base_path: str = ".") -> bool:
+        """
+        Generate directory structure based on template with improved error handling
+        
+        Args:
+            template: Dictionary containing directory structure
+            base_path: Base path for structure creation
+            
+        Returns:
+            bool: True if structure was created successfully, False otherwise
+        """
+        base = Path(base_path)
+        
+        def create_structure(structure: Dict, current_path: Path) -> bool:
+            try:
+                for name, content in structure.items():
+                    path = current_path / name
+                    
+                    if isinstance(content, dict):
+                        path.mkdir(exist_ok=True, parents=True)
+                        if not create_structure(content, path):
+                            return False
+                    else:
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        if content is not None:
+                            path.write_text(content)
+                        else:
+                            path.touch()  # Create empty file
+                return True
+            except Exception as e:
+                logger.error(f"Error creating structure at {current_path}: {str(e)}")
+                return False
+
+        if not self.validate_template(template):
+            logger.error("Invalid template format")
+            return False
+            
+        return create_structure(template, base)
+
+    async def _batch_write(self) -> None:
+        """Batch write operations to reduce I/O with proper async handling"""
+        async with asyncio.Lock():
+            for path, content in self.pending_writes.items():
+                try:
+                    os.makedirs(os.path.dirname(path), exist_ok=True)
+                    async with aiofiles.open(path, 'w') as f:
+                        await f.write(content)
+                except Exception as e:
+                    logger.error(f"Error writing to {path}: {str(e)}")
+            self.pending_writes.clear()
 
     async def render_template(self, template_name: str, context: Dict[str, Any], cache_key: Optional[str] = None) -> str:
         """Render a template with caching and dependency tracking"""
@@ -330,17 +403,6 @@ class DocumentationGenerator:
             return content
         except Exception as e:
             raise Exception(f"Error documentation generation failed: {str(e)}")
-
-    async def _batch_write(self):
-        """Batch write operations to reduce I/O"""
-        for path, content in self.pending_writes.items():
-            try:
-                os.makedirs(os.path.dirname(path), exist_ok=True)
-                async with aiofiles.open(path, 'w') as f:
-                    await f.write(content)
-            except Exception as e:
-                print(f"Error writing to {path}: {str(e)}")
-        self.pending_writes.clear()
 
     def validate_template(self, template: Dict) -> bool:
         """Validate directory structure template"""

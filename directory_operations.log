@@ -160,3 +160,9 @@
 2024-11-19 21:28:47,307 - konomi.utils.directory_manager - INFO - Exported template to /tmp/tmpbou1xaqf/structure.json
 2024-11-19 21:28:47,308 - konomi.utils.directory_manager - INFO - Imported template from /tmp/tmpbou1xaqf/structure.json
 2024-11-19 21:28:47,308 - konomi.utils.directory_manager - INFO - Imported template from /tmp/tmpbou1xaqf/structure.json
+2024-11-19 21:30:17,592 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmp_n4tghkw
+2024-11-19 21:30:17,592 - konomi.utils.directory_manager - INFO - Created directory structure at /tmp/tmp_n4tghkw
+2024-11-19 21:30:17,594 - konomi.utils.directory_manager - INFO - Exported template to /tmp/tmp_n4tghkw/structure.json
+2024-11-19 21:30:17,594 - konomi.utils.directory_manager - INFO - Exported template to /tmp/tmp_n4tghkw/structure.json
+2024-11-19 21:30:17,594 - konomi.utils.directory_manager - INFO - Imported template from /tmp/tmp_n4tghkw/structure.json
+2024-11-19 21:30:17,594 - konomi.utils.directory_manager - INFO - Imported template from /tmp/tmp_n4tghkw/structure.json
