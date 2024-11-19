@@ -3,7 +3,7 @@ Documentation Generator for KonomiLang
 Handles automatic generation of documentation, APIs, and directory structure
 with caching and optimization features
 """
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Set
 import os
 import json
 import hashlib
@@ -13,7 +13,8 @@ from pathlib import Path
 from functools import lru_cache
 import markdown
 from concurrent.futures import ThreadPoolExecutor
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
+import time
 
 class DocumentationCache:
     def __init__(self):
@@ -21,7 +22,10 @@ class DocumentationCache:
         self.hash_cache = {}
         self.markdown_cache = {}
         self.template_cache = {}
+        self.template_versions = {}
+        self.template_dependencies = {}
         self._executor = ThreadPoolExecutor(max_workers=4)
+        self.last_render_time = {}
 
     def get_content(self, key: str) -> Optional[str]:
         return self.content_cache.get(key)
@@ -36,12 +40,51 @@ class DocumentationCache:
     def set_markdown(self, key: str, content: str):
         self.markdown_cache[key] = content
 
-    def get_template(self, key: str) -> Optional[str]:
-        return self.template_cache.get(key)
+    def get_template(self, key: str) -> Optional[tuple[str, int]]:
+        """Get template content and version"""
+        if key in self.template_cache:
+            return self.template_cache[key], self.template_versions.get(key, 1)
+        return None
 
-    def set_template(self, key: str, content: str):
+    def set_template(self, key: str, content: str, dependencies: Set[str] = None):
+        """Set template with version control and dependency tracking"""
         self.template_cache[key] = content
         self.hash_cache[key] = self._hash_content(content)
+        
+        # Update version
+        current_version = self.template_versions.get(key, 0)
+        self.template_versions[key] = current_version + 1
+        
+        # Track dependencies
+        if dependencies:
+            self.template_dependencies[key] = dependencies
+
+    def invalidate_dependent_templates(self, template_key: str):
+        """Invalidate all templates that depend on the given template"""
+        for key, deps in self.template_dependencies.items():
+            if template_key in deps:
+                if key in self.template_versions:
+                    self.template_versions[key] += 1
+
+    def should_rerender(self, template_key: str, min_interval: float = 5.0) -> bool:
+        """Check if template should be rerendered based on time and dependencies"""
+        current_time = time.time()
+        last_time = self.last_render_time.get(template_key, 0)
+        
+        if current_time - last_time < min_interval:
+            return False
+            
+        # Check if dependencies have changed
+        if template_key in self.template_dependencies:
+            for dep in self.template_dependencies[template_key]:
+                if self.has_changed(dep, self.template_cache.get(dep, '')):
+                    return True
+                    
+        return True
+
+    def update_render_time(self, template_key: str):
+        """Update last render time for a template"""
+        self.last_render_time[template_key] = time.time()
 
     def has_changed(self, key: str, content: str) -> bool:
         if key not in self.hash_cache:
@@ -61,17 +104,31 @@ class DocumentationGenerator:
         }
         self.cache = DocumentationCache()
         self.pending_writes = {}
-        self.jinja_env = Environment(
-            loader=FileSystemLoader(template_dir),
-            autoescape=select_autoescape(['html', 'xml']),
-            enable_async=True
-        )
+        self.template_dir = template_dir
+        self.jinja_env = self._setup_jinja_env()
+        self.custom_formats = {}
         self._setup_template_filters()
+
+    def _setup_jinja_env(self) -> Environment:
+        """Setup Jinja environment with inheritance support"""
+        env = Environment(
+            loader=FileSystemLoader([self.template_dir, "templates"]),
+            autoescape=select_autoescape(['html', 'xml']),
+            enable_async=True,
+            cache_size=100,
+            auto_reload=True
+        )
+        return env
 
     def _setup_template_filters(self):
         """Setup custom Jinja2 filters"""
         self.jinja_env.filters['code_highlight'] = self._highlight_code
         self.jinja_env.filters['markdown'] = self._render_markdown
+        self.jinja_env.filters['format_date'] = lambda d: d.strftime('%Y-%m-%d %H:%M:%S')
+
+    def register_custom_format(self, name: str, formatter: callable):
+        """Register a custom template format"""
+        self.custom_formats[name] = formatter
 
     def _highlight_code(self, code: str, language: str = 'python') -> str:
         """Syntax highlighting filter for code blocks"""
@@ -87,8 +144,11 @@ class DocumentationGenerator:
             return code
 
     def _render_markdown(self, content: str) -> str:
-        """Convert markdown to HTML"""
-        return markdown.markdown(content, extensions=['fenced_code', 'codehilite'])
+        """Convert markdown to HTML with extended features"""
+        return markdown.markdown(
+            content,
+            extensions=['fenced_code', 'codehilite', 'tables', 'attr_list', 'toc']
+        )
 
     async def process_markdown(self, content: str, cache_key: str) -> str:
         """Process markdown content with caching support"""
@@ -96,13 +156,12 @@ class DocumentationGenerator:
             if cached_content := self.cache.get_markdown(cache_key):
                 return cached_content
             
-            # Process markdown in thread pool to avoid blocking
             loop = asyncio.get_event_loop()
             processed_content = await loop.run_in_executor(
                 self.cache._executor,
                 lambda: markdown.markdown(
                     content,
-                    extensions=['fenced_code', 'codehilite', 'tables', 'attr_list']
+                    extensions=['fenced_code', 'codehilite', 'tables', 'attr_list', 'toc']
                 )
             )
             
@@ -111,11 +170,29 @@ class DocumentationGenerator:
         except Exception as e:
             raise Exception(f"Failed to process markdown: {str(e)}")
 
-    async def render_template(self, template_name: str, context: Dict[str, Any]) -> str:
-        """Render a template with the given context"""
+    async def render_template(self, template_name: str, context: Dict[str, Any], cache_key: str = None) -> str:
+        """Render a template with caching and dependency tracking"""
         try:
+            if cache_key and not self.cache.should_rerender(cache_key):
+                cached_template = self.cache.get_template(cache_key)
+                if cached_template:
+                    content, version = cached_template
+                    return content
+
             template = self.jinja_env.get_template(template_name)
-            return await template.render_async(**context)
+            
+            # Track template dependencies
+            dependencies = {template_name}
+            for parent in template.iter_referenced_templates():
+                dependencies.add(parent)
+
+            content = await template.render_async(**context)
+            
+            if cache_key:
+                self.cache.set_template(cache_key, content, dependencies)
+                self.cache.update_render_time(cache_key)
+            
+            return content
         except Exception as e:
             raise Exception(f"Template rendering failed: {str(e)}")
 
@@ -124,11 +201,16 @@ class DocumentationGenerator:
         context = {
             "endpoints": endpoints,
             "title": "API Documentation",
-            "description": "Complete API reference for the Konomi Language"
+            "description": "Complete API reference for the Konomi Language",
+            "current_version": "1.0"
         }
         
         try:
-            content = await self.render_template("api_docs.md.j2", context)
+            content = await self.render_template(
+                "api_docs.md.j2",
+                context,
+                cache_key='api_docs'
+            )
             
             if self.cache.has_changed('api_docs', content):
                 self.cache.set_content('api_docs', content)
@@ -139,45 +221,29 @@ class DocumentationGenerator:
         except Exception as e:
             raise Exception(f"API documentation generation failed: {str(e)}")
 
-    async def generate_component_docs(self, components: List[Dict], output_path: str = "docs/components.md") -> str:
-        """Generate documentation for UI components using templates"""
+    async def generate_error_docs(self, error_definitions: List[Dict], output_path: str = "docs/errors.md") -> str:
+        """Generate error documentation using templates"""
         context = {
-            "components": components,
-            "title": "Component Documentation",
-            "description": "Documentation for UI components"
+            "errors": error_definitions,
+            "title": "Error Reference",
+            "description": "Complete error code reference"
         }
         
         try:
-            content = await self.render_template("component_docs.md.j2", context)
+            content = await self.render_template(
+                "error_docs.md.j2",
+                context,
+                cache_key='error_docs'
+            )
             
-            if self.cache.has_changed('component_docs', content):
-                self.cache.set_content('component_docs', content)
+            if self.cache.has_changed('error_docs', content):
+                self.cache.set_content('error_docs', content)
                 self.pending_writes[output_path] = content
                 await self._batch_write()
             
             return content
         except Exception as e:
-            raise Exception(f"Component documentation generation failed: {str(e)}")
-
-    async def generate_syntax_docs(self, syntax_data: Dict, output_path: str = "docs/syntax.md") -> str:
-        """Generate syntax documentation using templates"""
-        context = {
-            "syntax": syntax_data,
-            "title": "Syntax Documentation",
-            "description": "Complete syntax reference for the Konomi Language"
-        }
-        
-        try:
-            content = await self.render_template("syntax_docs.md.j2", context)
-            
-            if self.cache.has_changed('syntax_docs', content):
-                self.cache.set_content('syntax_docs', content)
-                self.pending_writes[output_path] = content
-                await self._batch_write()
-            
-            return content
-        except Exception as e:
-            raise Exception(f"Syntax documentation generation failed: {str(e)}")
+            raise Exception(f"Error documentation generation failed: {str(e)}")
 
     async def _batch_write(self):
         """Batch write operations to reduce I/O"""

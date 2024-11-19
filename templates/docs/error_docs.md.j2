@@ -1,0 +1,58 @@
+# {{ title }}
+
+{{ description }}
+
+## Error Categories
+
+{% for category, errors in errors|groupby('category') %}
+### {{ category }}
+
+{% for error in errors %}
+#### {{ error.code }}: {{ error.name }}
+
+{{ error.description }}
+
+{% if error.example %}
+**Example:**
+```{{ error.example.language|default('text') }}
+{{ error.example.code }}
+```
+{% endif %}
+
+{% if error.solution %}
+**Solution:**
+{{ error.solution }}
+{% endif %}
+
+{% endfor %}
+{% endfor %}
+
+## Common Error Patterns
+
+{% for error in errors if error.common %}
+- **{{ error.code }}**: {{ error.description }}
+{% endfor %}
+
+## Best Practices
+
+1. Always check error responses in your API calls
+2. Implement proper error handling for all possible error codes
+3. Log errors appropriately for debugging purposes
+4. Use try-catch blocks when working with potentially error-prone operations
+
+## Error Response Format
+
+All API endpoints return error responses in the following format:
+
+```json
+{
+    "success": false,
+    "error": {
+        "code": "ERROR_CODE",
+        "message": "Detailed error message",
+        "details": {
+            "additional": "error specific information"
+        }
+    }
+}
+```
