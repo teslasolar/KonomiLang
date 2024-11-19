@@ -13,6 +13,10 @@ def index():
 def docs():
     return render_template('docs.html')
 
+@app.route('/examples')
+def examples():
+    return render_template('examples.html')
+
 @app.route('/execute', methods=['POST'])
 def execute():
     code = request.form.get('code', '')

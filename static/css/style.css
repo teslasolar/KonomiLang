@@ -4,6 +4,7 @@ pre code {
     background-color: var(--bs-dark);
     border-radius: 0.25rem;
     color: var(--bs-light);
+    margin-bottom: 1rem;
 }
 
 #output {
@@ -13,4 +14,30 @@ pre code {
 
 .input-group {
     margin-top: 1rem;
+}
+
+.example-code {
+    background-color: var(--bs-dark);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.example-code pre {
+    margin-bottom: 0;
+}
+
+.example-code code {
+    color: var(--bs-light);
+    font-family: monospace;
+}
+
+.card-header {
+    background-color: var(--bs-dark);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.card {
+    border: 1px solid var(--bs-border-color);
+    margin-bottom: 2rem;
 }

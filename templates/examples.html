@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="mb-4">Konomi Examples</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">AI Conversation Assistant</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-3">Create an AI assistant that helps with different topics:</p>
+                <div class="example-code">
+                    <pre><code>let topic = "quantum physics"
+try {
+    let response = ask "Explain " + topic + " in simple terms"
+    if (response.length > 200) {
+        ask "Can you give me a shorter explanation?"
+    }
+} catch {
+    ask "Let's try something simpler instead"
+}</code></pre>
+                <button class="btn btn-secondary btn-sm mt-2" onclick="copyToRepl(this)">Try in REPL</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Smart Calculator</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-3">Perform calculations and get AI explanations:</p>
+                <div class="example-code">
+                    <pre><code>let num1 = 42
+let num2 = 8
+let result = num1 / num2
+
+if (result > 5) {
+    ask "Explain why " + num1 + " divided by " + num2 + " equals " + result
+}</code></pre>
+                <button class="btn btn-secondary btn-sm mt-2" onclick="copyToRepl(this)">Try in REPL</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Dynamic Story Generator</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-3">Generate interactive stories based on user input:</p>
+                <div class="example-code">
+                    <pre><code>let character = "space explorer"
+let setting = "distant galaxy"
+
+try {
+    let story = ask "Create a short story about a " + character + " in a " + setting
+    if (story.length > 150) {
+        ask "That was great! What happens next?"
+    }
+} catch {
+    ask "Tell me a different story about " + character
+}</code></pre>
+                <button class="btn btn-secondary btn-sm mt-2" onclick="copyToRepl(this)">Try in REPL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyToRepl(button) {
+    const code = button.previousElementSibling.textContent;
+    const input = document.querySelector('#input');
+    if (input) {
+        input.value = code;
+        window.location.href = '/';
+    }
+}
+</script>
+{% endblock %}
