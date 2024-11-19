@@ -1,6 +1,6 @@
 // IIFE to prevent global scope pollution
 (function() {
-    // Configuration object for commands and endpoints
+    // Single configuration object for all settings
     const config = {
         commands: {
             'ask': {
@@ -46,65 +46,76 @@
                 path: '/api/v1/execute',
                 template: '{\n    "code": "let x = 42\\nask \\"What is x?\\""}\n}'
             },
-            'status': {
-                method: 'GET',
-                path: '/api/v1/status',
-                template: ''
-            },
-            'variables': {
-                method: 'GET',
-                path: '/api/v1/variables',
-                template: ''
-            },
-            'analyze-content': {
+            // ... existing endpoints ...
+            // New Data Processing endpoints
+            'process-csv': {
                 method: 'POST',
-                path: '/api/v1/chains/analyze-content',
-                template: '{\n    "text": "Your content here"\n}'
+                path: '/api/v1/chains/process-csv',
+                template: '{\n    "data": "Your CSV data",\n    "operations": ["clean", "analyze", "transform"]\n}'
             },
-            'sentiment-analysis': {
+            'process-json': {
                 method: 'POST',
-                path: '/api/v1/chains/sentiment-analysis',
-                template: '{\n    "text": "Your text for sentiment analysis"\n}'
+                path: '/api/v1/chains/process-json',
+                template: '{\n    "data": "Your JSON data",\n    "schema": "Optional JSON schema"\n}'
             },
-            'entity-recognition': {
+            // Advanced Language Analysis
+            'semantic-analysis': {
                 method: 'POST',
-                path: '/api/v1/chains/entity-recognition',
-                template: '{\n    "text": "Your text for entity recognition"\n}'
+                path: '/api/v1/chains/semantic-analysis',
+                template: '{\n    "text": "Text for semantic analysis",\n    "aspects": ["themes", "context", "relations"]\n}'
             },
-            'review-code': {
+            'discourse-analysis': {
                 method: 'POST',
-                path: '/api/v1/chains/review-code',
-                template: '{\n    "code": "Your code for review"\n}'
+                path: '/api/v1/chains/discourse-analysis',
+                template: '{\n    "text": "Text for discourse analysis"\n}'
             },
-            'language-tutor': {
+            // Machine Learning Operations
+            'ml-prediction': {
                 method: 'POST',
-                path: '/api/v1/chains/language-tutor',
-                template: '{\n    "text": "Text to translate",\n    "target_language": "Spanish"\n}'
+                path: '/api/v1/chains/ml-prediction',
+                template: '{\n    "data": "Your input data",\n    "model_type": "classification"\n}'
             },
-            'text-classification': {
+            'model-evaluation': {
                 method: 'POST',
-                path: '/api/v1/chains/text-classification',
-                template: '{\n    "text": "Your text to classify",\n    "categories": "category1,category2,category3"\n}'
+                path: '/api/v1/chains/model-evaluation',
+                template: '{\n    "model_name": "model identifier",\n    "test_data": "Your test data"\n}'
             },
-            'data-analysis': {
+            // Document Processing
+            'document-extraction': {
                 method: 'POST',
-                path: '/api/v1/chains/data-analysis',
-                template: '{\n    "data": "Your data for analysis"\n}'
+                path: '/api/v1/chains/document-extraction',
+                template: '{\n    "text": "Document text",\n    "extract": ["tables", "lists", "headers"]\n}'
             },
-            'data-validation': {
+            'document-classification': {
                 method: 'POST',
-                path: '/api/v1/chains/data-validation',
-                template: '{\n    "data": "Your data",\n    "schema": "Your schema"\n}'
+                path: '/api/v1/chains/document-classification',
+                template: '{\n    "text": "Document text",\n    "categories": ["type1", "type2"]\n}'
             },
-            'analyze-business': {
+            // Component Operations
+            'component-builder': {
                 method: 'POST',
-                path: '/api/v1/chains/analyze-business',
-                template: '{\n    "description": "Your business idea description"\n}'
+                path: '/api/v1/chains/component-builder',
+                template: '{\n    "specifications": "Describe your component specifications here"\n}'
             },
-            'story-developer': {
+            'component-validator': {
                 method: 'POST',
-                path: '/api/v1/chains/story-developer',
-                template: '{\n    "premise": "Your story premise"\n}'
+                path: '/api/v1/chains/component-validator',
+                template: '{\n    "component": "Your component code here"\n}'
+            },
+            'component-optimizer': {
+                method: 'POST',
+                path: '/api/v1/chains/component-optimizer',
+                template: '{\n    "component": "Your component code here",\n    "feedback": "Optimization feedback and requirements"\n}'
+            },
+            'component-integration': {
+                method: 'POST',
+                path: '/api/v1/chains/component-integration',
+                template: '{\n    "component": "Your component code here",\n    "context": "Integration context and requirements"\n}'
+            },
+            'component-auto-build': {
+                method: 'POST',
+                path: '/api/v1/chains/component-auto-build',
+                template: '{\n    "specifications": "Your component specifications with quality requirements"\n}'
             }
         },
         errorTypes: {
@@ -122,6 +133,7 @@
         }
     };
 
+    // Function declarations moved inside IIFE
     function insertEndpoint(endpointName) {
         const input = document.getElementById('input');
         if (!input || !config.endpoints[endpointName]) return;
@@ -135,22 +147,18 @@
     function classifyError(error) {
         if (!error) return config.errorTypes.UNKNOWN_ERROR;
         const errorStr = String(error);
-        if (errorStr.includes('SyntaxError')) return config.errorTypes.SYNTAX_ERROR;
-        if (errorStr.includes('RuntimeError')) return config.errorTypes.RUNTIME_ERROR;
-        if (errorStr.includes('Network')) return config.errorTypes.NETWORK_ERROR;
-        if (errorStr.includes('File System Error')) return config.errorTypes.FILE_SYSTEM_ERROR;
-        if (errorStr.includes('Directory not found')) return config.errorTypes.DIRECTORY_NOT_FOUND;
-        if (errorStr.includes('Directory already exists')) return config.errorTypes.DIRECTORY_ALREADY_EXISTS;
-        if (errorStr.includes('Directory not empty')) return config.errorTypes.DIRECTORY_NOT_EMPTY;
-        if (errorStr.includes('Permission denied')) return config.errorTypes.PERMISSION_DENIED;
-        if (errorStr.includes('Invalid path format')) return config.errorTypes.INVALID_PATH_FORMAT;
-        if (errorStr.includes('Console Error')) return config.errorTypes.CONSOLE_ERROR;
+        
+        for (const [key, value] of Object.entries(config.errorTypes)) {
+            if (errorStr.toLowerCase().includes(value.toLowerCase())) {
+                return value;
+            }
+        }
+        
         return config.errorTypes.UNKNOWN_ERROR;
     }
 
     function validatePath(path) {
         if (!path) return '';
-        
         path = path.replace(/^["']|["']$/g, '');
         
         if (path.includes('..')) {
@@ -186,50 +194,52 @@
         if (!code) return;
 
         try {
+            // File system operations validation
             if (code.startsWith('ls') || code.startsWith('mkdir') || code.startsWith('rmdir')) {
                 const path = code.split(/\s+/)[1];
-                if (path) {
-                    validatePath(path);
-                }
+                if (path) validatePath(path);
             }
 
-            // Handle API endpoint templates
+            // API endpoint handling
             if (code.startsWith('//')) {
-                const lines = code.split('\n');
-                const endpointLine = lines[0].substring(3);
-                const [method, path] = endpointLine.split(' ');
-                
-                const formData = new FormData();
-                formData.append('endpoint', path);
-                formData.append('method', method);
-                formData.append('data', lines.slice(1).join('\n'));
-
-                fetch(path, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: lines.slice(1).join('\n')
-                })
-                .then(response => response.json())
-                .then(data => {
-                    appendToOutput(output, code, JSON.stringify(data, null, 2));
-                    input.value = '';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    const errorType = classifyError(error.message);
-                    appendError(output, code, 'Failed to execute API request', errorType);
-                    input.value = '';
-                });
+                handleApiEndpoint(code, output);
                 return;
             }
-        } catch (error) {
-            appendError(output, code, error.message, config.errorTypes.FILE_SYSTEM_ERROR);
-            input.value = '';
-            return;
-        }
 
+            // Standard code execution
+            executeStandardCode(code, input, output);
+        } catch (error) {
+            handleExecutionError(error, code, output);
+            input.value = '';
+        }
+    }
+
+    function handleApiEndpoint(code, output) {
+        const lines = code.split('\n');
+        const endpointLine = lines[0].substring(3);
+        const [method, path] = endpointLine.split(' ');
+        
+        fetch(path, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: lines.slice(1).join('\n')
+        })
+        .then(response => response.json())
+        .then(data => {
+            appendToOutput(output, code, JSON.stringify(data, null, 2));
+            document.getElementById('input').value = '';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const errorType = classifyError(error.message);
+            appendError(output, code, 'Failed to execute API request', errorType);
+            document.getElementById('input').value = '';
+        });
+    }
+
+    function executeStandardCode(code, input, output) {
         const formData = new FormData();
         formData.append('code', code);
 
@@ -258,6 +268,11 @@
             appendError(output, code, 'Failed to execute code', errorType);
             input.value = '';
         });
+    }
+
+    function handleExecutionError(error, code, output) {
+        const errorType = classifyError(error.message);
+        appendError(output, code, error.message, errorType);
     }
 
     function appendToOutput(output, code, result) {
@@ -313,8 +328,7 @@
             if (command.placeholderText) {
                 const before = command.template.slice(0, cursorPos);
                 const after = command.template.slice(cursorPos);
-                const newValue = before + command.placeholderText + after;
-                input.value = newValue;
+                input.value = before + command.placeholderText + after;
                 input.setSelectionRange(cursorPos, cursorPos + command.placeholderText.length);
             }
         }

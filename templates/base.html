@@ -14,6 +14,43 @@
 
     <!-- API Endpoints Sidebar -->
     <div class="api-sidebar">
+        <!-- Component Operations -->
+        <div class="endpoint-group">
+            <div class="endpoint-group-title">Component Operations</div>
+            <ul class="endpoint-list">
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('component-builder')">
+                        POST /chains/component-builder
+                    </button>
+                    <div class="endpoint-tooltip">Generate component from specifications</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('component-validator')">
+                        POST /chains/component-validator
+                    </button>
+                    <div class="endpoint-tooltip">Validate component against best practices</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('component-optimizer')">
+                        POST /chains/component-optimizer
+                    </button>
+                    <div class="endpoint-tooltip">Optimize component based on feedback</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('component-integration')">
+                        POST /chains/component-integration
+                    </button>
+                    <div class="endpoint-tooltip">Test component integration</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('component-auto-build')">
+                        POST /chains/component-auto-build
+                    </button>
+                    <div class="endpoint-tooltip">Auto-build with quality checks</div>
+                </li>
+            </ul>
+        </div>
+
         <!-- Basic Operations -->
         <div class="endpoint-group">
             <div class="endpoint-group-title">Basic Operations</div>
