@@ -35,7 +35,12 @@ const config = {
         RUNTIME_ERROR: 'Runtime Error',
         NETWORK_ERROR: 'Network Error',
         UNKNOWN_ERROR: 'Unknown Error',
-        FILE_SYSTEM_ERROR: 'File System Error'
+        FILE_SYSTEM_ERROR: 'File System Error',
+        DIRECTORY_NOT_FOUND: 'Directory Not Found',
+        DIRECTORY_ALREADY_EXISTS: 'Directory Already Exists',
+        DIRECTORY_NOT_EMPTY: 'Directory Not Empty',
+        PERMISSION_DENIED: 'Permission Denied',
+        INVALID_PATH_FORMAT: 'Invalid Path Format'
     }
 };
 
@@ -46,6 +51,11 @@ function classifyError(error) {
     if (errorStr.includes('RuntimeError')) return config.errorTypes.RUNTIME_ERROR;
     if (errorStr.includes('Network')) return config.errorTypes.NETWORK_ERROR;
     if (errorStr.includes('File System Error')) return config.errorTypes.FILE_SYSTEM_ERROR;
+    if (errorStr.includes('Directory not found')) return config.errorTypes.DIRECTORY_NOT_FOUND;
+    if (errorStr.includes('Directory already exists')) return config.errorTypes.DIRECTORY_ALREADY_EXISTS;
+    if (errorStr.includes('Directory not empty')) return config.errorTypes.DIRECTORY_NOT_EMPTY;
+    if (errorStr.includes('Permission denied')) return config.errorTypes.PERMISSION_DENIED;
+    if (errorStr.includes('Invalid path format')) return config.errorTypes.INVALID_PATH_FORMAT;
     return config.errorTypes.UNKNOWN_ERROR;
 }
 

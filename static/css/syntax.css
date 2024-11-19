@@ -1,4 +1,20 @@
-/* Syntax highlighting theme */
+/* Syntax highlighting theme - One Dark inspired */
+.highlight {
+    background: #282c34;
+    border-radius: 4px;
+    padding: 1em;
+    margin: 1em 0;
+    overflow-x: auto;
+}
+
+.highlight pre {
+    margin: 0;
+    color: #abb2bf;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
 .highlight .k { color: #c678dd; } /* Keyword */
 .highlight .s { color: #98c379; } /* String */
 .highlight .n { color: #e06c75; } /* Name */
@@ -8,6 +24,27 @@
 .highlight .nv { color: #61afef; } /* Name.Variable */
 .highlight .c { color: #5c6370; font-style: italic; } /* Comment */
 .highlight .m { color: #d19a66; } /* Number */
+.highlight .kc { color: #56b6c2; } /* Keyword.Constant */
+.highlight .gs { color: #abb2bf; } /* Generic.Strong */
+.highlight .gd { color: #be5046; } /* Generic.Deleted */
+.highlight .gi { color: #98c379; } /* Generic.Inserted */
+.highlight .err { color: #be5046; } /* Error */
+
+/* REPL-specific syntax highlighting */
+.repl-input {
+    border-left: 3px solid #528bff;
+    padding-left: 8px;
+}
+
+.repl-result {
+    border-left: 3px solid #98c379;
+    padding-left: 8px;
+}
+
+.repl-error {
+    border-left: 3px solid #be5046;
+    padding-left: 8px;
+}
 
 /* Code block styling */
 .code-block {
@@ -15,7 +52,8 @@
     border-radius: 4px;
     padding: 1em;
     margin: 1em 0;
-    overflow-x: auto;
+    border: 1px solid #3e4451;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .code-block pre {
