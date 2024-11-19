@@ -13,7 +13,17 @@ pre code {
 }
 
 .input-group {
+    display: flex;
+    align-items: stretch;
     margin-top: 1rem;
+}
+
+.input-group .dropdown {
+    margin-right: 0.5rem;
+}
+
+.input-group input.form-control {
+    flex: 1;
 }
 
 .example-code {
@@ -40,10 +50,6 @@ pre code {
 .card {
     border: 1px solid var(--bs-border-color);
     margin-bottom: 2rem;
-}
-
-.dropdown {
-    margin-right: 0.5rem;
 }
 
 .dropdown-menu {

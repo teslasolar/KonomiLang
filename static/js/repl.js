@@ -1,3 +1,10 @@
+const commands = {
+    'ask': 'ask ""',
+    'let': 'let name = ""',
+    'if': 'if () {\n\n}',
+    'try': 'try {\n\n} catch {\n\n}'
+};
+
 function executeCode() {
     const input = document.getElementById('input');
     const output = document.getElementById('output');
@@ -31,6 +38,22 @@ function executeCode() {
 document.getElementById('input').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         executeCode();
+    }
+});
+
+document.getElementById('input').addEventListener('input', function(e) {
+    const input = e.target;
+    const currentText = input.value.trim();
+    
+    for (const [cmd, template] of Object.entries(commands)) {
+        if (cmd.startsWith(currentText) && currentText.length > 0) {
+            input.value = template;
+            input.setSelectionRange(
+                template.indexOf('""') > -1 ? template.indexOf('""') + 1 : template.indexOf('()') + 1,
+                template.indexOf('""') > -1 ? template.indexOf('""') + 1 : template.indexOf('()') + 1
+            );
+            break;
+        }
     }
 });
 
