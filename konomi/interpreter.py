@@ -1,5 +1,5 @@
 from .lexer import Lexer
-from .parser import Parser
+from .parser import Parser, VariableDeclaration, AskCommand
 from .errors import RuntimeError
 
 class Interpreter:
@@ -21,9 +21,9 @@ class Interpreter:
         
         results = []
         for statement in statements:
-            if isinstance(statement, parser.VariableDeclaration):
+            if isinstance(statement, VariableDeclaration):
                 results.append(self.visit_variable_declaration(statement))
-            elif isinstance(statement, parser.AskCommand):
+            elif isinstance(statement, AskCommand):
                 results.append(self.visit_ask_command(statement))
             else:
                 raise RuntimeError(f"Unknown statement type: {type(statement)}")
