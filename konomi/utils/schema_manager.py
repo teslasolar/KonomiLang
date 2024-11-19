@@ -1,19 +1,22 @@
 """
 Schema Version Control Manager for KonomiLang Database Grid
-Handles database schema versioning and migrations
+Handles database schema versioning and migrations with improved transaction handling and retry mechanism
 """
 import sqlite3
 from pathlib import Path
 import json
 import logging
+import time
 from typing import Dict, List, Optional, Union
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
 class SchemaManager:
-    def __init__(self, base_dir: Union[str, Path] = "db_grid"):
+    def __init__(self, base_dir: Union[str, Path] = "db_grid", max_retries: int = 3, retry_delay: float = 1.0):
         self.base_dir = Path(base_dir)
+        self.max_retries = max_retries
+        self.retry_delay = retry_delay
         self._setup_logging()
         
     def _setup_logging(self):
@@ -24,6 +27,21 @@ class SchemaManager:
         logger.addHandler(handler)
         logger.setLevel(logging.INFO)
 
+    def _retry_operation(self, operation, *args, **kwargs):
+        """Execute operation with retry mechanism"""
+        last_error = None
+        for attempt in range(self.max_retries):
+            try:
+                return operation(*args, **kwargs)
+            except Exception as e:
+                last_error = e
+                logger.warning(f"Attempt {attempt + 1} failed: {str(e)}")
+                if attempt < self.max_retries - 1:
+                    time.sleep(self.retry_delay * (attempt + 1))
+                continue
+        logger.error(f"Operation failed after {self.max_retries} attempts. Last error: {str(last_error)}")
+        raise last_error
+
     def clean_migrations(self, db_path: Path) -> bool:
         """Remove all existing migrations from a database"""
         conn = None
@@ -31,16 +49,17 @@ class SchemaManager:
             conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
             
+            cursor.execute("BEGIN")
             # Remove all existing migrations
             cursor.execute("DELETE FROM schema_migrations")
             cursor.execute("DELETE FROM schema_versions")
+            cursor.execute("COMMIT")
             
-            conn.commit()
             logger.info(f"Cleaned migrations from {db_path}")
             return True
         except Exception as e:
             if conn:
-                conn.rollback()
+                cursor.execute("ROLLBACK")
             logger.error(f"Failed to clean migrations: {str(e)}")
             return False
         finally:
@@ -49,6 +68,168 @@ class SchemaManager:
                     conn.close()
                 except Exception as e:
                     logger.error(f"Error closing connection: {str(e)}")
+
+    def _validate_sql_script(self, script: str) -> bool:
+        """Validate SQL script format and syntax"""
+        conn = None
+        try:
+            conn = sqlite3.connect(':memory:')
+            cursor = conn.cursor()
+            
+            # Split statements and validate each one
+            statements = [stmt.strip() for stmt in script.split(';') if stmt.strip()]
+            
+            for statement in statements:
+                try:
+                    cursor.execute(statement)
+                except sqlite3.Error as e:
+                    logger.error(f"SQL validation failed for statement '{statement}': {str(e)}")
+                    return False
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"Unexpected error during SQL validation: {str(e)}")
+            return False
+        finally:
+            if conn:
+                try:
+                    conn.close()
+                except Exception as e:
+                    logger.error(f"Error closing validation connection: {str(e)}")
+
+    def apply_migration(self, db_path: Path, version: int, description: str = "", force: bool = False) -> bool:
+        """Apply a specific migration version to a database with retry mechanism"""
+        def _apply():
+            conn = None
+            try:
+                conn = sqlite3.connect(db_path)
+                cursor = conn.cursor()
+                
+                # Start transaction
+                cursor.execute("BEGIN")
+                
+                # Get migration script and dependencies
+                cursor.execute(
+                    "SELECT script, dependencies FROM schema_migrations WHERE version = ?",
+                    (version,)
+                )
+                result = cursor.fetchone()
+                
+                if not result:
+                    raise ValueError(f"Migration version {version} not found")
+                    
+                script, dependencies = result
+                deps = json.loads(dependencies)
+                
+                # Check if already applied unless force flag is set
+                cursor.execute("SELECT version FROM schema_versions WHERE version = ?", (version,))
+                if cursor.fetchone() and not force:
+                    raise ValueError(f"Migration version {version} already applied")
+                
+                # Check dependencies unless force flag is set
+                if not force:
+                    for dep_version in deps:
+                        cursor.execute(
+                            "SELECT id FROM schema_versions WHERE version = ? AND status = 'success'",
+                            (dep_version,)
+                        )
+                        if not cursor.fetchone():
+                            raise ValueError(f"Dependency version {dep_version} not applied")
+                
+                try:
+                    # Split and execute each statement
+                    statements = [stmt.strip() for stmt in script.split(';') if stmt.strip()]
+                    for statement in statements:
+                        if statement:
+                            cursor.execute(statement)
+                    
+                    # Record version
+                    if force:
+                        cursor.execute("DELETE FROM schema_versions WHERE version = ?", (version,))
+                        
+                    cursor.execute(
+                        """INSERT INTO schema_versions 
+                           (version, description, script_name, status) 
+                           VALUES (?, ?, ?, ?)""",
+                        (version, description, f"migration_{version}.sql", 'success')
+                    )
+                    
+                    cursor.execute("COMMIT")
+                    logger.info(f"Applied migration version {version} to {db_path}")
+                    return True
+                    
+                except Exception as e:
+                    cursor.execute("ROLLBACK")
+                    raise Exception(f"Failed to execute migration: {str(e)}")
+                    
+            except Exception as e:
+                if conn:
+                    try:
+                        cursor.execute("ROLLBACK")
+                    except:
+                        pass
+                raise e
+            finally:
+                if conn:
+                    try:
+                        conn.close()
+                    except Exception as e:
+                        logger.error(f"Error closing connection: {str(e)}")
+
+        return self._retry_operation(_apply)
+
+    def register_migration(self, db_path: Path, version: int, script: str, 
+                         dependencies: Optional[List[int]] = None, force: bool = False) -> bool:
+        """Register a new migration script with retry mechanism"""
+        if not self._validate_sql_script(script):
+            logger.error("Failed to validate migration script")
+            return False
+            
+        def _register():
+            conn = None
+            try:
+                conn = sqlite3.connect(db_path)
+                cursor = conn.cursor()
+                
+                # Start transaction
+                cursor.execute("BEGIN")
+                
+                # Check if version exists and force flag is set
+                cursor.execute("SELECT version FROM schema_migrations WHERE version = ?", (version,))
+                if cursor.fetchone():
+                    if force:
+                        # Remove existing migration if force is True
+                        cursor.execute("DELETE FROM schema_migrations WHERE version = ?", (version,))
+                        cursor.execute("DELETE FROM schema_versions WHERE version = ?", (version,))
+                    else:
+                        raise ValueError(f"Migration version {version} already exists")
+                
+                # Insert migration with parameterized query
+                cursor.execute(
+                    "INSERT INTO schema_migrations (version, script, dependencies) VALUES (?, ?, ?)",
+                    (version, script, json.dumps(dependencies or []))
+                )
+                
+                cursor.execute("COMMIT")
+                logger.info(f"Registered migration version {version} for {db_path}")
+                return True
+                    
+            except Exception as e:
+                if conn:
+                    try:
+                        cursor.execute("ROLLBACK")
+                    except:
+                        pass
+                raise e
+            finally:
+                if conn:
+                    try:
+                        conn.close()
+                    except Exception as e:
+                        logger.error(f"Error closing connection: {str(e)}")
+
+        return self._retry_operation(_register)
 
     def _init_version_control(self, db_path: Path) -> bool:
         """Initialize schema version control table in a database"""
@@ -88,161 +269,6 @@ class SchemaManager:
             if conn:
                 conn.rollback()
             logger.error(f"Failed to initialize version control in {db_path}: {str(e)}")
-            return False
-        finally:
-            if conn:
-                try:
-                    conn.close()
-                except Exception as e:
-                    logger.error(f"Error closing connection: {str(e)}")
-
-    def _validate_sql_script(self, script: str) -> bool:
-        """Validate SQL script format and syntax"""
-        conn = None
-        try:
-            conn = sqlite3.connect(':memory:')
-            cursor = conn.cursor()
-            
-            # Split statements and validate each one
-            statements = [stmt.strip() for stmt in script.split(';') if stmt.strip()]
-            
-            # Start a transaction for validation
-            cursor.execute("BEGIN")
-            
-            for statement in statements:
-                try:
-                    cursor.execute(statement)
-                except sqlite3.Error as e:
-                    cursor.execute("ROLLBACK")
-                    logger.error(f"SQL validation failed for statement '{statement}': {str(e)}")
-                    return False
-            
-            cursor.execute("COMMIT")
-            return True
-            
-        except Exception as e:
-            logger.error(f"Unexpected error during SQL validation: {str(e)}")
-            return False
-        finally:
-            if conn:
-                try:
-                    conn.close()
-                except Exception as e:
-                    logger.error(f"Error closing validation connection: {str(e)}")
-
-    def register_migration(self, db_path: Path, version: int, script: str, 
-                         dependencies: Optional[List[int]] = None, force: bool = False) -> bool:
-        """Register a new migration script"""
-        # First validate the SQL script
-        if not self._validate_sql_script(script):
-            logger.error("Failed to validate migration script")
-            return False
-            
-        conn = None
-        try:
-            conn = sqlite3.connect(db_path)
-            cursor = conn.cursor()
-            
-            # Check if version exists and force flag is set
-            cursor.execute("SELECT version FROM schema_migrations WHERE version = ?", (version,))
-            if cursor.fetchone():
-                if force:
-                    # Remove existing migration if force is True
-                    cursor.execute("DELETE FROM schema_migrations WHERE version = ?", (version,))
-                    cursor.execute("DELETE FROM schema_versions WHERE version = ?", (version,))
-                else:
-                    raise ValueError(f"Migration version {version} already exists")
-            
-            # Start transaction for registration
-            cursor.execute("BEGIN")
-            
-            # Insert migration with parameterized query
-            cursor.execute(
-                "INSERT INTO schema_migrations (version, script, dependencies) VALUES (?, ?, ?)",
-                (version, script, json.dumps(dependencies or []))
-            )
-            
-            cursor.execute("COMMIT")
-            logger.info(f"Registered migration version {version} for {db_path}")
-            return True
-                
-        except Exception as e:
-            if conn:
-                cursor.execute("ROLLBACK")
-            logger.error(f"Failed to register migration: {str(e)}")
-            return False
-        finally:
-            if conn:
-                try:
-                    conn.close()
-                except Exception as e:
-                    logger.error(f"Error closing connection: {str(e)}")
-
-    def apply_migration(self, db_path: Path, version: int, description: str = "", force: bool = False) -> bool:
-        """Apply a specific migration version to a database"""
-        conn = None
-        try:
-            conn = sqlite3.connect(db_path)
-            cursor = conn.cursor()
-            
-            # Get migration script and dependencies
-            cursor.execute(
-                "SELECT script, dependencies FROM schema_migrations WHERE version = ?",
-                (version,)
-            )
-            result = cursor.fetchone()
-            
-            if not result:
-                raise ValueError(f"Migration version {version} not found")
-                
-            script, dependencies = result
-            deps = json.loads(dependencies)
-            
-            # Check if already applied unless force flag is set
-            cursor.execute("SELECT version FROM schema_versions WHERE version = ?", (version,))
-            if cursor.fetchone() and not force:
-                raise ValueError(f"Migration version {version} already applied")
-            
-            # Check dependencies unless force flag is set
-            if not force:
-                for dep_version in deps:
-                    cursor.execute(
-                        "SELECT id FROM schema_versions WHERE version = ? AND status = 'success'",
-                        (dep_version,)
-                    )
-                    if not cursor.fetchone():
-                        raise ValueError(f"Dependency version {dep_version} not applied")
-            
-            # Start transaction for migration
-            cursor.execute("BEGIN")
-            
-            try:
-                # Split and execute each statement
-                statements = [stmt.strip() for stmt in script.split(';') if stmt.strip()]
-                for statement in statements:
-                    cursor.execute(statement)
-                
-                # Record version
-                if force:
-                    cursor.execute("DELETE FROM schema_versions WHERE version = ?", (version,))
-                    
-                cursor.execute(
-                    """INSERT INTO schema_versions 
-                       (version, description, script_name, status) 
-                       VALUES (?, ?, ?, ?)""",
-                    (version, description, f"migration_{version}.sql", 'success')
-                )
-                
-                cursor.execute("COMMIT")
-                logger.info(f"Applied migration version {version} to {db_path}")
-                return True
-                
-            except Exception as e:
-                cursor.execute("ROLLBACK")
-                raise Exception(f"Failed to execute migration: {str(e)}")
-                
-        except Exception as e:
-            logger.error(f"Failed to apply migration: {str(e)}")
             return False
         finally:
             if conn:

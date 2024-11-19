@@ -258,5 +258,110 @@ SCHEMAS = {
             details TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );'''
+    ],
+    'F1': [
+        '''CREATE TABLE IF NOT EXISTS usage_metrics (
+            id INTEGER PRIMARY KEY,
+            feature_name TEXT NOT NULL,
+            usage_count INTEGER DEFAULT 0,
+            last_used TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );''',
+        '''CREATE TABLE IF NOT EXISTS performance_data (
+            id INTEGER PRIMARY KEY,
+            operation_type TEXT NOT NULL,
+            duration_ms INTEGER,
+            resource_usage TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );'''
+    ],
+    'F2': [
+        '''CREATE TABLE IF NOT EXISTS api_metrics (
+            id INTEGER PRIMARY KEY,
+            endpoint TEXT NOT NULL,
+            response_time_ms INTEGER,
+            status_code INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );'''
+    ],
+    'F3': [
+        '''CREATE TABLE IF NOT EXISTS user_analytics (
+            id INTEGER PRIMARY KEY,
+            user_id TEXT NOT NULL,
+            session_duration INTEGER,
+            feature_usage TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );'''
+    ],
+    'F4': [
+        '''CREATE TABLE IF NOT EXISTS error_analytics (
+            id INTEGER PRIMARY KEY,
+            error_type TEXT NOT NULL,
+            frequency INTEGER DEFAULT 1,
+            last_occurrence TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            stack_trace TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );'''
+    ],
+    'F5': [
+        '''CREATE TABLE IF NOT EXISTS resource_usage (
+            id INTEGER PRIMARY KEY,
+            resource_type TEXT NOT NULL,
+            usage_amount REAL,
+            usage_limit REAL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );'''
+    ],
+    'G1': [
+        '''CREATE TABLE IF NOT EXISTS extensions (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            version TEXT NOT NULL,
+            enabled BOOLEAN DEFAULT true,
+            config TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );'''
+    ],
+    'G2': [
+        '''CREATE TABLE IF NOT EXISTS extension_hooks (
+            id INTEGER PRIMARY KEY,
+            extension_id INTEGER,
+            hook_type TEXT NOT NULL,
+            priority INTEGER DEFAULT 0,
+            handler TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (extension_id) REFERENCES extensions(id)
+        );'''
+    ],
+    'G3': [
+        '''CREATE TABLE IF NOT EXISTS extension_dependencies (
+            id INTEGER PRIMARY KEY,
+            extension_id INTEGER,
+            dependency_name TEXT NOT NULL,
+            required_version TEXT,
+            optional BOOLEAN DEFAULT false,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (extension_id) REFERENCES extensions(id)
+        );'''
+    ],
+    'G4': [
+        '''CREATE TABLE IF NOT EXISTS extension_logs (
+            id INTEGER PRIMARY KEY,
+            extension_id INTEGER,
+            log_level TEXT NOT NULL,
+            message TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (extension_id) REFERENCES extensions(id)
+        );'''
+    ],
+    'G5': [
+        '''CREATE TABLE IF NOT EXISTS extension_data (
+            id INTEGER PRIMARY KEY,
+            extension_id INTEGER,
+            data_key TEXT NOT NULL,
+            data_value TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (extension_id) REFERENCES extensions(id)
+        );'''
     ]
 }
