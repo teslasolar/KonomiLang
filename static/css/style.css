@@ -1,3 +1,4 @@
+/* Base styles */
 pre code {
     display: block;
     padding: 1rem;
@@ -12,6 +13,7 @@ pre code {
     white-space: pre-wrap;
 }
 
+/* Input group styling */
 .input-group {
     display: flex;
     align-items: stretch;
@@ -26,6 +28,7 @@ pre code {
     flex: 1;
 }
 
+/* Code block styling */
 .example-code {
     background-color: var(--bs-dark);
     border-radius: 0.5rem;
@@ -42,6 +45,7 @@ pre code {
     font-family: monospace;
 }
 
+/* Card styling */
 .card-header {
     background-color: var(--bs-dark);
     border-bottom: 1px solid var(--bs-border-color);
@@ -52,6 +56,7 @@ pre code {
     margin-bottom: 2rem;
 }
 
+/* Dropdown styling */
 .dropdown-menu {
     background-color: var(--bs-dark);
     border: 1px solid var(--bs-border-color);
@@ -95,3 +100,24 @@ pre code {
 .markdown-content p {
     margin-bottom: 1rem;
 }
+
+/* Syntax highlighting */
+.codehilite {
+    background: var(--bs-dark);
+    padding: 1rem;
+    border-radius: 0.25rem;
+    margin: 1rem 0;
+}
+
+.codehilite pre {
+    margin: 0;
+    color: var(--bs-light);
+}
+
+/* Syntax highlighting colors */
+.codehilite .k { color: #569cd6; } /* Keyword */
+.codehilite .s { color: #ce9178; } /* String */
+.codehilite .n { color: #9cdcfe; } /* Name */
+.codehilite .o { color: #d4d4d4; } /* Operator */
+.codehilite .m { color: #b5cea8; } /* Number */
+.codehilite .c { color: #6a9955; } /* Comment */

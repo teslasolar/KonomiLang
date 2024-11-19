@@ -24,6 +24,24 @@
             "Generate interactive stories based on user input:",
             'let character = "space explorer"\nlet setting = "distant galaxy"\n\ntry {\n    let story = ask "Create a short story about a " + character + " in a " + setting\n    if (story.length > 150) {\n        ask "That was great! What happens next?"\n    }\n} catch {\n    ask "Tell me a different story about " + character\n}'
         ) }}
+
+        {{ example_card(
+            "Language Learning Assistant",
+            "Create an interactive language learning experience:",
+            'let language = "Spanish"\nlet topic = "greetings"\n\ntry {\n    let lesson = ask "Teach me common " + language + " " + topic\n    ask "Now give me some practice exercises"\n} catch {\n    ask "Can we start with something more basic?"\n}'
+        ) }}
+
+        {{ example_card(
+            "Recipe Generator",
+            "Generate and customize recipes with AI assistance:",
+            'let cuisine = "Italian"\nlet dietary = "vegetarian"\n\nlet recipe = ask "Create a " + dietary + " " + cuisine + " recipe"\nif (recipe.length > 300) {\n    ask "Can you simplify this recipe?"\n} else {\n    ask "What wine would pair well with this dish?"\n}'
+        ) }}
+
+        {{ example_card(
+            "Code Explainer",
+            "Get explanations for complex programming concepts:",
+            'let concept = "recursion"\nlet language = "Python"\n\ntry {\n    let explanation = ask "Explain " + concept + " in " + language + " with examples"\n    if (explanation.length > 250) {\n        ask "Can you provide a simpler example?"\n    }\n} catch {\n    ask "Let\'s break this down into smaller parts"\n}'
+        ) }}
     </div>
 </div>
 

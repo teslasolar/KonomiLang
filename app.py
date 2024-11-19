@@ -7,6 +7,14 @@ import os
 app = Flask(__name__)
 interpreter = Interpreter()
 
+# Configure Markdown extensions
+markdown_extensions = [
+    'fenced_code',
+    'codehilite',
+    'tables',
+    'attr_list'
+]
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -15,22 +23,29 @@ def index():
 def docs():
     # Read and convert README.md
     with open('docs/README.md', 'r') as f:
-        content = markdown.markdown(f.read(), extensions=['fenced_code', 'tables'])
+        content = markdown.markdown(f.read(), extensions=markdown_extensions)
     return render_template('markdown.html', content=content, title="Documentation")
 
 @app.route('/docs/api')
 def api_docs():
     # Read and convert api.md
     with open('docs/api.md', 'r') as f:
-        content = markdown.markdown(f.read(), extensions=['fenced_code', 'tables'])
+        content = markdown.markdown(f.read(), extensions=markdown_extensions)
     return render_template('markdown.html', content=content, title="API Documentation")
 
 @app.route('/docs/endpoints')
 def endpoints_docs():
     # Read and convert endpoints.md
     with open('docs/endpoints.md', 'r') as f:
-        content = markdown.markdown(f.read(), extensions=['fenced_code', 'tables'])
+        content = markdown.markdown(f.read(), extensions=markdown_extensions)
     return render_template('markdown.html', content=content, title="API Endpoints")
+
+@app.route('/docs/syntax')
+def syntax_docs():
+    # Read and convert basic_syntax.md
+    with open('docs/basic_syntax.md', 'r') as f:
+        content = markdown.markdown(f.read(), extensions=markdown_extensions)
+    return render_template('markdown.html', content=content, title="Basic Syntax")
 
 @app.route('/examples')
 def examples():

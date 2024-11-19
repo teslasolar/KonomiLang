@@ -1,8 +1,14 @@
 const commands = {
     'ask': 'ask ""',
     'let': 'let name = ""',
-    'if': 'if () {\n    ask ""\n}',
-    'try': 'try {\n    ask ""\n} catch {\n    ask ""\n}'
+    'if': `if () {
+    ask ""
+}`,
+    'try': `try {
+    ask ""
+} catch {
+    ask ""
+}`
 };
 
 function executeCode() {
@@ -12,17 +18,12 @@ function executeCode() {
 
     if (!code) return;
 
-    // Properly escape special characters for the server
-    const escapedCode = code.replace(/\\/g, '\\\\')
-                           .replace(/\n/g, '\\n')
-                           .replace(/"/g, '\\"');
-
     fetch('/execute', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `code=${encodeURIComponent(escapedCode)}`
+        body: `code=${encodeURIComponent(code)}`
     })
     .then(response => response.json())
     .then(data => {
@@ -49,18 +50,13 @@ document.getElementById('input').addEventListener('keypress', function(e) {
 document.getElementById('input').addEventListener('input', function(e) {
     const input = e.target;
     const currentText = input.value.trim();
-    const lastWord = currentText.split(/[\s\n]/).pop(); // Only look at last word
+    const lastWord = currentText.split(/[\s\n]/).pop();
     
-    // Only trigger for commands at start of line or after newline
     if (currentText === lastWord) {
         for (const [cmd, template] of Object.entries(commands)) {
-            if (cmd.startsWith(lastWord) && lastWord.length >= 2) { // Require at least 2 chars
-                const cursorPos = input.selectionStart;
-                // Replace escaped newlines with actual newlines
-                const processedTemplate = template.replace(/\\n/g, '\n');
-                input.value = currentText.slice(0, -lastWord.length) + processedTemplate;
+            if (cmd.startsWith(lastWord) && lastWord.length >= 2) {
+                input.value = currentText.slice(0, -lastWord.length) + template;
                 
-                // Smart cursor positioning
                 if (template.includes('""')) {
                     const quotePos = input.value.indexOf('""') + 1;
                     input.setSelectionRange(quotePos, quotePos);
@@ -76,12 +72,9 @@ document.getElementById('input').addEventListener('input', function(e) {
 
 function insertCommand(template) {
     const input = document.getElementById('input');
-    // Replace escaped newlines with actual newlines
-    const processedTemplate = template.replace(/\\n/g, '\n');
-    input.value = processedTemplate;
+    input.value = template;
     input.focus();
     
-    // Position cursor based on template type
     if (template.includes('""')) {
         const quotePos = input.value.indexOf('""') + 1;
         input.setSelectionRange(quotePos, quotePos);

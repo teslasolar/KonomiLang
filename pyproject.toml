@@ -12,4 +12,5 @@ dependencies = [
     "openai>=1.54.4",
     "psycopg2-binary>=2.9.10",
     "markdown>=3.7",
+    "pygments>=2.18.0",
 ]
