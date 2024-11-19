@@ -177,6 +177,21 @@ def example_html():
 def example_svg():
     """Render example SVG generation."""
     return generate_example_chart(), 200, {'Content-Type': 'image/svg+xml'}
+@app.route('/examples/svg/loader')
+def example_svg_loader():
+    """Render example animated SVG loader."""
+    return generate_animated_loader(), 200, {'Content-Type': 'image/svg+xml'}
+
+@app.route('/examples/svg/path')
+def example_svg_path():
+    """Render example SVG path animation."""
+    return generate_animated_path(), 200, {'Content-Type': 'image/svg+xml'}
+
+@app.route('/examples/svg/pulse')
+def example_svg_pulse():
+    """Render example SVG pulse animation."""
+    return generate_pulse_animation(), 200, {'Content-Type': 'image/svg+xml'}
+
 
 # API Management endpoints
 @app.route('/api/v1/docs/generate', methods=['POST'])
