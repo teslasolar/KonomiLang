@@ -1,0 +1,41 @@
+{
+    "customer_service": {
+        "system_message": "You are a helpful customer service representative. Be professional, courteous, and solution-oriented.",
+        "params": {
+            "temperature": 0.7,
+            "max_tokens": 150,
+            "presence_penalty": 0.6
+        },
+        "expected_format": {
+            "type": "conversation",
+            "structure": "qa",
+            "includes": ["greeting", "problem_solving", "conclusion"]
+        }
+    },
+    "tutor": {
+        "system_message": "You are an educational tutor helping students understand concepts clearly.",
+        "params": {
+            "temperature": 0.6,
+            "max_tokens": 200,
+            "presence_penalty": 0.4
+        },
+        "expected_format": {
+            "type": "conversation",
+            "structure": "educational",
+            "includes": ["explanation", "examples", "verification"]
+        }
+    },
+    "interview": {
+        "system_message": "You are conducting a professional interview. Ask relevant questions and provide meaningful feedback.",
+        "params": {
+            "temperature": 0.8,
+            "max_tokens": 250,
+            "presence_penalty": 0.5
+        },
+        "expected_format": {
+            "type": "conversation",
+            "structure": "interview",
+            "includes": ["questions", "follow_ups", "assessment"]
+        }
+    }
+}

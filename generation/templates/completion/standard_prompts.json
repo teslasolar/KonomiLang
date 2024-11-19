@@ -1,0 +1,41 @@
+{
+    "story": {
+        "prompt": "Write a short story about [topic] with [style] writing style",
+        "params": {
+            "temperature": 0.8,
+            "max_tokens": 500,
+            "top_p": 0.9
+        },
+        "expected_format": {
+            "type": "text",
+            "structure": "narrative",
+            "sections": ["setting", "characters", "plot", "conclusion"]
+        }
+    },
+    "description": {
+        "prompt": "Provide a detailed description of [subject] focusing on [aspects]",
+        "params": {
+            "temperature": 0.7,
+            "max_tokens": 300,
+            "top_p": 0.95
+        },
+        "expected_format": {
+            "type": "text",
+            "structure": "descriptive",
+            "sections": ["overview", "details", "characteristics"]
+        }
+    },
+    "summary": {
+        "prompt": "Summarize the following text while maintaining key points: [text]",
+        "params": {
+            "temperature": 0.3,
+            "max_tokens": 200,
+            "top_p": 1.0
+        },
+        "expected_format": {
+            "type": "text",
+            "structure": "summary",
+            "sections": ["main_points", "details", "conclusion"]
+        }
+    }
+}

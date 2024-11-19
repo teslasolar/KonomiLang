@@ -1,0 +1,41 @@
+{
+    "function": {
+        "prompt": "Write a [language] function that [functionality] with appropriate error handling",
+        "params": {
+            "temperature": 0.3,
+            "max_tokens": 500,
+            "stop": ["```"]
+        },
+        "expected_format": {
+            "type": "code",
+            "structure": "function",
+            "includes": ["signature", "docstring", "implementation", "error_handling"]
+        }
+    },
+    "class": {
+        "prompt": "Create a [language] class for [purpose] with necessary methods and documentation",
+        "params": {
+            "temperature": 0.4,
+            "max_tokens": 800,
+            "stop": ["```"]
+        },
+        "expected_format": {
+            "type": "code",
+            "structure": "class",
+            "includes": ["class_definition", "constructor", "methods", "docstrings"]
+        }
+    },
+    "script": {
+        "prompt": "Generate a [language] script that [functionality] with proper organization and comments",
+        "params": {
+            "temperature": 0.5,
+            "max_tokens": 1000,
+            "stop": ["```"]
+        },
+        "expected_format": {
+            "type": "code",
+            "structure": "script",
+            "includes": ["imports", "configuration", "main_logic", "helper_functions"]
+        }
+    }
+}
