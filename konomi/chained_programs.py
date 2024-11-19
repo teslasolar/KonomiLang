@@ -32,6 +32,55 @@ class ProgramLibrary:
     def __init__(self, interpreter):
         self.chain = ChainedProgram(interpreter)
 
+    def code_analyzer(self, directory):
+        steps = [
+            f'let dir = "{directory}"',
+            'let large_functions = ask "Scan this directory and identify all functions over 150 lines: " + dir',
+            'let complexity = ask "Analyze the complexity and dependencies of these functions"',
+            'let metadata = ask "Generate metadata including size, complexity metrics, and dependency graph"',
+            'let recommendations = ask "Provide initial recommendations for breaking down these functions"'
+        ]
+        return self.chain.execute_chain(steps)
+
+    def code_modularizer(self, function_code):
+        steps = [
+            f'let code = """{function_code}"""',
+            'let flow_analysis = ask "Analyze the logical flow and identify distinct responsibilities in this function: " + code',
+            'let break_points = ask "Suggest logical break points where the function can be split"',
+            'let modular_version = ask "Generate a modularized version with smaller, focused functions"',
+            'let documentation = ask "Generate documentation for the new modular structure"'
+        ]
+        return self.chain.execute_chain(steps)
+
+    def test_generator(self, original_code, modularized_code):
+        steps = [
+            f'let original = """{original_code}"""',
+            f'let modular = """{modularized_code}"""',
+            'let test_cases = ask "Generate comprehensive test cases covering both versions: \nOriginal:\n" + original + "\nModular:\n" + modular',
+            'let edge_cases = ask "Identify and create test cases for edge cases and boundary conditions"',
+            'let equivalence_tests = ask "Generate tests to verify functional equivalence between versions"'
+        ]
+        return self.chain.execute_chain(steps)
+
+    def backup_manager(self, code_data):
+        steps = [
+            f'let code = """{code_data}"""',
+            'let backup_entry = ask "Create a backup entry with metadata and versioning information for: " + code',
+            'let timestamp = ask "Generate timestamp and tracking information"',
+            'let rollback_plan = ask "Create a rollback strategy for this code version"'
+        ]
+        return self.chain.execute_chain(steps)
+
+    def code_replacer(self, validated_code):
+        steps = [
+            f'let code = """{validated_code}"""',
+            'let dependency_check = ask "Verify all dependencies and references for the new code: " + code',
+            'let replacement_plan = ask "Generate a safe replacement strategy"',
+            'let reference_updates = ask "Identify all references that need to be updated"',
+            'let verification_steps = ask "Create verification steps for the replacement process"'
+        ]
+        return self.chain.execute_chain(steps)
+
     def content_analyzer(self, text):
         steps = [
             f'let input_text = "{text}"',

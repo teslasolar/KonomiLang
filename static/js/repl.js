@@ -116,6 +116,32 @@
                 method: 'POST',
                 path: '/api/v1/chains/component-auto-build',
                 template: '{\n    "specifications": "Your component specifications with quality requirements"\n}'
+            },
+            // Code Modularization endpoints
+            'analyze-code-size': {
+                method: 'POST',
+                path: '/api/v1/chains/analyze-code-size',
+                template: '{\n    "directory": "path/to/code/directory"\n}'
+            },
+            'modularize-function': {
+                method: 'POST',
+                path: '/api/v1/chains/modularize-function',
+                template: '{\n    "function_code": "Your function code here"\n}'
+            },
+            'generate-tests': {
+                method: 'POST',
+                path: '/api/v1/chains/generate-tests',
+                template: '{\n    "original_code": "Original function code",\n    "modularized_code": "Modularized version"\n}'
+            },
+            'backup-code': {
+                method: 'POST',
+                path: '/api/v1/chains/backup-code',
+                template: '{\n    "code_data": "Code to backup with metadata"\n}'
+            },
+            'replace-code': {
+                method: 'POST',
+                path: '/api/v1/chains/replace-code',
+                template: '{\n    "validated_code": "Validated modularized code"\n}'
             }
         },
         errorTypes: {

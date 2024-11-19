@@ -287,5 +287,81 @@ def story_developer():
         except Exception as e:
             return jsonify({'success': False, 'error': str(e)}), 500
 
+@app.route('/api/v1/chains/analyze-code-size', methods=['POST'])
+def analyze_code_size():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    directory = request.json.get('directory')
+    if not directory:
+        return jsonify({'success': False, 'error': 'Directory parameter is required'}), 400
+    
+    try:
+        result = program_library.code_analyzer(directory)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/modularize-function', methods=['POST'])
+def modularize_function():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    function_code = request.json.get('function_code')
+    if not function_code:
+        return jsonify({'success': False, 'error': 'Function code parameter is required'}), 400
+    
+    try:
+        result = program_library.code_modularizer(function_code)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/generate-tests', methods=['POST'])
+def generate_tests():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    original_code = request.json.get('original_code')
+    modularized_code = request.json.get('modularized_code')
+    if not original_code or not modularized_code:
+        return jsonify({'success': False, 'error': 'Both original and modularized code parameters are required'}), 400
+    
+    try:
+        result = program_library.test_generator(original_code, modularized_code)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/backup-code', methods=['POST'])
+def backup_code():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    code_data = request.json.get('code_data')
+    if not code_data:
+        return jsonify({'success': False, 'error': 'Code data parameter is required'}), 400
+    
+    try:
+        result = program_library.backup_manager(code_data)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/v1/chains/replace-code', methods=['POST'])
+def replace_code():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+    
+    validated_code = request.json.get('validated_code')
+    if not validated_code:
+        return jsonify({'success': False, 'error': 'Validated code parameter is required'}), 400
+    
+    try:
+        result = program_library.code_replacer(validated_code)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

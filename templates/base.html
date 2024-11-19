@@ -14,6 +14,43 @@
 
     <!-- API Endpoints Sidebar -->
     <div class="api-sidebar">
+        <!-- Code Modularization -->
+        <div class="endpoint-group">
+            <div class="endpoint-group-title">Code Modularization</div>
+            <ul class="endpoint-list">
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('analyze-code-size')">
+                        POST /chains/analyze-code-size
+                    </button>
+                    <div class="endpoint-tooltip">Analyze function sizes and complexity</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('modularize-function')">
+                        POST /chains/modularize-function
+                    </button>
+                    <div class="endpoint-tooltip">Break down large functions into modules</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('generate-tests')">
+                        POST /chains/generate-tests
+                    </button>
+                    <div class="endpoint-tooltip">Generate tests for both versions</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('backup-code')">
+                        POST /chains/backup-code
+                    </button>
+                    <div class="endpoint-tooltip">Create code backup with metadata</div>
+                </li>
+                <li class="endpoint-item">
+                    <button class="endpoint-button post" onclick="insertEndpoint('replace-code')">
+                        POST /chains/replace-code
+                    </button>
+                    <div class="endpoint-tooltip">Replace code with modularized version</div>
+                </li>
+            </ul>
+        </div>
+
         <!-- Component Operations -->
         <div class="endpoint-group">
             <div class="endpoint-group-title">Component Operations</div>
