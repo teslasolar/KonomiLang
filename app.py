@@ -236,58 +236,14 @@ async def generate_docs():
         logger.error(f"Error generating documentation: {str(e)}")
         return jsonify({"success": False, "error": str(e)}), 500
 
+from konomi.visualizers import run_all_benchmarks
+
 @app.route('/api/v1/visualization/benchmark', methods=['POST'])
 def benchmark_visualizations():
     """Run performance benchmarks for visualization methods."""
     try:
         iterations = request.json.get('iterations', 100)
-        results = {}
-        
-        # Test particle simulation
-        start = time.perf_counter()
-        for _ in range(iterations):
-            particles = [{
-                'x': random.random() * 99,
-                'y': random.random() * 99,
-                'v': random.random() - 0.5,
-                'w': random.random() - 0.5
-            } for _ in range(99)]
-        results['particle'] = (time.perf_counter() - start) * 1000 / iterations
-        
-        # Test wave generation
-        start = time.perf_counter()
-        t = 0
-        for _ in range(iterations):
-            t += 0.1
-            wave = [50 + 25 * math.sin(t) + 15 * math.cos(t * 1.5) for _ in range(50)]
-        results['wave'] = (time.perf_counter() - start) * 1000 / iterations
-        
-        # Test quantum visualization
-        start = time.perf_counter()
-        for _ in range(iterations):
-            quantum = [99 if random.random() > 0.5 else 0 for _ in range(50)]
-        results['quantum'] = (time.perf_counter() - start) * 1000 / iterations
-        
-        # Test neural network
-        start = time.perf_counter()
-        for _ in range(iterations):
-            network = [[1 if random.random() > 0.7 else 0 for _ in range(9)] for _ in range(9)]
-            activation = sum(sum(row) for row in network) * 10
-        results['neural'] = (time.perf_counter() - start) * 1000 / iterations
-        
-        # Test genetic algorithm
-        start = time.perf_counter()
-        population = [random.random() for _ in range(50)]
-        for _ in range(iterations):
-            population = sorted([p + 0.1 * (random.random() - 0.5) for p in population])
-        results['genetic'] = (time.perf_counter() - start) * 1000 / iterations
-        
-        # Test chaos system
-        start = time.perf_counter()
-        x = 0.5
-        for _ in range(iterations):
-            x = 4 * x * (1 - x)
-        results['chaos'] = (time.perf_counter() - start) * 1000 / iterations
+        results = run_all_benchmarks(iterations)
         
         return jsonify({
             'success': True,
