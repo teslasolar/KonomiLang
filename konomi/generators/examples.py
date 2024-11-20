@@ -146,3 +146,63 @@ def generate_pulse_animation() -> str:
     )
     
     return svg_gen.generate()
+
+def generate_interactive_animations() -> str:
+    """Generate an example with interactive SVG animations."""
+    from konomi.generators.svg.core import SVGGenerator
+    from konomi.generators.svg.animations import AnimationManager
+    
+    svg_gen = SVGGenerator(300, 200)
+    anim_manager = AnimationManager()
+    
+    # Add background
+    svg_gen.add_element(
+        f'<rect x="0" y="0" width="300" height="200" fill="#f8f9fa"/>'
+    )
+    
+    # Add interactive circle that scales on hover
+    svg_gen.add_element(
+        f'<circle cx="75" cy="100" r="30" fill="#4C6EF5" cursor="pointer" id="hover-circle"/>'
+    )
+    svg_gen.add_definition(
+        anim_manager.create_transform_animation(
+            "hover-circle", "mouseover", "scale",
+            "1 1", "1.5 1.5", 0.3, "ease-out"
+        )
+    )
+    svg_gen.add_definition(
+        anim_manager.create_transform_animation(
+            "hover-circle", "mouseout", "scale",
+            "1.5 1.5", "1 1", 0.3, "ease-out"
+        )
+    )
+    
+    # Add interactive rectangle that rotates on click
+    svg_gen.add_element(
+        f'<rect x="150" y="70" width="60" height="60" fill="#FA5252" cursor="pointer" id="click-rect"/>'
+    )
+    svg_gen.add_definition(
+        anim_manager.create_transform_animation(
+            "click-rect", "click", "rotate",
+            "0 30 30", "360 30 30", 1, "ease-in-out"
+        )
+    )
+    
+    # Add morphing path
+    path1 = "M250,70 Q280,100 250,130"
+    path2 = "M250,70 Q220,100 250,130"
+    svg_gen.add_element(
+        f'<path d="{path1}" stroke="#40C057" stroke-width="4" fill="none" id="morph-path" cursor="pointer"/>'
+    )
+    svg_gen.add_definition(
+        anim_manager.create_morph_animation(
+            "morph-path", path1, path2, 1, "mouseover", "ease-in-out"
+        )
+    )
+    svg_gen.add_definition(
+        anim_manager.create_morph_animation(
+            "morph-path", path2, path1, 1, "mouseout", "ease-in-out"
+        )
+    )
+    
+    return svg_gen.generate()

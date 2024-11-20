@@ -5,6 +5,11 @@ This module implements the main Flask application for the Konomi programming lan
 providing both web interface and API endpoints.
 """
 from flask import Flask, render_template, request, jsonify
+from konomi.generators.examples import (
+    generate_example_card, generate_example_chart,
+    generate_animated_loader, generate_animated_path,
+    generate_pulse_animation, generate_interactive_animations
+)
 from konomi.interpreter import Interpreter
 from konomi.errors import KonomiError
 from konomi.chained_programs import ProgramLibrary
@@ -195,6 +200,10 @@ def example_svg_path():
 def example_svg_pulse():
     """Render example SVG pulse animation."""
     return generate_pulse_animation(), 200, {'Content-Type': 'image/svg+xml'}
+@app.route('/examples/svg/interactive')
+def example_svg_interactive():
+    """Render example SVG with interactive animations."""
+    return generate_interactive_animations(), 200, {'Content-Type': 'image/svg+xml'}
 
 
 # API Management endpoints
