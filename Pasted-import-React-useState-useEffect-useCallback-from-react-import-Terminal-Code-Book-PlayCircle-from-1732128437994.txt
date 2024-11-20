@@ -1,0 +1,30 @@
+import React,{useState,useEffect,useCallback}from'react';
+import{Terminal,Code,Book,PlayCircle}from'lucide-react';
+const κ={V:'1',M:'🌐🧩🔣🧬〰️🖌️🎹👾🏭💾📑📡'.split(''),X:{h:'help',c:'clr',v:'ver',i:'ins',r:'run',p:'png',s:'sta',b:'ben',d:'dbg',x:'exp',sim:{p:'ptc',w:'wav',q:'qnt',n:'neu',g:'gen',c:'cho'},sys:{m:'mem',c:'cch',n:'net'}}},
+G=({d,i})=><svg viewBox="0 0 100 50"><defs><linearGradient id={i}><stop offset="0"stopColor="#93e"stopOpacity=".3"/><stop offset="1"stopColor="#93e"stopOpacity="0"/></linearGradient></defs><path d={`M${d.map((y,i)=>`${i*2},${50-y/2}`).join` `}stroke="#93e"fill="none"/><path d={`M${d.map((y,i)=>`${i*2},${50-y/2}`).join` `}V50H0`}fill={`url(#${i})`}/></svg>,
+D=()=>{const[t,T]=useState('c'),[m]=useState({c:98,r:76,n:52}),[l,L]=useState(['κ']),
+[g,G]=useState({a:Array(50).fill(50),b:Array(50).fill(50),c:Array(50).fill(50)}),[s,S]=useState([]),[h,H]=useState(''),
+A=(m,t='i')=>L(p=>[...p,`${new Date().toISOString().slice(11,19)}${t=='c'?'⚡':t=='e'?'❌':''}${m}`]),
+sim={p:()=>{let p=Array(99).fill().map(()=>({x:Math.random()*99,y:Math.random()*99,v:Math.random()-.5,w:Math.random()-.5}));
+return setInterval(()=>{p=p.map(p=>({x:p.x+p.v,y:p.y+p.w,v:p.v*(p.x<0||p.x>99?-1:1),w:p.w*(p.y<0||p.y>99?-1:1)}));
+G(g=>({...g,a:[...g.a.slice(1),p.reduce((s,p)=>s+p.x+p.y,0)/200]}))},50)},
+w:()=>{let t=0;return setInterval(()=>{t+=.1;G(p=>({...g,b:[...p.b.slice(1),50+25*Math.sin(t)+15*Math.cos(t*1.5)]}))},50)},
+q:()=>{let q=Array(50).fill(0);return setInterval(()=>{q=[...q.slice(1),Math.random()>.5?99:0];G(p=>({...g,c:q}))},99)},
+n:()=>{let n=Array(9).fill().map(()=>Array(9).fill(0));return setInterval(()=>{n=n.map(r=>r.map(()=>Math.random()>.7?1:0));
+G(p=>({...g,a:[...p.a.slice(1),n.flat().filter(x=>x).length*10]}))},200)},
+g:()=>{let p=Array(50).fill().map(()=>Math.random());return setInterval(()=>{p=p.map(p=>p+.1*(Math.random()-.5)).sort();
+G(g=>({...g,b:p.map(x=>x*99)}))},99)},
+c:()=>{let x=.5;return setInterval(()=>{x=4*x*(1-x);G(p=>({...g,c:[...p.c.slice(1),x*99]}))},50)}},
+P=c=>{let[a,...r]=c.toLowerCase().split` `;A(c,'c');({h:()=>Object.entries(κ.X).map(([k,v])=>A(`${k}:${typeof v=='string'?v:Object.keys(v)}`)),
+c:()=>L([]),v:()=>A(`κ${κ.V}`),p:()=>{A('→');setTimeout(()=>A('←.4'),420)},s:()=>A(`${m.c}%`),b:()=>{A('⌛');setTimeout(()=>A('✓'),500)},
+x:()=>A('→κ'),sim:()=>{r[0]in sim&&S(p=>[...p.filter(x=>x!=r[0]),r[0]]);A(`►${r[0]}`)},
+sys:()=>r[0]in κ.X.sys&&A(`${r[0]}:${Math.random().toString(16).slice(2,6)}`),i:()=>r[0]?.startsWith('κ')&&A(`+${r[0]}`)})[a]?.()??A(`?${a}`,'e')};
+useEffect(()=>s.map(x=>sim[x]()).map(i=>()=>clearInterval(i)),[s]);
+useEffect(()=>h&&Object.keys(κ.X).filter(k=>k.startsWith(h)).map(f=>A(`→${f}`)),[h]);
+return[<Terminal key="t"/>,['c',<Code/>],['p',<PlayCircle/>],['d',<Book/>]].map(([k,i])=>
+<button key={k}onClick={()=>T(k)}style={{background:t==k?'#93e3':'#0003'}}>{i}</button>).concat(
+[<svg key="m"viewBox="0 0 99 99"><circle cx="50"cy="50"r="40"stroke="#93e"fill="none"strokeWidth="8"/></svg>,
+Object.entries(g).map(([k,d],i)=><G key={k}d={d}i={k}/>),
+<input key="i"placeholder="κ>"onChange={e=>H(e.target.value)}onKeyUp={e=>{if(e.key=='Enter'){P(e.target.value);e.target.value=''}}}/>,
+<pre key="l"style={{color:'#3f3'}}>{l.join`\n`}</pre>])};
+export default D;
