@@ -166,6 +166,13 @@ async def endpoints_docs():
 @async_route
 async def syntax_docs():
     """Render syntax documentation page."""
+@app.route('/docs/react-visualization')
+@async_route
+async def react_visualization_docs():
+    """Render React visualization documentation page."""
+    content, status = await load_markdown_file('docs/react-visualization.md', 'react-vis')
+    return render_template('markdown.html', content=content, title="React Visualization"), status
+
     content, status = await load_markdown_file('docs/basic_syntax.md', 'syntax')
     return render_template('markdown.html', content=content, title="Basic Syntax"), status
 
