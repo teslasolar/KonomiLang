@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Algorithm Visual Explanations</h1>
+    
+    <!-- Particle Simulation -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">Particle Simulation Algorithm</h2>
+        <svg class="w-full" viewBox="0 0 800 300">
+            <!-- Coordinate System -->
+            <line x1="50" y1="250" x2="750" y2="250" stroke="#333" stroke-width="2"/>
+            <line x1="50" y1="50" x2="50" y2="250" stroke="#333" stroke-width="2"/>
+            
+            <!-- Particles with Velocity Vectors -->
+            <circle cx="150" cy="150" r="8" fill="#93e"/>
+            <line x1="150" y1="150" x2="180" y2="130" stroke="#93e" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <circle cx="300" cy="200" r="8" fill="#93e"/>
+            <line x1="300" y1="200" x2="330" y2="220" stroke="#93e" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <!-- Boundary Reflection -->
+            <circle cx="700" cy="100" r="8" fill="#93e"/>
+            <path d="M 700 100 L 730 80 L 700 60" fill="none" stroke="#93e" stroke-width="2" stroke-dasharray="4"/>
+            
+            <!-- Arrow Marker -->
+            <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#93e"/>
+                </marker>
+            </defs>
+            
+            <!-- Labels -->
+            <text x="400" y="280" text-anchor="middle">Position (x)</text>
+            <text x="30" y="150" text-anchor="middle" transform="rotate(-90,30,150)">Position (y)</text>
+            <text x="150" y="100" class="text-sm">Velocity Vector</text>
+            <text x="700" y="40" class="text-sm">Boundary Reflection</text>
+        </svg>
+    </div>
+    
+    <!-- Wave Generation -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">Wave Generation Algorithm</h2>
+        <svg class="w-full" viewBox="0 0 800 300">
+            <!-- Base Wave -->
+            <path d="M 50 150 Q 200 50, 400 150 T 750 150" fill="none" stroke="#93e" stroke-width="2"/>
+            
+            <!-- Component Waves -->
+            <path d="M 50 150 Q 200 100, 400 150 T 750 150" fill="none" stroke="#93e" stroke-width="1" stroke-dasharray="4"/>
+            <path d="M 50 150 Q 200 200, 400 150 T 750 150" fill="none" stroke="#93e" stroke-width="1" stroke-dasharray="4"/>
+            
+            <!-- Labels -->
+            <text x="400" y="280" text-anchor="middle">Time</text>
+            <text x="30" y="150" text-anchor="middle" transform="rotate(-90,30,150)">Amplitude</text>
+            <text x="200" y="80" class="text-sm">Sine Component</text>
+            <text x="200" y="220" class="text-sm">Cosine Component</text>
+            <text x="600" y="80" class="text-sm">Resultant Wave</text>
+        </svg>
+    </div>
+    
+    <!-- Quantum State -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">Quantum State Visualization</h2>
+        <svg class="w-full" viewBox="0 0 800 300">
+            <!-- State Timeline -->
+            <line x1="50" y1="150" x2="750" y2="150" stroke="#333" stroke-width="2"/>
+            
+            <!-- Quantum States -->
+            <circle cx="150" cy="100" r="8" fill="#93e"/>
+            <circle cx="300" cy="200" r="8" fill="#93e"/>
+            <circle cx="450" cy="100" r="8" fill="#93e"/>
+            <circle cx="600" cy="200" r="8" fill="#93e"/>
+            
+            <!-- State Transitions -->
+            <path d="M 150 100 Q 225 150, 300 200" fill="none" stroke="#93e" stroke-width="2" marker-end="url(#arrow)"/>
+            <path d="M 300 200 Q 375 150, 450 100" fill="none" stroke="#93e" stroke-width="2" marker-end="url(#arrow)"/>
+            <path d="M 450 100 Q 525 150, 600 200" fill="none" stroke="#93e" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <!-- Labels -->
+            <text x="150" y="80" class="text-sm">State |0⟩</text>
+            <text x="300" y="240" class="text-sm">State |1⟩</text>
+            <text x="400" y="280" text-anchor="middle">Time</text>
+            <text x="30" y="150" text-anchor="middle" transform="rotate(-90,30,150)">State</text>
+        </svg>
+    </div>
+    
+    <!-- Neural Network -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">Neural Network Activity</h2>
+        <svg class="w-full" viewBox="0 0 800 300">
+            <!-- Network Grid -->
+            {% for i in range(3) %}
+                {% for j in range(3) %}
+                <rect x="{{ 250 + i * 100 }}" y="{{ 50 + j * 100 }}" width="80" height="80" 
+                      fill="none" stroke="#93e" stroke-width="2"/>
+                <circle cx="{{ 290 + i * 100 }}" cy="{{ 90 + j * 100 }}" r="30" 
+                        fill="#93e" fill-opacity="0.3"/>
+            {% endfor %}
+            {% endfor %}
+            
+            <!-- Connections -->
+            <path d="M 290 90 L 390 190" stroke="#93e" stroke-width="1" stroke-opacity="0.5"/>
+            <path d="M 390 90 L 490 190" stroke="#93e" stroke-width="1" stroke-opacity="0.5"/>
+            <path d="M 290 190 L 390 90" stroke="#93e" stroke-width="1" stroke-opacity="0.5"/>
+            
+            <!-- Labels -->
+            <text x="400" y="280" text-anchor="middle">Network Width</text>
+            <text x="200" y="150" text-anchor="middle" transform="rotate(-90,200,150)">Network Height</text>
+            <text x="650" y="150" class="text-sm">Active Neurons</text>
+        </svg>
+    </div>
+    
+    <!-- Genetic Algorithm -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">Genetic Algorithm Evolution</h2>
+        <svg class="w-full" viewBox="0 0 800 300">
+            <!-- Population Distribution -->
+            <path d="M 50 250 L 50 50 C 200 200, 600 100, 750 250" fill="#93e" fill-opacity="0.2" stroke="#93e" stroke-width="2"/>
+            
+            <!-- Generation Markers -->
+            <line x1="200" y1="250" x2="200" y2="150" stroke="#93e" stroke-width="1" stroke-dasharray="4"/>
+            <line x1="400" y1="250" x2="400" y2="120" stroke="#93e" stroke-width="1" stroke-dasharray="4"/>
+            <line x1="600" y1="250" x2="600" y2="180" stroke="#93e" stroke-width="1" stroke-dasharray="4"/>
+            
+            <!-- Labels -->
+            <text x="400" y="280" text-anchor="middle">Generation</text>
+            <text x="30" y="150" text-anchor="middle" transform="rotate(-90,30,150)">Fitness</text>
+            <text x="200" y="140" class="text-sm">Gen 1</text>
+            <text x="400" y="110" class="text-sm">Gen 2</text>
+            <text x="600" y="170" class="text-sm">Gen 3</text>
+        </svg>
+    </div>
+    
+    <!-- Chaos System -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">Chaos System Visualization</h2>
+        <svg class="w-full" viewBox="0 0 800 300">
+            <!-- Logistic Map -->
+            <path d="M 50 250 Q 200 50, 400 250 T 750 50" fill="none" stroke="#93e" stroke-width="2"/>
+            
+            <!-- Bifurcation Points -->
+            <circle cx="300" cy="150" r="4" fill="#93e"/>
+            <circle cx="500" cy="100" r="4" fill="#93e"/>
+            <circle cx="500" cy="200" r="4" fill="#93e"/>
+            
+            <!-- Labels -->
+            <text x="400" y="280" text-anchor="middle">Parameter (r)</text>
+            <text x="30" y="150" text-anchor="middle" transform="rotate(-90,30,150)">Population</text>
+            <text x="300" y="130" class="text-sm">First Bifurcation</text>
+            <text x="500" y="80" class="text-sm">Chaos Region</text>
+        </svg>
+    </div>
+</div>
+{% endblock %}

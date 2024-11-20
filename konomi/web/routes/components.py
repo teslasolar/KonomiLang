@@ -22,6 +22,7 @@ class ComponentsRouter(APIRouter):
     def setup_routes(self):
         """Initialize all component routes."""
         self.route('/examples/components', endpoint='example_components')(self.example_components)
+        self.route('/algorithm-diagrams', endpoint='algorithm_diagrams', methods=['GET'])(self.show_algorithm_diagrams)
         self.route('/api/components/preview', methods=['POST'], endpoint='preview_component')(self.preview_component)
         self.route('/generated-components', endpoint='generated_components')(self.generated_components)
     
@@ -38,6 +39,10 @@ class ComponentsRouter(APIRouter):
             return self.error_response(str(e))
     
     @measure_performance(threshold=1.0)
+    def show_algorithm_diagrams(self):
+        """Display visual diagrams explaining the algorithms."""
+        return render_template('algorithm_diagrams.html')
+
     def example_components(self):
         """Render example components page."""
         components_html = generate_components_example()
