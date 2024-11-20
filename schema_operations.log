@@ -8226,3 +8226,563 @@ Error: near "CREATE": syntax error
 2024-11-20 12:32:07,588 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G5/database.db
 2024-11-20 12:32:07,615 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G5/database.db
 2024-11-20 12:32:07,641 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G5/database.db
+2024-11-20 12:41:55,922 - __main__ - INFO - Initializing database A1...
+2024-11-20 12:41:55,927 - __main__ - INFO - Successfully initialized db_grid/A1/database.db
+2024-11-20 12:41:55,972 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A1/database.db
+2024-11-20 12:41:55,972 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A1/database.db
+2024-11-20 12:41:56,001 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A1/database.db
+2024-11-20 12:41:56,001 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A1/database.db
+2024-11-20 12:41:56,046 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A1/database.db
+2024-11-20 12:41:56,046 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A1/database.db
+2024-11-20 12:41:56,048 - __main__ - INFO - Initializing database A2...
+2024-11-20 12:41:56,049 - __main__ - INFO - Successfully initialized db_grid/A2/database.db
+2024-11-20 12:41:56,087 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A2/database.db
+2024-11-20 12:41:56,087 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A2/database.db
+2024-11-20 12:41:56,283 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A2/database.db
+2024-11-20 12:41:56,283 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A2/database.db
+2024-11-20 12:41:56,335 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A2/database.db
+2024-11-20 12:41:56,335 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A2/database.db
+2024-11-20 12:41:56,335 - __main__ - INFO - Initializing database A3...
+2024-11-20 12:41:56,335 - __main__ - INFO - Successfully initialized db_grid/A3/database.db
+2024-11-20 12:41:56,370 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A3/database.db
+2024-11-20 12:41:56,370 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A3/database.db
+2024-11-20 12:41:56,423 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A3/database.db
+2024-11-20 12:41:56,423 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A3/database.db
+2024-11-20 12:41:56,466 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A3/database.db
+2024-11-20 12:41:56,466 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A3/database.db
+2024-11-20 12:41:56,466 - __main__ - INFO - Initializing database A4...
+2024-11-20 12:41:56,466 - __main__ - INFO - Successfully initialized db_grid/A4/database.db
+2024-11-20 12:41:56,523 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A4/database.db
+2024-11-20 12:41:56,523 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A4/database.db
+2024-11-20 12:41:56,589 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A4/database.db
+2024-11-20 12:41:56,589 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A4/database.db
+2024-11-20 12:41:56,665 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A4/database.db
+2024-11-20 12:41:56,665 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A4/database.db
+2024-11-20 12:41:56,666 - __main__ - INFO - Initializing database A5...
+2024-11-20 12:41:56,667 - __main__ - INFO - Successfully initialized db_grid/A5/database.db
+2024-11-20 12:41:56,714 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A5/database.db
+2024-11-20 12:41:56,714 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A5/database.db
+2024-11-20 12:41:56,760 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A5/database.db
+2024-11-20 12:41:56,760 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A5/database.db
+2024-11-20 12:41:56,813 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A5/database.db
+2024-11-20 12:41:56,813 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A5/database.db
+2024-11-20 12:41:56,814 - __main__ - INFO - Initializing database B1...
+2024-11-20 12:41:56,815 - __main__ - INFO - Successfully initialized db_grid/B1/database.db
+2024-11-20 12:41:56,863 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B1/database.db
+2024-11-20 12:41:56,863 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B1/database.db
+2024-11-20 12:41:56,909 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B1/database.db
+2024-11-20 12:41:56,909 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B1/database.db
+2024-11-20 12:41:56,962 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B1/database.db
+2024-11-20 12:41:56,962 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B1/database.db
+2024-11-20 12:41:56,964 - __main__ - INFO - Initializing database B2...
+2024-11-20 12:41:56,964 - __main__ - INFO - Successfully initialized db_grid/B2/database.db
+2024-11-20 12:41:57,022 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B2/database.db
+2024-11-20 12:41:57,022 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B2/database.db
+2024-11-20 12:41:57,087 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B2/database.db
+2024-11-20 12:41:57,087 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B2/database.db
+2024-11-20 12:41:57,124 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B2/database.db
+2024-11-20 12:41:57,124 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B2/database.db
+2024-11-20 12:41:57,125 - __main__ - INFO - Initializing database B3...
+2024-11-20 12:41:57,126 - __main__ - INFO - Successfully initialized db_grid/B3/database.db
+2024-11-20 12:41:57,160 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B3/database.db
+2024-11-20 12:41:57,160 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B3/database.db
+2024-11-20 12:41:57,212 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B3/database.db
+2024-11-20 12:41:57,212 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B3/database.db
+2024-11-20 12:41:57,261 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B3/database.db
+2024-11-20 12:41:57,261 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B3/database.db
+2024-11-20 12:41:57,262 - __main__ - INFO - Initializing database B4...
+2024-11-20 12:41:57,264 - __main__ - INFO - Successfully initialized db_grid/B4/database.db
+2024-11-20 12:41:57,306 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B4/database.db
+2024-11-20 12:41:57,306 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B4/database.db
+2024-11-20 12:41:57,339 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B4/database.db
+2024-11-20 12:41:57,339 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B4/database.db
+2024-11-20 12:41:57,412 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B4/database.db
+2024-11-20 12:41:57,412 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B4/database.db
+2024-11-20 12:41:57,418 - __main__ - INFO - Initializing database B5...
+2024-11-20 12:41:57,418 - __main__ - INFO - Successfully initialized db_grid/B5/database.db
+2024-11-20 12:41:57,469 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B5/database.db
+2024-11-20 12:41:57,469 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B5/database.db
+2024-11-20 12:41:57,538 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B5/database.db
+2024-11-20 12:41:57,538 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B5/database.db
+2024-11-20 12:41:57,576 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B5/database.db
+2024-11-20 12:41:57,576 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B5/database.db
+2024-11-20 12:41:57,577 - __main__ - INFO - Initializing database C1...
+2024-11-20 12:41:57,578 - __main__ - INFO - Successfully initialized db_grid/C1/database.db
+2024-11-20 12:41:57,632 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C1/database.db
+2024-11-20 12:41:57,632 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C1/database.db
+2024-11-20 12:41:57,675 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C1/database.db
+2024-11-20 12:41:57,675 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C1/database.db
+2024-11-20 12:41:57,710 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C1/database.db
+2024-11-20 12:41:57,710 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C1/database.db
+2024-11-20 12:41:57,710 - __main__ - INFO - Initializing database C2...
+2024-11-20 12:41:57,711 - __main__ - INFO - Successfully initialized db_grid/C2/database.db
+2024-11-20 12:41:57,754 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C2/database.db
+2024-11-20 12:41:57,754 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C2/database.db
+2024-11-20 12:41:57,780 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C2/database.db
+2024-11-20 12:41:57,780 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C2/database.db
+2024-11-20 12:41:57,806 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C2/database.db
+2024-11-20 12:41:57,806 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C2/database.db
+2024-11-20 12:41:57,806 - __main__ - INFO - Initializing database C3...
+2024-11-20 12:41:57,807 - __main__ - INFO - Successfully initialized db_grid/C3/database.db
+2024-11-20 12:41:57,839 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C3/database.db
+2024-11-20 12:41:57,839 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C3/database.db
+2024-11-20 12:41:57,881 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C3/database.db
+2024-11-20 12:41:57,881 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C3/database.db
+2024-11-20 12:41:57,927 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C3/database.db
+2024-11-20 12:41:57,927 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C3/database.db
+2024-11-20 12:41:57,927 - __main__ - INFO - Initializing database C4...
+2024-11-20 12:41:57,928 - __main__ - INFO - Successfully initialized db_grid/C4/database.db
+2024-11-20 12:41:57,958 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C4/database.db
+2024-11-20 12:41:57,958 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C4/database.db
+2024-11-20 12:41:58,008 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C4/database.db
+2024-11-20 12:41:58,008 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C4/database.db
+2024-11-20 12:41:58,039 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C4/database.db
+2024-11-20 12:41:58,039 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C4/database.db
+2024-11-20 12:41:58,040 - __main__ - INFO - Initializing database C5...
+2024-11-20 12:41:58,040 - __main__ - INFO - Successfully initialized db_grid/C5/database.db
+2024-11-20 12:41:58,074 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C5/database.db
+2024-11-20 12:41:58,074 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C5/database.db
+2024-11-20 12:41:58,108 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C5/database.db
+2024-11-20 12:41:58,108 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C5/database.db
+2024-11-20 12:41:58,282 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C5/database.db
+2024-11-20 12:41:58,282 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C5/database.db
+2024-11-20 12:41:58,282 - __main__ - INFO - Initializing database D1...
+2024-11-20 12:41:58,283 - __main__ - INFO - Successfully initialized db_grid/D1/database.db
+2024-11-20 12:41:58,308 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D1/database.db
+2024-11-20 12:41:58,308 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D1/database.db
+2024-11-20 12:41:58,339 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D1/database.db
+2024-11-20 12:41:58,339 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D1/database.db
+2024-11-20 12:41:58,373 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D1/database.db
+2024-11-20 12:41:58,373 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D1/database.db
+2024-11-20 12:41:58,374 - __main__ - INFO - Initializing database D2...
+2024-11-20 12:41:58,374 - __main__ - INFO - Successfully initialized db_grid/D2/database.db
+2024-11-20 12:41:58,405 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D2/database.db
+2024-11-20 12:41:58,405 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D2/database.db
+2024-11-20 12:41:58,440 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D2/database.db
+2024-11-20 12:41:58,440 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D2/database.db
+2024-11-20 12:41:58,465 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D2/database.db
+2024-11-20 12:41:58,465 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D2/database.db
+2024-11-20 12:41:58,466 - __main__ - INFO - Initializing database D3...
+2024-11-20 12:41:58,466 - __main__ - INFO - Successfully initialized db_grid/D3/database.db
+2024-11-20 12:41:58,489 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D3/database.db
+2024-11-20 12:41:58,489 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D3/database.db
+2024-11-20 12:41:58,526 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D3/database.db
+2024-11-20 12:41:58,526 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D3/database.db
+2024-11-20 12:41:58,557 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D3/database.db
+2024-11-20 12:41:58,557 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D3/database.db
+2024-11-20 12:41:58,557 - __main__ - INFO - Initializing database D4...
+2024-11-20 12:41:58,558 - __main__ - INFO - Successfully initialized db_grid/D4/database.db
+2024-11-20 12:41:58,593 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D4/database.db
+2024-11-20 12:41:58,593 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D4/database.db
+2024-11-20 12:41:58,629 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D4/database.db
+2024-11-20 12:41:58,629 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D4/database.db
+2024-11-20 12:41:58,655 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D4/database.db
+2024-11-20 12:41:58,655 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D4/database.db
+2024-11-20 12:41:58,655 - __main__ - INFO - Initializing database D5...
+2024-11-20 12:41:58,656 - __main__ - INFO - Successfully initialized db_grid/D5/database.db
+2024-11-20 12:41:58,697 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D5/database.db
+2024-11-20 12:41:58,697 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D5/database.db
+2024-11-20 12:41:58,725 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D5/database.db
+2024-11-20 12:41:58,725 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D5/database.db
+2024-11-20 12:41:58,754 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D5/database.db
+2024-11-20 12:41:58,754 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D5/database.db
+2024-11-20 12:41:58,754 - __main__ - INFO - Initializing database E1...
+2024-11-20 12:41:58,755 - __main__ - INFO - Successfully initialized db_grid/E1/database.db
+2024-11-20 12:41:58,779 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E1/database.db
+2024-11-20 12:41:58,779 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E1/database.db
+2024-11-20 12:41:58,802 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E1/database.db
+2024-11-20 12:41:58,802 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E1/database.db
+2024-11-20 12:41:58,827 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E1/database.db
+2024-11-20 12:41:58,827 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E1/database.db
+2024-11-20 12:41:58,828 - __main__ - INFO - Initializing database E2...
+2024-11-20 12:41:58,828 - __main__ - INFO - Successfully initialized db_grid/E2/database.db
+2024-11-20 12:41:58,862 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E2/database.db
+2024-11-20 12:41:58,862 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E2/database.db
+2024-11-20 12:41:58,894 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E2/database.db
+2024-11-20 12:41:58,894 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E2/database.db
+2024-11-20 12:41:58,929 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E2/database.db
+2024-11-20 12:41:58,929 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E2/database.db
+2024-11-20 12:41:58,929 - __main__ - INFO - Initializing database E3...
+2024-11-20 12:41:58,930 - __main__ - INFO - Successfully initialized db_grid/E3/database.db
+2024-11-20 12:41:58,962 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E3/database.db
+2024-11-20 12:41:58,962 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E3/database.db
+2024-11-20 12:41:58,990 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E3/database.db
+2024-11-20 12:41:58,990 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E3/database.db
+2024-11-20 12:41:59,015 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E3/database.db
+2024-11-20 12:41:59,015 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E3/database.db
+2024-11-20 12:41:59,015 - __main__ - INFO - Initializing database E4...
+2024-11-20 12:41:59,015 - __main__ - INFO - Successfully initialized db_grid/E4/database.db
+2024-11-20 12:41:59,050 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E4/database.db
+2024-11-20 12:41:59,050 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E4/database.db
+2024-11-20 12:41:59,076 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E4/database.db
+2024-11-20 12:41:59,076 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E4/database.db
+2024-11-20 12:41:59,102 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E4/database.db
+2024-11-20 12:41:59,102 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E4/database.db
+2024-11-20 12:41:59,102 - __main__ - INFO - Initializing database E5...
+2024-11-20 12:41:59,103 - __main__ - INFO - Successfully initialized db_grid/E5/database.db
+2024-11-20 12:41:59,131 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E5/database.db
+2024-11-20 12:41:59,131 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E5/database.db
+2024-11-20 12:41:59,168 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E5/database.db
+2024-11-20 12:41:59,168 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E5/database.db
+2024-11-20 12:41:59,193 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E5/database.db
+2024-11-20 12:41:59,193 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E5/database.db
+2024-11-20 12:41:59,193 - __main__ - INFO - Initializing database F1...
+2024-11-20 12:41:59,194 - __main__ - INFO - Successfully initialized db_grid/F1/database.db
+2024-11-20 12:41:59,218 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F1/database.db
+2024-11-20 12:41:59,218 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F1/database.db
+2024-11-20 12:41:59,260 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F1/database.db
+2024-11-20 12:41:59,260 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F1/database.db
+2024-11-20 12:41:59,283 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F1/database.db
+2024-11-20 12:41:59,283 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F1/database.db
+2024-11-20 12:41:59,284 - __main__ - INFO - Initializing database F2...
+2024-11-20 12:41:59,284 - __main__ - INFO - Successfully initialized db_grid/F2/database.db
+2024-11-20 12:41:59,317 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F2/database.db
+2024-11-20 12:41:59,317 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F2/database.db
+2024-11-20 12:41:59,347 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F2/database.db
+2024-11-20 12:41:59,347 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F2/database.db
+2024-11-20 12:41:59,371 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F2/database.db
+2024-11-20 12:41:59,371 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F2/database.db
+2024-11-20 12:41:59,371 - __main__ - INFO - Initializing database F3...
+2024-11-20 12:41:59,371 - __main__ - INFO - Successfully initialized db_grid/F3/database.db
+2024-11-20 12:41:59,397 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F3/database.db
+2024-11-20 12:41:59,397 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F3/database.db
+2024-11-20 12:41:59,428 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F3/database.db
+2024-11-20 12:41:59,428 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F3/database.db
+2024-11-20 12:41:59,453 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F3/database.db
+2024-11-20 12:41:59,453 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F3/database.db
+2024-11-20 12:41:59,454 - __main__ - INFO - Initializing database F4...
+2024-11-20 12:41:59,454 - __main__ - INFO - Successfully initialized db_grid/F4/database.db
+2024-11-20 12:41:59,479 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F4/database.db
+2024-11-20 12:41:59,479 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F4/database.db
+2024-11-20 12:41:59,504 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F4/database.db
+2024-11-20 12:41:59,504 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F4/database.db
+2024-11-20 12:41:59,528 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F4/database.db
+2024-11-20 12:41:59,528 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F4/database.db
+2024-11-20 12:41:59,529 - __main__ - INFO - Initializing database F5...
+2024-11-20 12:41:59,529 - __main__ - INFO - Successfully initialized db_grid/F5/database.db
+2024-11-20 12:41:59,561 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F5/database.db
+2024-11-20 12:41:59,561 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F5/database.db
+2024-11-20 12:41:59,592 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F5/database.db
+2024-11-20 12:41:59,592 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F5/database.db
+2024-11-20 12:41:59,616 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F5/database.db
+2024-11-20 12:41:59,616 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F5/database.db
+2024-11-20 12:41:59,617 - __main__ - INFO - Initializing database G1...
+2024-11-20 12:41:59,617 - __main__ - INFO - Successfully initialized db_grid/G1/database.db
+2024-11-20 12:41:59,644 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G1/database.db
+2024-11-20 12:41:59,644 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G1/database.db
+2024-11-20 12:41:59,681 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G1/database.db
+2024-11-20 12:41:59,681 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G1/database.db
+2024-11-20 12:41:59,705 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G1/database.db
+2024-11-20 12:41:59,705 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G1/database.db
+2024-11-20 12:41:59,706 - __main__ - INFO - Initializing database G2...
+2024-11-20 12:41:59,706 - __main__ - INFO - Successfully initialized db_grid/G2/database.db
+2024-11-20 12:41:59,731 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G2/database.db
+2024-11-20 12:41:59,731 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G2/database.db
+2024-11-20 12:41:59,766 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G2/database.db
+2024-11-20 12:41:59,766 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G2/database.db
+2024-11-20 12:41:59,789 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G2/database.db
+2024-11-20 12:41:59,789 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G2/database.db
+2024-11-20 12:41:59,790 - __main__ - INFO - Initializing database G3...
+2024-11-20 12:41:59,790 - __main__ - INFO - Successfully initialized db_grid/G3/database.db
+2024-11-20 12:41:59,822 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G3/database.db
+2024-11-20 12:41:59,822 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G3/database.db
+2024-11-20 12:42:00,015 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G3/database.db
+2024-11-20 12:42:00,015 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G3/database.db
+2024-11-20 12:42:00,038 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G3/database.db
+2024-11-20 12:42:00,038 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G3/database.db
+2024-11-20 12:42:00,039 - __main__ - INFO - Initializing database G4...
+2024-11-20 12:42:00,039 - __main__ - INFO - Successfully initialized db_grid/G4/database.db
+2024-11-20 12:42:00,072 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G4/database.db
+2024-11-20 12:42:00,072 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G4/database.db
+2024-11-20 12:42:00,103 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G4/database.db
+2024-11-20 12:42:00,103 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G4/database.db
+2024-11-20 12:42:00,127 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G4/database.db
+2024-11-20 12:42:00,127 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G4/database.db
+2024-11-20 12:42:00,127 - __main__ - INFO - Initializing database G5...
+2024-11-20 12:42:00,127 - __main__ - INFO - Successfully initialized db_grid/G5/database.db
+2024-11-20 12:42:00,154 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G5/database.db
+2024-11-20 12:42:00,154 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G5/database.db
+2024-11-20 12:42:00,190 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G5/database.db
+2024-11-20 12:42:00,190 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G5/database.db
+2024-11-20 12:42:00,215 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G5/database.db
+2024-11-20 12:42:00,215 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G5/database.db
+2024-11-20 12:42:39,245 - __main__ - INFO - Initializing database A1...
+2024-11-20 12:42:39,246 - __main__ - INFO - Successfully initialized db_grid/A1/database.db
+2024-11-20 12:42:39,315 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A1/database.db
+2024-11-20 12:42:39,315 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A1/database.db
+2024-11-20 12:42:39,383 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A1/database.db
+2024-11-20 12:42:39,383 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A1/database.db
+2024-11-20 12:42:39,442 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A1/database.db
+2024-11-20 12:42:39,442 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A1/database.db
+2024-11-20 12:42:39,443 - __main__ - INFO - Initializing database A2...
+2024-11-20 12:42:39,443 - __main__ - INFO - Successfully initialized db_grid/A2/database.db
+2024-11-20 12:42:39,545 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A2/database.db
+2024-11-20 12:42:39,545 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A2/database.db
+2024-11-20 12:42:39,609 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A2/database.db
+2024-11-20 12:42:39,609 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A2/database.db
+2024-11-20 12:42:39,653 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A2/database.db
+2024-11-20 12:42:39,653 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A2/database.db
+2024-11-20 12:42:39,653 - __main__ - INFO - Initializing database A3...
+2024-11-20 12:42:39,657 - __main__ - INFO - Successfully initialized db_grid/A3/database.db
+2024-11-20 12:42:39,696 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A3/database.db
+2024-11-20 12:42:39,696 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A3/database.db
+2024-11-20 12:42:39,760 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A3/database.db
+2024-11-20 12:42:39,760 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A3/database.db
+2024-11-20 12:42:39,856 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A3/database.db
+2024-11-20 12:42:39,856 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A3/database.db
+2024-11-20 12:42:39,856 - __main__ - INFO - Initializing database A4...
+2024-11-20 12:42:39,857 - __main__ - INFO - Successfully initialized db_grid/A4/database.db
+2024-11-20 12:42:39,931 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A4/database.db
+2024-11-20 12:42:39,931 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A4/database.db
+2024-11-20 12:42:39,989 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A4/database.db
+2024-11-20 12:42:39,989 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A4/database.db
+2024-11-20 12:42:40,084 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A4/database.db
+2024-11-20 12:42:40,084 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A4/database.db
+2024-11-20 12:42:40,085 - __main__ - INFO - Initializing database A5...
+2024-11-20 12:42:40,090 - __main__ - INFO - Successfully initialized db_grid/A5/database.db
+2024-11-20 12:42:40,146 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A5/database.db
+2024-11-20 12:42:40,146 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/A5/database.db
+2024-11-20 12:42:40,193 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A5/database.db
+2024-11-20 12:42:40,193 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/A5/database.db
+2024-11-20 12:42:40,239 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A5/database.db
+2024-11-20 12:42:40,239 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/A5/database.db
+2024-11-20 12:42:40,240 - __main__ - INFO - Initializing database B1...
+2024-11-20 12:42:40,241 - __main__ - INFO - Successfully initialized db_grid/B1/database.db
+2024-11-20 12:42:40,325 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B1/database.db
+2024-11-20 12:42:40,325 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B1/database.db
+2024-11-20 12:42:40,386 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B1/database.db
+2024-11-20 12:42:40,386 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B1/database.db
+2024-11-20 12:42:40,434 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B1/database.db
+2024-11-20 12:42:40,434 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B1/database.db
+2024-11-20 12:42:40,434 - __main__ - INFO - Initializing database B2...
+2024-11-20 12:42:40,435 - __main__ - INFO - Successfully initialized db_grid/B2/database.db
+2024-11-20 12:42:40,497 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B2/database.db
+2024-11-20 12:42:40,497 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B2/database.db
+2024-11-20 12:42:40,552 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B2/database.db
+2024-11-20 12:42:40,552 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B2/database.db
+2024-11-20 12:42:40,642 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B2/database.db
+2024-11-20 12:42:40,642 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B2/database.db
+2024-11-20 12:42:40,644 - __main__ - INFO - Initializing database B3...
+2024-11-20 12:42:40,645 - __main__ - INFO - Successfully initialized db_grid/B3/database.db
+2024-11-20 12:42:40,697 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B3/database.db
+2024-11-20 12:42:40,697 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B3/database.db
+2024-11-20 12:42:40,744 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B3/database.db
+2024-11-20 12:42:40,744 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B3/database.db
+2024-11-20 12:42:40,812 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B3/database.db
+2024-11-20 12:42:40,812 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B3/database.db
+2024-11-20 12:42:40,813 - __main__ - INFO - Initializing database B4...
+2024-11-20 12:42:40,813 - __main__ - INFO - Successfully initialized db_grid/B4/database.db
+2024-11-20 12:42:41,057 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B4/database.db
+2024-11-20 12:42:41,057 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B4/database.db
+2024-11-20 12:42:41,151 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B4/database.db
+2024-11-20 12:42:41,151 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B4/database.db
+2024-11-20 12:42:41,217 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B4/database.db
+2024-11-20 12:42:41,217 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B4/database.db
+2024-11-20 12:42:41,217 - __main__ - INFO - Initializing database B5...
+2024-11-20 12:42:41,218 - __main__ - INFO - Successfully initialized db_grid/B5/database.db
+2024-11-20 12:42:41,258 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B5/database.db
+2024-11-20 12:42:41,258 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/B5/database.db
+2024-11-20 12:42:41,352 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B5/database.db
+2024-11-20 12:42:41,352 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/B5/database.db
+2024-11-20 12:42:41,619 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B5/database.db
+2024-11-20 12:42:41,619 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/B5/database.db
+2024-11-20 12:42:41,624 - __main__ - INFO - Initializing database C1...
+2024-11-20 12:42:41,628 - __main__ - INFO - Successfully initialized db_grid/C1/database.db
+2024-11-20 12:42:41,849 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C1/database.db
+2024-11-20 12:42:41,849 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C1/database.db
+2024-11-20 12:42:42,001 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C1/database.db
+2024-11-20 12:42:42,001 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C1/database.db
+2024-11-20 12:42:42,045 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C1/database.db
+2024-11-20 12:42:42,045 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C1/database.db
+2024-11-20 12:42:42,045 - __main__ - INFO - Initializing database C2...
+2024-11-20 12:42:42,045 - __main__ - INFO - Successfully initialized db_grid/C2/database.db
+2024-11-20 12:42:42,110 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C2/database.db
+2024-11-20 12:42:42,110 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C2/database.db
+2024-11-20 12:42:42,161 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C2/database.db
+2024-11-20 12:42:42,161 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C2/database.db
+2024-11-20 12:42:42,221 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C2/database.db
+2024-11-20 12:42:42,221 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C2/database.db
+2024-11-20 12:42:42,221 - __main__ - INFO - Initializing database C3...
+2024-11-20 12:42:42,222 - __main__ - INFO - Successfully initialized db_grid/C3/database.db
+2024-11-20 12:42:42,268 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C3/database.db
+2024-11-20 12:42:42,268 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C3/database.db
+2024-11-20 12:42:42,312 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C3/database.db
+2024-11-20 12:42:42,312 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C3/database.db
+2024-11-20 12:42:42,348 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C3/database.db
+2024-11-20 12:42:42,348 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C3/database.db
+2024-11-20 12:42:42,348 - __main__ - INFO - Initializing database C4...
+2024-11-20 12:42:42,349 - __main__ - INFO - Successfully initialized db_grid/C4/database.db
+2024-11-20 12:42:42,399 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C4/database.db
+2024-11-20 12:42:42,399 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C4/database.db
+2024-11-20 12:42:42,466 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C4/database.db
+2024-11-20 12:42:42,466 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C4/database.db
+2024-11-20 12:42:42,499 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C4/database.db
+2024-11-20 12:42:42,499 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C4/database.db
+2024-11-20 12:42:42,499 - __main__ - INFO - Initializing database C5...
+2024-11-20 12:42:42,500 - __main__ - INFO - Successfully initialized db_grid/C5/database.db
+2024-11-20 12:42:42,538 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C5/database.db
+2024-11-20 12:42:42,538 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/C5/database.db
+2024-11-20 12:42:42,572 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C5/database.db
+2024-11-20 12:42:42,572 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/C5/database.db
+2024-11-20 12:42:42,611 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C5/database.db
+2024-11-20 12:42:42,611 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/C5/database.db
+2024-11-20 12:42:42,615 - __main__ - INFO - Initializing database D1...
+2024-11-20 12:42:42,617 - __main__ - INFO - Successfully initialized db_grid/D1/database.db
+2024-11-20 12:42:42,649 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D1/database.db
+2024-11-20 12:42:42,649 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D1/database.db
+2024-11-20 12:42:42,691 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D1/database.db
+2024-11-20 12:42:42,691 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D1/database.db
+2024-11-20 12:42:43,649 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D1/database.db
+2024-11-20 12:42:43,649 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D1/database.db
+2024-11-20 12:42:43,649 - __main__ - INFO - Initializing database D2...
+2024-11-20 12:42:43,651 - __main__ - INFO - Successfully initialized db_grid/D2/database.db
+2024-11-20 12:42:43,709 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D2/database.db
+2024-11-20 12:42:43,709 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D2/database.db
+2024-11-20 12:42:43,764 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D2/database.db
+2024-11-20 12:42:43,764 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D2/database.db
+2024-11-20 12:42:43,809 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D2/database.db
+2024-11-20 12:42:43,809 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D2/database.db
+2024-11-20 12:42:43,814 - __main__ - INFO - Initializing database D3...
+2024-11-20 12:42:43,816 - __main__ - INFO - Successfully initialized db_grid/D3/database.db
+2024-11-20 12:42:43,888 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D3/database.db
+2024-11-20 12:42:43,888 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D3/database.db
+2024-11-20 12:42:43,965 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D3/database.db
+2024-11-20 12:42:43,965 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D3/database.db
+2024-11-20 12:42:44,006 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D3/database.db
+2024-11-20 12:42:44,006 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D3/database.db
+2024-11-20 12:42:44,007 - __main__ - INFO - Initializing database D4...
+2024-11-20 12:42:44,008 - __main__ - INFO - Successfully initialized db_grid/D4/database.db
+2024-11-20 12:42:44,088 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D4/database.db
+2024-11-20 12:42:44,088 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D4/database.db
+2024-11-20 12:42:44,156 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D4/database.db
+2024-11-20 12:42:44,156 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D4/database.db
+2024-11-20 12:42:44,232 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D4/database.db
+2024-11-20 12:42:44,232 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D4/database.db
+2024-11-20 12:42:44,244 - __main__ - INFO - Initializing database D5...
+2024-11-20 12:42:44,250 - __main__ - INFO - Successfully initialized db_grid/D5/database.db
+2024-11-20 12:42:44,322 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D5/database.db
+2024-11-20 12:42:44,322 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/D5/database.db
+2024-11-20 12:42:44,367 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D5/database.db
+2024-11-20 12:42:44,367 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/D5/database.db
+2024-11-20 12:42:44,415 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D5/database.db
+2024-11-20 12:42:44,415 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/D5/database.db
+2024-11-20 12:42:44,417 - __main__ - INFO - Initializing database E1...
+2024-11-20 12:42:44,558 - __main__ - INFO - Successfully initialized db_grid/E1/database.db
+2024-11-20 12:42:44,594 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E1/database.db
+2024-11-20 12:42:44,594 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E1/database.db
+2024-11-20 12:42:44,627 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E1/database.db
+2024-11-20 12:42:44,627 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E1/database.db
+2024-11-20 12:42:44,659 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E1/database.db
+2024-11-20 12:42:44,659 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E1/database.db
+2024-11-20 12:42:44,661 - __main__ - INFO - Initializing database E2...
+2024-11-20 12:42:44,661 - __main__ - INFO - Successfully initialized db_grid/E2/database.db
+2024-11-20 12:42:44,704 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E2/database.db
+2024-11-20 12:42:44,704 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E2/database.db
+2024-11-20 12:42:44,731 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E2/database.db
+2024-11-20 12:42:44,731 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E2/database.db
+2024-11-20 12:42:44,775 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E2/database.db
+2024-11-20 12:42:44,775 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E2/database.db
+2024-11-20 12:42:44,776 - __main__ - INFO - Initializing database E3...
+2024-11-20 12:42:44,777 - __main__ - INFO - Successfully initialized db_grid/E3/database.db
+2024-11-20 12:42:44,809 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E3/database.db
+2024-11-20 12:42:44,809 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E3/database.db
+2024-11-20 12:42:44,839 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E3/database.db
+2024-11-20 12:42:44,839 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E3/database.db
+2024-11-20 12:42:44,868 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E3/database.db
+2024-11-20 12:42:44,868 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E3/database.db
+2024-11-20 12:42:44,869 - __main__ - INFO - Initializing database E4...
+2024-11-20 12:42:44,872 - __main__ - INFO - Successfully initialized db_grid/E4/database.db
+2024-11-20 12:42:44,916 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E4/database.db
+2024-11-20 12:42:44,916 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E4/database.db
+2024-11-20 12:42:45,038 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E4/database.db
+2024-11-20 12:42:45,038 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E4/database.db
+2024-11-20 12:42:45,082 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E4/database.db
+2024-11-20 12:42:45,082 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E4/database.db
+2024-11-20 12:42:45,084 - __main__ - INFO - Initializing database E5...
+2024-11-20 12:42:45,085 - __main__ - INFO - Successfully initialized db_grid/E5/database.db
+2024-11-20 12:42:45,138 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E5/database.db
+2024-11-20 12:42:45,138 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/E5/database.db
+2024-11-20 12:42:45,172 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E5/database.db
+2024-11-20 12:42:45,172 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/E5/database.db
+2024-11-20 12:42:45,210 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E5/database.db
+2024-11-20 12:42:45,210 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/E5/database.db
+2024-11-20 12:42:45,212 - __main__ - INFO - Initializing database F1...
+2024-11-20 12:42:45,213 - __main__ - INFO - Successfully initialized db_grid/F1/database.db
+2024-11-20 12:42:45,249 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F1/database.db
+2024-11-20 12:42:45,249 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F1/database.db
+2024-11-20 12:42:45,519 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F1/database.db
+2024-11-20 12:42:45,519 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F1/database.db
+2024-11-20 12:42:45,563 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F1/database.db
+2024-11-20 12:42:45,563 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F1/database.db
+2024-11-20 12:42:45,563 - __main__ - INFO - Initializing database F2...
+2024-11-20 12:42:45,564 - __main__ - INFO - Successfully initialized db_grid/F2/database.db
+2024-11-20 12:42:45,595 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F2/database.db
+2024-11-20 12:42:45,595 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F2/database.db
+2024-11-20 12:42:45,625 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F2/database.db
+2024-11-20 12:42:45,625 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F2/database.db
+2024-11-20 12:42:45,653 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F2/database.db
+2024-11-20 12:42:45,653 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F2/database.db
+2024-11-20 12:42:45,655 - __main__ - INFO - Initializing database F3...
+2024-11-20 12:42:45,656 - __main__ - INFO - Successfully initialized db_grid/F3/database.db
+2024-11-20 12:42:45,691 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F3/database.db
+2024-11-20 12:42:45,691 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F3/database.db
+2024-11-20 12:42:45,719 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F3/database.db
+2024-11-20 12:42:45,719 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F3/database.db
+2024-11-20 12:42:45,748 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F3/database.db
+2024-11-20 12:42:45,748 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F3/database.db
+2024-11-20 12:42:45,749 - __main__ - INFO - Initializing database F4...
+2024-11-20 12:42:45,749 - __main__ - INFO - Successfully initialized db_grid/F4/database.db
+2024-11-20 12:42:45,800 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F4/database.db
+2024-11-20 12:42:45,800 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F4/database.db
+2024-11-20 12:42:45,838 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F4/database.db
+2024-11-20 12:42:45,838 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F4/database.db
+2024-11-20 12:42:45,867 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F4/database.db
+2024-11-20 12:42:45,867 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F4/database.db
+2024-11-20 12:42:45,868 - __main__ - INFO - Initializing database F5...
+2024-11-20 12:42:45,868 - __main__ - INFO - Successfully initialized db_grid/F5/database.db
+2024-11-20 12:42:45,897 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F5/database.db
+2024-11-20 12:42:45,897 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/F5/database.db
+2024-11-20 12:42:45,927 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F5/database.db
+2024-11-20 12:42:45,927 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/F5/database.db
+2024-11-20 12:42:45,955 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F5/database.db
+2024-11-20 12:42:45,955 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/F5/database.db
+2024-11-20 12:42:45,956 - __main__ - INFO - Initializing database G1...
+2024-11-20 12:42:45,956 - __main__ - INFO - Successfully initialized db_grid/G1/database.db
+2024-11-20 12:42:45,981 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G1/database.db
+2024-11-20 12:42:45,981 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G1/database.db
+2024-11-20 12:42:46,019 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G1/database.db
+2024-11-20 12:42:46,019 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G1/database.db
+2024-11-20 12:42:46,046 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G1/database.db
+2024-11-20 12:42:46,046 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G1/database.db
+2024-11-20 12:42:46,048 - __main__ - INFO - Initializing database G2...
+2024-11-20 12:42:46,049 - __main__ - INFO - Successfully initialized db_grid/G2/database.db
+2024-11-20 12:42:46,107 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G2/database.db
+2024-11-20 12:42:46,107 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G2/database.db
+2024-11-20 12:42:46,137 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G2/database.db
+2024-11-20 12:42:46,137 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G2/database.db
+2024-11-20 12:42:46,163 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G2/database.db
+2024-11-20 12:42:46,163 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G2/database.db
+2024-11-20 12:42:46,163 - __main__ - INFO - Initializing database G3...
+2024-11-20 12:42:46,164 - __main__ - INFO - Successfully initialized db_grid/G3/database.db
+2024-11-20 12:42:46,194 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G3/database.db
+2024-11-20 12:42:46,194 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G3/database.db
+2024-11-20 12:42:46,227 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G3/database.db
+2024-11-20 12:42:46,227 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G3/database.db
+2024-11-20 12:42:46,296 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G3/database.db
+2024-11-20 12:42:46,296 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G3/database.db
+2024-11-20 12:42:46,296 - __main__ - INFO - Initializing database G4...
+2024-11-20 12:42:46,297 - __main__ - INFO - Successfully initialized db_grid/G4/database.db
+2024-11-20 12:42:46,330 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G4/database.db
+2024-11-20 12:42:46,330 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G4/database.db
+2024-11-20 12:42:46,358 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G4/database.db
+2024-11-20 12:42:46,358 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G4/database.db
+2024-11-20 12:42:46,386 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G4/database.db
+2024-11-20 12:42:46,386 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G4/database.db
+2024-11-20 12:42:46,386 - __main__ - INFO - Initializing database G5...
+2024-11-20 12:42:46,387 - __main__ - INFO - Successfully initialized db_grid/G5/database.db
+2024-11-20 12:42:46,419 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G5/database.db
+2024-11-20 12:42:46,419 - konomi.utils.schema_manager - INFO - Cleaned migrations from db_grid/G5/database.db
+2024-11-20 12:42:46,446 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G5/database.db
+2024-11-20 12:42:46,446 - konomi.utils.schema_manager - INFO - Registered migration version 1 for db_grid/G5/database.db
+2024-11-20 12:42:46,472 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G5/database.db
+2024-11-20 12:42:46,472 - konomi.utils.schema_manager - INFO - Applied migration version 1 to db_grid/G5/database.db

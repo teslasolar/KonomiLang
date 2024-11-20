@@ -7,6 +7,7 @@ from flask import Blueprint, jsonify, request, render_template
 from konomi.generators.examples import generate_components_example
 from konomi.web.routes.base import APIRouter
 from konomi.utils.performance import measure_performance
+from konomi.generators.html.components_generator import HTMLComponentsGenerator
 
 bp = Blueprint('components', __name__)
 
@@ -15,12 +16,26 @@ class ComponentsRouter(APIRouter):
     
     def __init__(self, blueprint: Blueprint):
         super().__init__(blueprint)
+        self.components_generator = HTMLComponentsGenerator()
         self.setup_routes()
     
     def setup_routes(self):
         """Initialize all component routes."""
         self.route('/examples/components', endpoint='example_components')(self.example_components)
         self.route('/api/components/preview', methods=['POST'], endpoint='preview_component')(self.preview_component)
+        self.route('/generated-components', endpoint='generated_components')(self.generated_components)
+    
+    @measure_performance(threshold=2.0)
+    def generated_components(self):
+        """Generate and display AI-powered components."""
+        try:
+            components = self.components_generator.generate_complete_page()
+            return render_template(
+                'generated_components.html',
+                components=components
+            )
+        except Exception as e:
+            return self.error_response(str(e))
     
     @measure_performance(threshold=1.0)
     def example_components(self):

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="generated-components">
+    <!-- Hero Section -->
+    <section class="hero">
+        {{ components.hero | safe }}
+    </section>
+
+    <!-- Feature Cards -->
+    <section class="features">
+        {{ components.features | safe }}
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        {{ components.testimonials | safe }}
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact">
+        {{ components.contact | safe }}
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        {{ components.footer | safe }}
+    </footer>
+</div>
+{% endblock %}
