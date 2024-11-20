@@ -35,10 +35,14 @@ class MonitoringService:
                 self.last_results = self.monitor.monitor_databases()
                 total_dbs = len(self.last_results)
                 healthy_dbs = sum(1 for metrics in self.last_results.values() 
-                                if metrics["connection_status"] and metrics["integrity_check"])
+                                if metrics.connection_status and metrics.integrity_check)
                 
                 print(f"\nMonitoring Update ({time.strftime('%Y-%m-%d %H:%M:%S')})")
                 print(f"Healthy databases: {healthy_dbs}/{total_dbs}")
+                
+                # Print detailed results using the format_monitoring_results function
+                from db_monitor import format_monitoring_results
+                print(format_monitoring_results(self.last_results))
                 
                 # Sleep for the specified interval
                 time.sleep(self.interval)

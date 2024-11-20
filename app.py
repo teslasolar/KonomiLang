@@ -57,8 +57,7 @@ interpreter = Interpreter()
 program_library = ProgramLibrary(interpreter)
 doc_generator = DocumentationGenerator()
 
-# Setup modular routes
-setup_core_routes(app, interpreter)
+# Setup chain routes
 setup_chain_routes(app, program_library)
 
 # Ensure docs directory exists
@@ -198,89 +197,16 @@ def example_svg_path():
 def example_svg_pulse():
     """Render example SVG pulse animation."""
     return generate_pulse_animation(), 200, {'Content-Type': 'image/svg+xml'}
-@app.route('/examples/components')
-def example_components():
-# Components example route
-@app.route('/examples/components')
-def examples_components():
-    """Render example components page."""
-    from konomi.generators.examples import generate_components_example
-    components_html = generate_components_example()
-    return render_template('components_example.html', components=components_html)
+# Register modular routes
+from konomi.web.routes.components import bp as components_bp
+from konomi.web.routes.charts import bp as charts_bp
 
-    """Render example components page."""
-    from konomi.generators.examples import generate_components_example
-    components_html = generate_components_example()
-    return render_template('components_example.html', components=components_html)
+app.register_blueprint(components_bp)
+app.register_blueprint(charts_bp)
 
-@app.route('/api/components/preview', methods=['POST'])
-def preview_component():
-    """Preview a component with given props."""
-    try:
-        component_type = request.json.get('type')
-        props = request.json.get('props', {})
-        
-        if component_type == 'button':
-            from konomi.generators.html.components import Button, ButtonProps
-            button = Button(text=props.get('text', 'Button'), props=ButtonProps(**props))
-            return button.render()
-        elif component_type == 'alert':
-            from konomi.generators.html.components import Alert, AlertProps
-            alert = Alert(message=props.get('message', 'Alert'), props=AlertProps(**props))
-            return alert.render()
-        # Add more component types as needed
-        
-        return jsonify({'error': 'Invalid component type'}), 400
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/examples/svg/interactive')
-@app.route('/examples/svg/charts')
-def example_svg_charts():
-    """Render example SVG charts."""
-    from konomi.generators.svg.charts import ChartGenerator
-    
-    # Create bar chart
-    bar_chart = ChartGenerator(400, 300)
-    bar_data = [10, 45, 30, 25, 60, 15]
-    bar_labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
-    bar_svg = bar_chart.generate_bar_chart(
-        bar_data, bar_labels, 
-        title="Monthly Sales"
-    )
-    
-    # Create line chart
-    line_chart = ChartGenerator(400, 300)
-    line_data = [20, 35, 45, 30, 55, 40]
-    line_labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    line_svg = line_chart.generate_line_chart(
-        line_data, line_labels,
-        title="Weekly Traffic"
-    )
-    
-    # Create pie chart
-    pie_chart = ChartGenerator(400, 400)
-    pie_data = [30, 20, 15, 25, 10]
-    pie_labels = ["A", "B", "C", "D", "E"]
-    pie_svg = pie_chart.generate_pie_chart(
-        pie_data, pie_labels,
-        title="Market Share"
-    )
-    
-    # Combine all charts
-    combined_svg = f'''
-    <svg width="1200" height="400" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(0,0)">{bar_svg}</g>
-        <g transform="translate(400,0)">{line_svg}</g>
-        <g transform="translate(800,0)">{pie_svg}</g>
-    </svg>
-    '''
-    
-    return combined_svg, 200, {'Content-Type': 'image/svg+xml'}
-def example_svg_interactive():
-    """Render example SVG with interactive animations."""
-    return generate_interactive_animations(), 200, {'Content-Type': 'image/svg+xml'}
-
+# Register API routes
+from konomi.web.routes.execution import bp as execution_bp
+app.register_blueprint(execution_bp)
 
 # API Management endpoints
 @app.route('/api/v1/docs/generate', methods=['POST'])
@@ -311,18 +237,6 @@ def generate_structure():
     except Exception as e:
         logger.error(f"Error generating directory structure: {str(e)}")
         return jsonify({"success": False, "error": str(e)}), 500
-
-# Web interface execute endpoint
-@app.route('/execute', methods=['POST'])
-def execute():
-    """Execute Konomi code from web interface."""
-    code = request.form.get('code', '')
-    try:
-        result = interpreter.execute(code)
-        return jsonify({'success': True, 'result': result})
-    except KonomiError as e:
-        logger.error(f"Error executing code: {str(e)}")
-        return jsonify({'success': False, 'error': str(e)})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

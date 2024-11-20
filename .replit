@@ -75,7 +75,7 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python main.py"
+args = "python app.py"
 waitForPort = 5000
 
 [[workflows.workflow]]
@@ -174,7 +174,7 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python backup_cli.py backup"
+args = "python backup_cli.py list"
 
 [[workflows.workflow]]
 name = "List Backups"
@@ -269,7 +269,7 @@ task = "shell.exec"
 args = "python -m pytest tests/test_generated_components.py -v"
 
 [deployment]
-run = ["sh", "-c", "python main.py"]
+run = ["sh", "-c", "python app.py"]
 
 [[ports]]
 localPort = 5000

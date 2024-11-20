@@ -1,0 +1,105 @@
+2024-11-20 12:14:27,479 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,479 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database A1
+2024-11-20 12:14:27,481 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,482 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database A2
+2024-11-20 12:14:27,484 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,484 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database A3
+2024-11-20 12:14:27,493 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,493 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database A4
+2024-11-20 12:14:27,498 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,499 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database A5
+2024-11-20 12:14:27,501 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,502 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database B1
+2024-11-20 12:14:27,505 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,506 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database B2
+2024-11-20 12:14:27,508 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,508 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database B3
+2024-11-20 12:14:27,510 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,511 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database B4
+2024-11-20 12:14:27,513 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,514 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database B5
+2024-11-20 12:14:27,517 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,517 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database C1
+2024-11-20 12:14:27,519 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,520 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database C2
+2024-11-20 12:14:27,522 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,522 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database C3
+2024-11-20 12:14:27,524 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,525 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database C4
+2024-11-20 12:14:27,527 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,527 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database C5
+2024-11-20 12:14:27,529 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,529 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database D1
+2024-11-20 12:14:27,531 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,531 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database D2
+2024-11-20 12:14:27,534 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,534 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database D3
+2024-11-20 12:14:27,537 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,538 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database D4
+2024-11-20 12:14:27,540 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,540 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database D5
+2024-11-20 12:14:27,556 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,557 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database E1
+2024-11-20 12:14:27,560 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,561 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database E2
+2024-11-20 12:14:27,563 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,563 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database E3
+2024-11-20 12:14:27,565 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,565 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database E4
+2024-11-20 12:14:27,567 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,567 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database E5
+2024-11-20 12:14:27,569 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,569 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database F1
+2024-11-20 12:14:27,572 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,572 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database F2
+2024-11-20 12:14:27,574 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,574 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database F3
+2024-11-20 12:14:27,576 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,577 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database F4
+2024-11-20 12:14:27,578 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,579 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database F5
+2024-11-20 12:14:27,581 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,581 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database G1
+2024-11-20 12:14:27,584 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,585 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database G2
+2024-11-20 12:14:27,587 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,588 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database G3
+2024-11-20 12:14:27,591 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,591 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database G4
+2024-11-20 12:14:27,594 - db_monitor.DatabaseMonitor - ERROR - Database query failed for db_grid/E1/database.db: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+2024-11-20 12:14:27,594 - db_monitor.DatabaseMonitor - WARNING - Failed to store metrics for database G5
+2024-11-20 12:15:53,510 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database A1
+2024-11-20 12:15:53,541 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database A2
+2024-11-20 12:15:53,572 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database A3
+2024-11-20 12:15:53,601 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database A4
+2024-11-20 12:15:53,635 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database A5
+2024-11-20 12:15:53,668 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database B1
+2024-11-20 12:15:53,696 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database B2
+2024-11-20 12:15:53,724 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database B3
+2024-11-20 12:15:53,754 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database B4
+2024-11-20 12:15:53,787 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database B5
+2024-11-20 12:15:53,814 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database C1
+2024-11-20 12:15:53,844 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database C2
+2024-11-20 12:15:53,882 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database C3
+2024-11-20 12:15:53,909 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database C4
+2024-11-20 12:15:53,937 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database C5
+2024-11-20 12:15:53,965 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database D1
+2024-11-20 12:15:53,996 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database D2
+2024-11-20 12:15:54,027 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database D3
+2024-11-20 12:15:54,053 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database D4
+2024-11-20 12:15:54,082 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database D5
+2024-11-20 12:15:54,133 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database E1
+2024-11-20 12:15:54,160 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database E2
+2024-11-20 12:15:54,187 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database E3
+2024-11-20 12:15:54,213 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database E4
+2024-11-20 12:15:54,239 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database E5
+2024-11-20 12:15:54,264 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database F1
+2024-11-20 12:15:54,290 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database F2
+2024-11-20 12:15:54,315 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database F3
+2024-11-20 12:15:54,340 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database F4
+2024-11-20 12:15:54,370 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database F5
+2024-11-20 12:15:54,399 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database G1
+2024-11-20 12:15:54,424 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database G2
+2024-11-20 12:15:54,451 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database G3
+2024-11-20 12:15:54,480 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database G4
+2024-11-20 12:15:54,506 - db_monitor.DatabaseMonitor - INFO - Successfully stored metrics for database G5
