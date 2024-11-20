@@ -6,6 +6,7 @@ Handles routes for SVG chart generation and visualization.
 from flask import Blueprint
 from konomi.generators.svg.charts import ChartGenerator
 from konomi.web.routes.base import APIRouter
+from konomi.utils.performance import measure_performance
 
 bp = Blueprint('charts', __name__)
 
@@ -21,6 +22,7 @@ class ChartRouter(APIRouter):
         self.route('/examples/svg/charts', endpoint='svg_charts')(self.svg_charts)
         self.route('/examples/svg/interactive', endpoint='svg_interactive')(self.svg_charts)
     
+    @measure_performance(threshold=2.0)
     def svg_charts(self):
         """Render example SVG charts."""
         chart_gen = ChartGenerator(400, 300)

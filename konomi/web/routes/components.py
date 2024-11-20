@@ -6,6 +6,7 @@ Handles routes for component previews and examples.
 from flask import Blueprint, jsonify, request, render_template
 from konomi.generators.examples import generate_components_example
 from konomi.web.routes.base import APIRouter
+from konomi.utils.performance import measure_performance
 
 bp = Blueprint('components', __name__)
 
@@ -21,11 +22,13 @@ class ComponentsRouter(APIRouter):
         self.route('/examples/components', endpoint='example_components')(self.example_components)
         self.route('/api/components/preview', methods=['POST'], endpoint='preview_component')(self.preview_component)
     
+    @measure_performance(threshold=1.0)
     def example_components(self):
         """Render example components page."""
         components_html = generate_components_example()
         return render_template('components_example.html', components=components_html)
     
+    @measure_performance(threshold=0.5)
     def preview_component(self):
         """Preview a component with given props."""
         try:

@@ -212,20 +212,45 @@ class DatabaseMonitor:
                     "table_counts": self.get_table_counts(db_path)
                 }
                 
+    def get_function_performance_metrics(self) -> Dict[str, Any]:
+        """Get function performance metrics."""
+        try:
+            from konomi.utils.performance import _metrics
+            slow_functions = _metrics.get_slow_functions(threshold=1.0)
+            recent_errors = self.connection_manager.execute_query(
+                "E1",
+                """
+                SELECT function_name, error_type, COUNT(*) as error_count
+                FROM function_metrics
+                WHERE success = 0 AND timestamp > datetime('now', '-1 day')
+                GROUP BY function_name, error_type
+                """)
+            
+            return {
+                "slow_functions": slow_functions,
+                "recent_errors": recent_errors
+            }
+        except Exception as e:
+            logger.error(f"Error getting function metrics: {str(e)}")
+            return {}
                 # Advanced metrics
-                metrics.update({
-                    "error_stats": self.get_error_rate(db_path),
-                    "connection_pool": self.get_connection_pool_status(db_path),
-                    "lock_info": self.get_lock_info(db_path)
-                })
-                
-                # Track performance of a simple query
-                metrics["query_performance"] = self.track_query_performance(
-                    db_path,
-                    "SELECT COUNT(*) FROM sqlite_master"
-                )
-                
-                results[position] = metrics
-                self.store_metrics(position, metrics)
+            metrics.update({
+                "error_stats": self.get_error_rate(db_path),
+                "connection_pool": self.get_connection_pool_status(db_path),
+                "lock_info": self.get_lock_info(db_path)
+            })
+            
+            # Track performance of a simple query
+            metrics["query_performance"] = self.track_query_performance(
+                db_path,
+                "SELECT COUNT(*) FROM sqlite_master"
+            )
+            
+            # Add function performance metrics
+            if position == "E1":  # Store function metrics only in E1 summary
+                metrics["function_performance"] = self.get_function_performance_metrics()
+            
+            results[position] = metrics
+            self.store_metrics(position, metrics)
                 
         return results

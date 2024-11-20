@@ -9,6 +9,7 @@ from konomi.errors import KonomiError
 from konomi.interpreter import Interpreter
 from konomi.chained_programs import ProgramLibrary
 from konomi.web.routes.base import APIRouter
+from konomi.utils.performance import measure_performance
 
 bp = Blueprint('execution', __name__)
 
@@ -28,6 +29,7 @@ class ExecutionRouter(APIRouter):
         self.route('/api/v1/status', methods=['GET'], endpoint='api_status')(self.api_status)
         self.route('/api/v1/variables', methods=['GET'], endpoint='api_variables')(self.api_variables)
     
+    @measure_performance(threshold=1.0)
     def execute(self):
         """Execute Konomi code from web interface."""
         code = request.form.get('code', '')
@@ -37,6 +39,7 @@ class ExecutionRouter(APIRouter):
         except KonomiError as e:
             return self.error_response(str(e))
     
+    @measure_performance(threshold=1.0)
     def api_execute(self):
         """Execute Konomi code via API."""
         if not request.is_json:

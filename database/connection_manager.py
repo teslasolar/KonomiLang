@@ -3,6 +3,7 @@ Database connection manager for the Konomi database grid.
 Provides centralized connection handling and pooling for all databases.
 Includes function-level caching for improved performance.
 """
+from konomi.utils.performance import measure_performance
 import os
 import sqlite3
 import threading
@@ -76,6 +77,7 @@ class DatabaseConnectionManager:
             conn.close()
             
     @cache_result(query_cache)
+    @measure_performance(threshold=1.0)
     def execute_query(self, position: str, query: str, parameters: tuple = ()) -> List[Dict[str, Any]]:
         """Execute a query and return results with caching."""
         with self.get_connection(position) as conn:
@@ -84,6 +86,7 @@ class DatabaseConnectionManager:
             # Convert sqlite3.Row to dict for JSON serialization
             return [dict(row) for row in cursor.fetchall()]
             
+    @measure_performance(threshold=0.5)
     def execute_write(self, position: str, query: str, parameters: tuple = ()):
         """Execute a write query (INSERT, UPDATE, DELETE) and invalidate cache."""
         with self.get_connection(position) as conn:
