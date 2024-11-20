@@ -1,0 +1,26 @@
+{
+    "particle_simulation": {
+        "update_interval_ms": 50,
+        "batch_size": 100
+    },
+    "wave_generation": {
+        "update_interval_ms": 50,
+        "samples_per_update": 50
+    },
+    "quantum_state": {
+        "update_interval_ms": 99,
+        "states_per_update": 50
+    },
+    "neural_network": {
+        "update_interval_ms": 200,
+        "layer_update_interval_ms": 50
+    },
+    "genetic_algorithm": {
+        "update_interval_ms": 99,
+        "generation_interval_ms": 500
+    },
+    "chaos_system": {
+        "update_interval_ms": 50,
+        "iterations_per_update": 1
+    }
+}

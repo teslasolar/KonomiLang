@@ -1,0 +1,50 @@
+{
+    "particle_simulation": {
+        "avg_time_ms": 0.8,
+        "max_time_ms": 1.2,
+        "memory_usage": "Medium",
+        "complexity": "O(n)",
+        "memory_footprint": "8KB per 100 particles",
+        "cpu_usage": "15-20%"
+    },
+    "wave_generation": {
+        "avg_time_ms": 0.3,
+        "max_time_ms": 0.5,
+        "memory_usage": "Low",
+        "complexity": "O(1)",
+        "memory_footprint": "2KB per wave",
+        "cpu_usage": "5-10%"
+    },
+    "quantum_state": {
+        "avg_time_ms": 0.4,
+        "max_time_ms": 0.6,
+        "memory_usage": "Low",
+        "complexity": "O(1)",
+        "memory_footprint": "1KB",
+        "cpu_usage": "3-5%"
+    },
+    "neural_network": {
+        "avg_time_ms": 1.0,
+        "max_time_ms": 1.5,
+        "memory_usage": "High",
+        "complexity": "O(n²)",
+        "memory_footprint": "12KB per layer",
+        "cpu_usage": "25-30%"
+    },
+    "genetic_algorithm": {
+        "avg_time_ms": 0.7,
+        "max_time_ms": 1.0,
+        "memory_usage": "Medium",
+        "complexity": "O(n log n)",
+        "memory_footprint": "6KB per generation",
+        "cpu_usage": "10-15%"
+    },
+    "chaos_system": {
+        "avg_time_ms": 0.2,
+        "max_time_ms": 0.4,
+        "memory_usage": "Low",
+        "complexity": "O(1)",
+        "memory_footprint": "1KB",
+        "cpu_usage": "2-4%"
+    }
+}

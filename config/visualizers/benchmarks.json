@@ -1,0 +1,19 @@
+{
+    "default_iterations": 100,
+    "warmup_iterations": 5,
+    "measurement_types": ["time", "memory", "cpu"],
+    "thresholds": {
+        "execution_time_ms": {
+            "warning": 1.0,
+            "critical": 2.0
+        },
+        "memory_mb": {
+            "warning": 50,
+            "critical": 100
+        },
+        "cpu_percent": {
+            "warning": 25,
+            "critical": 50
+        }
+    }
+}
