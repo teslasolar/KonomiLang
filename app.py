@@ -167,6 +167,11 @@ async def endpoints_docs():
 async def syntax_docs():
     """Render syntax documentation page."""
 @app.route('/docs/react-visualization')
+@app.route('/examples/visualization')
+def visualization_examples():
+    """Render visualization examples page."""
+    return render_template('visualization_examples.html')
+
 @async_route
 async def react_visualization_docs():
     """Render React visualization documentation page."""

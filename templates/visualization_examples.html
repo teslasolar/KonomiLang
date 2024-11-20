@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% from "molecules/docs/section.html" import docs_section %}
+{% from "organisms/example_card.html" import example_card %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Interactive Visualization Examples</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {# Particle Simulation Example #}
+        <div class="visualization-card">
+            <h2 class="text-2xl mb-4">Particle Simulation</h2>
+            <div id="particle-vis" class="vis-container">
+                <svg viewBox="0 0 100 50" class="w-full"></svg>
+            </div>
+            <button onclick="startVisualization('p')" class="btn btn-primary mt-4">Start Simulation</button>
+            <pre class="mt-4 bg-gray-100 p-4 rounded"><code>// Start particle simulation
+const interval = sim.p();
+// Clear on unmount
+return () => clearInterval(interval);</code></pre>
+        </div>
+
+        {# Wave Generation Example #}
+        <div class="visualization-card">
+            <h2 class="text-2xl mb-4">Wave Generation</h2>
+            <div id="wave-vis" class="vis-container">
+                <svg viewBox="0 0 100 50" class="w-full"></svg>
+            </div>
+            <button onclick="startVisualization('w')" class="btn btn-primary mt-4">Generate Waves</button>
+            <pre class="mt-4 bg-gray-100 p-4 rounded"><code>// Start wave generation
+const interval = sim.w();
+// Clear on unmount
+return () => clearInterval(interval);</code></pre>
+        </div>
+
+        {# Quantum State Example #}
+        <div class="visualization-card">
+            <h2 class="text-2xl mb-4">Quantum State</h2>
+            <div id="quantum-vis" class="vis-container">
+                <svg viewBox="0 0 100 50" class="w-full"></svg>
+            </div>
+            <button onclick="startVisualization('q')" class="btn btn-primary mt-4">Show Quantum States</button>
+            <pre class="mt-4 bg-gray-100 p-4 rounded"><code>// Start quantum visualization
+const interval = sim.q();
+// Clear on unmount
+return () => clearInterval(interval);</code></pre>
+        </div>
+
+        {# Neural Network Example #}
+        <div class="visualization-card">
+            <h2 class="text-2xl mb-4">Neural Network Activity</h2>
+            <div id="neural-vis" class="vis-container">
+                <svg viewBox="0 0 100 50" class="w-full"></svg>
+            </div>
+            <button onclick="startVisualization('n')" class="btn btn-primary mt-4">Show Neural Activity</button>
+            <pre class="mt-4 bg-gray-100 p-4 rounded"><code>// Start neural visualization
+const interval = sim.n();
+// Clear on unmount
+return () => clearInterval(interval);</code></pre>
+        </div>
+
+        {# Genetic Algorithm Example #}
+        <div class="visualization-card">
+            <h2 class="text-2xl mb-4">Genetic Algorithm</h2>
+            <div id="genetic-vis" class="vis-container">
+                <svg viewBox="0 0 100 50" class="w-full"></svg>
+            </div>
+            <button onclick="startVisualization('g')" class="btn btn-primary mt-4">Start Evolution</button>
+            <pre class="mt-4 bg-gray-100 p-4 rounded"><code>// Start genetic visualization
+const interval = sim.g();
+// Clear on unmount
+return () => clearInterval(interval);</code></pre>
+        </div>
+
+        {# Chaos System Example #}
+        <div class="visualization-card">
+            <h2 class="text-2xl mb-4">Chaos System</h2>
+            <div id="chaos-vis" class="vis-container">
+                <svg viewBox="0 0 100 50" class="w-full"></svg>
+            </div>
+            <button onclick="startVisualization('c')" class="btn btn-primary mt-4">Show Chaos</button>
+            <pre class="mt-4 bg-gray-100 p-4 rounded"><code>// Start chaos visualization
+const interval = sim.c();
+// Clear on unmount
+return () => clearInterval(interval);</code></pre>
+        </div>
+    </div>
+</div>
+
+<style>
+.visualization-card {
+    @apply bg-white rounded-lg shadow-lg p-6 mb-6;
+}
+.vis-container {
+    @apply bg-gray-900 rounded-lg p-4 h-64;
+}
+.vis-container svg {
+    @apply h-full w-full;
+}
+</style>
+
+<script>
+const κ = {
+    sim: {
+        p: function() { return setInterval(() => updateVisualization('p'), 50); },
+        w: function() { return setInterval(() => updateVisualization('w'), 50); },
+        q: function() { return setInterval(() => updateVisualization('q'), 99); },
+        n: function() { return setInterval(() => updateVisualization('n'), 200); },
+        g: function() { return setInterval(() => updateVisualization('g'), 99); },
+        c: function() { return setInterval(() => updateVisualization('c'), 50); }
+    }
+};
+
+const activeIntervals = {};
+
+function startVisualization(type) {
+    if (activeIntervals[type]) {
+        clearInterval(activeIntervals[type]);
+        delete activeIntervals[type];
+        return;
+    }
+    
+    const interval = κ.sim[type]();
+    activeIntervals[type] = interval;
+    
+    const button = document.querySelector(`button[onclick="startVisualization('${type}')"]`);
+    button.textContent = 'Stop';
+    button.classList.add('active');
+}
+
+function updateVisualization(type) {
+    const container = document.getElementById(`${type}-vis`);
+    const svg = container.querySelector('svg');
+    
+    // Generate visualization data based on type
+    const data = generateData(type);
+    
+    // Update SVG content
+    svg.innerHTML = generateSVGContent(data);
+}
+
+function generateData(type) {
+    switch(type) {
+        case 'p':
+            return Array.from({length: 20}, () => ({
+                x: Math.random() * 100,
+                y: Math.random() * 50
+            }));
+        case 'w':
+            return Array.from({length: 50}, (_, i) => ({
+                x: i * 2,
+                y: 25 + Math.sin(Date.now() / 1000 + i / 5) * 20
+            }));
+        case 'q':
+            return Array.from({length: 50}, () => Math.random() > 0.5 ? 50 : 0);
+        case 'n':
+            return Array.from({length: 81}, () => Math.random() > 0.7);
+        case 'g':
+            return Array.from({length: 50}, () => Math.random() * 50);
+        case 'c':
+            const t = Date.now() / 1000;
+            return Array.from({length: 50}, (_, i) => Math.sin(t + i / 5) * 25 + 25);
+        default:
+            return [];
+    }
+}
+
+function generateSVGContent(data) {
+    const paths = [];
+    
+    if (Array.isArray(data)) {
+        if (typeof data[0] === 'number') {
+            // Line chart for simple arrays
+            const points = data.map((y, i) => `${i * 2},${y}`).join(' ');
+            paths.push(`<path d="M ${points}" stroke="#93e" fill="none"/>`);
+        } else if (data[0].x !== undefined) {
+            // Scatter plot for particle data
+            paths.push(data.map(p => 
+                `<circle cx="${p.x}" cy="${p.y}" r="1" fill="#93e"/>`
+            ).join(''));
+        }
+    }
+    
+    return paths.join('\n');
+}
+</script>
+{% endblock %}
