@@ -201,6 +201,48 @@ def example_svg_pulse():
     """Render example SVG pulse animation."""
     return generate_pulse_animation(), 200, {'Content-Type': 'image/svg+xml'}
 @app.route('/examples/svg/interactive')
+@app.route('/examples/svg/charts')
+def example_svg_charts():
+    """Render example SVG charts."""
+    from konomi.generators.svg.charts import ChartGenerator
+    
+    # Create bar chart
+    bar_chart = ChartGenerator(400, 300)
+    bar_data = [10, 45, 30, 25, 60, 15]
+    bar_labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+    bar_svg = bar_chart.generate_bar_chart(
+        bar_data, bar_labels, 
+        title="Monthly Sales"
+    )
+    
+    # Create line chart
+    line_chart = ChartGenerator(400, 300)
+    line_data = [20, 35, 45, 30, 55, 40]
+    line_labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    line_svg = line_chart.generate_line_chart(
+        line_data, line_labels,
+        title="Weekly Traffic"
+    )
+    
+    # Create pie chart
+    pie_chart = ChartGenerator(400, 400)
+    pie_data = [30, 20, 15, 25, 10]
+    pie_labels = ["A", "B", "C", "D", "E"]
+    pie_svg = pie_chart.generate_pie_chart(
+        pie_data, pie_labels,
+        title="Market Share"
+    )
+    
+    # Combine all charts
+    combined_svg = f'''
+    <svg width="1200" height="400" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(0,0)">{bar_svg}</g>
+        <g transform="translate(400,0)">{line_svg}</g>
+        <g transform="translate(800,0)">{pie_svg}</g>
+    </svg>
+    '''
+    
+    return combined_svg, 200, {'Content-Type': 'image/svg+xml'}
 def example_svg_interactive():
     """Render example SVG with interactive animations."""
     return generate_interactive_animations(), 200, {'Content-Type': 'image/svg+xml'}
