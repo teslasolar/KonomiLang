@@ -201,6 +201,9 @@ def example_svg_pulse():
 from konomi.web.routes.components import bp as components_bp
 from konomi.web.routes.charts import bp as charts_bp
 
+# Register documentation routes
+from konomi.web.routes.docs import bp as docs_bp
+app.register_blueprint(docs_bp)
 app.register_blueprint(components_bp)
 app.register_blueprint(charts_bp)
 

@@ -18,4 +18,5 @@ dependencies = [
     "pathlib>=1.0.1",
     "typing>=3.10.0.0",
     "pytest-asyncio>=0.24.0",
+    "docstring-parser>=0.16",
 ]

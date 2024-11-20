@@ -13,6 +13,10 @@ from pathlib import Path
 from functools import lru_cache
 import markdown
 from concurrent.futures import ThreadPoolExecutor
+import ast
+import inspect
+from typing import get_type_hints
+from docstring_parser import parse as parse_docstring
 from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
 import time
 import inspect
@@ -413,6 +417,91 @@ class DocumentationGenerator:
         
         return validate_node(template)
 
+
+    async def generate_function_docs(self, source_path: str, output_path: str = None) -> str:
+        """
+        Generate documentation for functions in a Python source file.
+        
+        Args:
+            source_path: Path to the Python source file
+            output_path: Optional path to write documentation file
+            
+        Returns:
+            str: Generated markdown documentation
+        """
+        try:
+            # Read source file
+            with open(source_path, 'r') as f:
+                source = f.read()
+            
+            # Parse the source code
+            tree = ast.parse(source)
+            
+            # Extract module docstring
+            module_doc = ast.get_docstring(tree) or "No module documentation available."
+            
+            # Initialize documentation sections
+            doc_sections = [
+                f"# {os.path.basename(source_path)}",
+                "\n## Module Description",
+                module_doc,
+                "\n## Functions",
+            ]
+            
+            # Process each function in the module
+            for node in ast.walk(tree):
+                if isinstance(node, ast.FunctionDef):
+                    # Get function docstring
+                    docstring = ast.get_docstring(node) or "No documentation available."
+                    parsed_doc = parse_docstring(docstring)
+                    
+                    # Extract arguments and their types
+                    args = []
+                    for arg in node.args.args:
+                        if arg.annotation and isinstance(arg.annotation, ast.Name):
+                            arg_type = arg.annotation.id
+                        else:
+                            arg_type = "Any"
+                        args.append(f"{arg.arg}: {arg_type}")
+                    
+                    # Generate function documentation
+                    func_doc = [
+                        f"\n### {node.name}",
+                        f"\n```python\ndef {node.name}({', '.join(args)})",
+                        "```\n",
+                        parsed_doc.short_description or "No description available.",
+                        "\n#### Parameters:",
+                    ]
+                    
+                    # Add parameter descriptions
+                    for param in parsed_doc.params:
+                        func_doc.append(f"- `{param.arg_name}` ({param.type_name or 'Any'}): {param.description or 'No description'}")
+                    
+                    # Add return information if available
+                    if parsed_doc.returns:
+                        func_doc.extend([
+                            "\n#### Returns:",
+                            f"- `{parsed_doc.returns.type_name or 'Any'}`: {parsed_doc.returns.description or 'No description'}"
+                        ])
+                    
+                    doc_sections.extend(func_doc)
+            
+            # Combine all documentation sections
+            documentation = "\n".join(doc_sections)
+            
+            # Process markdown with existing method
+            processed_doc = await self.process_markdown(documentation, f"func_docs_{os.path.basename(source_path)}")
+            
+            # Write to file if output path is provided
+            if output_path:
+                async with aiofiles.open(output_path, 'w') as f:
+                    await f.write(documentation)
+            
+            return processed_doc
+            
+        except Exception as e:
+            logger.error(f"Error generating function documentation: {str(e)}")
+            raise
     def generate_directory_structure(self, template: Dict[str, Any], base_path: str = ".") -> None:
         """Generate directory structure based on template with error handling"""
         base = Path(base_path)

@@ -81,3 +81,48 @@ async def endpoints():
     """Render endpoints documentation page."""
     content, status = await load_markdown_file('docs/endpoints.md', 'endpoints')
     return render_template('markdown.html', content=content, title="API Endpoints"), status
+
+
+@bp.route('/function/<path:file_path>')
+@async_route
+async def function_docs(file_path: str):
+    """Generate and render documentation for a specific Python file."""
+    try:
+        # Sanitize and validate file path
+        file_path = os.path.normpath(file_path)
+        if file_path.startswith("..") or file_path.startswith("/"):
+            logger.error(f"Invalid file path: {file_path}")
+            return render_template('markdown.html',
+                                content="Error: Invalid file path",
+                                title="Error"), 400
+
+        # Get path relative to project root
+        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+        source_path = os.path.join(project_root, file_path)
+        
+        if not os.path.exists(source_path):
+            logger.error(f"File not found: {source_path}")
+            return render_template('markdown.html',
+                                content=f"Error: File {file_path} not found",
+                                title="Error"), 404
+
+        # Verify file is a Python file
+        if not source_path.endswith('.py'):
+            logger.error(f"Invalid file type: {source_path}")
+            return render_template('markdown.html',
+                                content="Error: Only Python files are supported",
+                                title="Error"), 400
+
+        # Generate documentation
+        from generation.functions import DocumentationGenerator
+        doc_generator = DocumentationGenerator()
+        content = await doc_generator.generate_function_docs(source_path)
+        
+        return render_template('markdown.html',
+                            content=content,
+                            title=f"Function Documentation: {os.path.basename(file_path)}")
+    except Exception as e:
+        logger.error(f"Error generating function documentation: {str(e)}")
+        return render_template('markdown.html',
+                            content=f"Error generating documentation: {str(e)}",
+                            title="Error"), 500
