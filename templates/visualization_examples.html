@@ -165,6 +165,81 @@ function updateVisualization(type) {
     
     // Generate visualization data based on type
     const data = generateData(type);
+<div id="metrics-comparison" class="mb-8">
+    <h2 class="text-2xl font-bold mb-4">Visualization Methods Comparison</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 border">Method</th>
+                    <th class="px-4 py-2 border">Performance</th>
+                    <th class="px-4 py-2 border">Memory Usage</th>
+                    <th class="px-4 py-2 border">Update Rate</th>
+                    <th class="px-4 py-2 border">Complexity</th>
+                </tr>
+            </thead>
+            <tbody id="comparison-metrics">
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-4">
+        <button onclick="runBenchmarks()" class="bg-blue-500 text-white px-4 py-2 rounded">
+            Run Benchmarks
+        </button>
+    </div>
+    <div id="benchmark-results" class="mt-4 grid grid-cols-2 gap-4">
+        <div class="p-4 border rounded">
+            <h3 class="font-bold mb-2">Particle Simulation</h3>
+            <p id="particle-benchmark">Not run</p>
+        </div>
+        <div class="p-4 border rounded">
+            <h3 class="font-bold mb-2">Wave Generation</h3>
+            <p id="wave-benchmark">Not run</p>
+        </div>
+        <div class="p-4 border rounded">
+            <h3 class="font-bold mb-2">Quantum State</h3>
+            <p id="quantum-benchmark">Not run</p>
+        </div>
+        <div class="p-4 border rounded">
+            <h3 class="font-bold mb-2">Neural Network</h3>
+            <p id="neural-benchmark">Not run</p>
+        </div>
+        <div class="p-4 border rounded">
+            <h3 class="font-bold mb-2">Genetic Algorithm</h3>
+            <p id="genetic-benchmark">Not run</p>
+        </div>
+        <div class="p-4 border rounded">
+            <h3 class="font-bold mb-2">Chaos System</h3>
+            <p id="chaos-benchmark">Not run</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Initial metrics data
+const metricsData = {
+    'Particle Simulation': { performance: 'Medium', memory: 'Medium', updateRate: '50ms', complexity: 'O(n)' },
+    'Wave Generation': { performance: 'Fast', memory: 'Low', updateRate: '50ms', complexity: 'O(1)' },
+    'Quantum State': { performance: 'Fast', memory: 'Low', updateRate: '99ms', complexity: 'O(1)' },
+    'Neural Network': { performance: 'Slow', memory: 'High', updateRate: '200ms', complexity: 'O(n²)' },
+    'Genetic Algorithm': { performance: 'Medium', memory: 'Medium', updateRate: '99ms', complexity: 'O(n log n)' },
+    'Chaos System': { performance: 'Fast', memory: 'Low', updateRate: '50ms', complexity: 'O(1)' }
+};
+
+// Populate comparison table
+const tbody = document.getElementById('comparison-metrics');
+Object.entries(metricsData).forEach(([method, metrics]) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td class="px-4 py-2 border">${method}</td>
+        <td class="px-4 py-2 border">${metrics.performance}</td>
+        <td class="px-4 py-2 border">${metrics.memory}</td>
+        <td class="px-4 py-2 border">${metrics.updateRate}</td>
+        <td class="px-4 py-2 border">${metrics.complexity}</td>
+    `;
+    tbody.appendChild(row);
+});
+</script>
 async function runBenchmarks() {
     // Disable button and show running state
     const button = document.querySelector('button[onclick="runBenchmarks()"]');
