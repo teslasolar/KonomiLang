@@ -1,12 +1,14 @@
 """
 Database connection manager for the Konomi database grid.
 Provides centralized connection handling and pooling for all databases.
+Includes function-level caching for improved performance.
 """
 import os
 import sqlite3
 import threading
 import time
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Any
+from .cache_manager import cache_result, query_cache, table_cache
 from contextlib import contextmanager
 
 class DatabaseConnectionManager:
@@ -73,31 +75,43 @@ class DatabaseConnectionManager:
         except Exception:
             conn.close()
             
-    def execute_query(self, position: str, query: str, parameters: tuple = ()) -> List[sqlite3.Row]:
-        """Execute a query and return results."""
+    @cache_result(query_cache)
+    def execute_query(self, position: str, query: str, parameters: tuple = ()) -> List[Dict[str, Any]]:
+        """Execute a query and return results with caching."""
         with self.get_connection(position) as conn:
             cursor = conn.cursor()
             cursor.execute(query, parameters)
-            return cursor.fetchall()
+            # Convert sqlite3.Row to dict for JSON serialization
+            return [dict(row) for row in cursor.fetchall()]
             
     def execute_write(self, position: str, query: str, parameters: tuple = ()):
-        """Execute a write query (INSERT, UPDATE, DELETE)."""
+        """Execute a write query (INSERT, UPDATE, DELETE) and invalidate cache."""
         with self.get_connection(position) as conn:
             cursor = conn.cursor()
             cursor.execute(query, parameters)
             conn.commit()
+        # Invalidate cache after write operation
+        self.invalidate_cache(position)
             
     def execute_many(self, position: str, query: str, parameters: List[tuple]):
-        """Execute many write operations in a single transaction."""
+        """Execute many write operations in a single transaction and invalidate cache."""
         with self.get_connection(position) as conn:
             cursor = conn.cursor()
             cursor.executemany(query, parameters)
             conn.commit()
+        # Invalidate cache after write operations
+        self.invalidate_cache(position)
             
+    @cache_result(table_cache)
     def get_table_names(self, position: str) -> List[str]:
-        """Get list of tables in the database."""
+        """Get list of tables in the database with caching."""
         query = "SELECT name FROM sqlite_master WHERE type='table'"
         return [row['name'] for row in self.execute_query(position, query)]
+        
+    def invalidate_cache(self, position: str):
+        """Invalidate cache for a specific database position."""
+        query_cache.clear()  # Clear query cache
+        table_cache.clear()  # Clear table cache
         
     def check_connection(self, position: str) -> bool:
         """Test if connection to database is possible."""
