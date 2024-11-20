@@ -1,6 +1,26 @@
 import os
 import subprocess
+import requests
 from datetime import datetime
+
+def create_github_repo():
+    """Create GitHub repository if it doesn't exist."""
+    headers = {
+        'Authorization': f'token {os.environ["GITHUB_TOKEN"]}',
+        'Accept': 'application/vnd.github.v3+json'
+    }
+    
+    data = {
+        'name': 'KonomiLang',
+        'description': 'A specialized programming language designed for AI model interactions',
+        'private': False,
+        'has_issues': True,
+        'has_projects': True,
+        'has_wiki': True
+    }
+    
+    response = requests.post('https://api.github.com/user/repos', headers=headers, json=data)
+    return response.status_code == 201
 
 def backup_to_github():
     """Backup the repository to GitHub."""
@@ -13,6 +33,9 @@ def backup_to_github():
         subprocess.run(['git', 'config', 'user.email', 'bot@konomi.ai'], check=True)
         subprocess.run(['git', 'config', 'user.name', 'Konomi Bot'], check=True)
         
+        # Create repository if it doesn't exist
+        create_github_repo()
+        
         # Add remote if not exists
         try:
             subprocess.run(['git', 'remote', 'add', 'origin', 
@@ -20,7 +43,9 @@ def backup_to_github():
                           '@github.com/teslasolar/KonomiLang.git'])
         except subprocess.CalledProcessError:
             # Remote might already exist
-            pass
+            subprocess.run(['git', 'remote', 'set-url', 'origin',
+                          'https://x-access-token:' + os.environ['GITHUB_TOKEN'] + 
+                          '@github.com/teslasolar/KonomiLang.git'])
             
         # Add all files
         subprocess.run(['git', 'add', '.'], check=True)
