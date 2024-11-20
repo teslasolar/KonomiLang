@@ -5,11 +5,8 @@ This module implements the main Flask application for the Konomi programming lan
 providing both web interface and API endpoints.
 """
 from flask import Flask, render_template, request, jsonify
-from konomi.generators.examples import (
-    generate_example_card, generate_example_chart,
-    generate_animated_loader, generate_animated_path,
-    generate_pulse_animation, generate_interactive_animations
-)
+from konomi.generators.examples import generate_components_example
+from konomi.generators.svg.charts import ChartGenerator
 from konomi.interpreter import Interpreter
 from konomi.errors import KonomiError
 from konomi.chained_programs import ProgramLibrary
@@ -17,7 +14,8 @@ from konomi.routes.core import setup_core_routes
 from konomi.routes.chains import setup_chain_routes
 from monitoring.api import monitor_api
 from generation.functions import DocumentationGenerator
-from konomi.generators.examples import (
+from konomi.generators.examples import generate_components_example
+from konomi.generators.examples.svg_examples import (
     generate_example_card, generate_example_chart,
     generate_animated_loader, generate_animated_path,
     generate_pulse_animation
@@ -200,6 +198,42 @@ def example_svg_path():
 def example_svg_pulse():
     """Render example SVG pulse animation."""
     return generate_pulse_animation(), 200, {'Content-Type': 'image/svg+xml'}
+@app.route('/examples/components')
+def example_components():
+# Components example route
+@app.route('/examples/components')
+def examples_components():
+    """Render example components page."""
+    from konomi.generators.examples import generate_components_example
+    components_html = generate_components_example()
+    return render_template('components_example.html', components=components_html)
+
+    """Render example components page."""
+    from konomi.generators.examples import generate_components_example
+    components_html = generate_components_example()
+    return render_template('components_example.html', components=components_html)
+
+@app.route('/api/components/preview', methods=['POST'])
+def preview_component():
+    """Preview a component with given props."""
+    try:
+        component_type = request.json.get('type')
+        props = request.json.get('props', {})
+        
+        if component_type == 'button':
+            from konomi.generators.html.components import Button, ButtonProps
+            button = Button(text=props.get('text', 'Button'), props=ButtonProps(**props))
+            return button.render()
+        elif component_type == 'alert':
+            from konomi.generators.html.components import Alert, AlertProps
+            alert = Alert(message=props.get('message', 'Alert'), props=AlertProps(**props))
+            return alert.render()
+        # Add more component types as needed
+        
+        return jsonify({'error': 'Invalid component type'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/examples/svg/interactive')
 @app.route('/examples/svg/charts')
 def example_svg_charts():

@@ -206,3 +206,70 @@ def generate_interactive_animations() -> str:
     )
     
     return svg_gen.generate()
+
+def generate_components_example():
+    """Generate an example page using the component library."""
+    from .html.components import Button, ButtonProps, Input, InputProps, Card, CardProps, Alert, AlertProps
+    from .html.layouts import Container, ContainerProps, Grid, GridProps, Flex, FlexProps
+    from .html.forms import Form, FormProps, FormGroup, FormGroupProps, Select, SelectProps
+    
+    # Create a button
+    button_props = ButtonProps(
+        variant="primary",
+        size="medium",
+        class_name="mr-4"
+    )
+    primary_button = Button("Click Me", button_props)
+    
+    # Create an input
+    input_props = InputProps(
+        type="text",
+        placeholder="Enter your name",
+        required=True
+    )
+    text_input = Input(input_props)
+    
+    # Create a form group
+    form_group_props = FormGroupProps(
+        label="Username",
+        help_text="Enter your username",
+        required=True
+    )
+    form_group = FormGroup(text_input.render(), form_group_props)
+    
+    # Create a select
+    select_props = SelectProps(
+        options=[
+            {"value": "1", "label": "Option 1"},
+            {"value": "2", "label": "Option 2"},
+            {"value": "3", "label": "Option 3"}
+        ],
+        placeholder="Select an option"
+    )
+    select = Select(select_props)
+    
+    # Create a form
+    form_props = FormProps(method="post", action="/submit")
+    form = Form([form_group.render(), select.render(), primary_button.render()], form_props)
+    
+    # Create a card
+    card_props = CardProps(padding="normal", shadow="medium", hover_effect=True)
+    card = Card(form.render(), card_props)
+    
+    # Create an alert
+    alert_props = AlertProps(type="info", dismissible=True)
+    alert = Alert("This is an example of the component library", alert_props)
+    
+    # Create a grid layout
+    grid_props = GridProps(columns=2, gap=4)
+    grid = Grid([card.render(), card.render()], grid_props)
+    
+    # Create a flex layout
+    flex_props = FlexProps(direction="column", justify="center", align="center")
+    flex = Flex([alert.render(), grid.render()], flex_props)
+    
+    # Create a container
+    container_props = ContainerProps(max_width="lg", padding=True, center=True)
+    container = Container(flex.render(), container_props)
+    
+    return container.render()

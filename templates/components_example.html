@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Component Library Examples</h1>
+    <div id="components-showcase" class="space-y-8">
+        {{ components | safe }}
+    </div>
+</div>
+{% endblock %}
