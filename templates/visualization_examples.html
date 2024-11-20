@@ -85,6 +85,37 @@ const interval = sim.c();
 return () => clearInterval(interval);</code></pre>
         </div>
     </div>
+    {# Performance Benchmarks Section #}
+    <div class="card mt-8 p-6">
+        <h2 class="text-2xl mb-4">Performance Benchmarks</h2>
+        <div id="benchmark-results" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="p-4 border rounded">
+                <h3>Particle Simulation</h3>
+                <p id="particle-benchmark">Running...</p>
+            </div>
+            <div class="p-4 border rounded">
+                <h3>Wave Generation</h3>
+                <p id="wave-benchmark">Running...</p>
+            </div>
+            <div class="p-4 border rounded">
+                <h3>Quantum State</h3>
+                <p id="quantum-benchmark">Running...</p>
+            </div>
+            <div class="p-4 border rounded">
+                <h3>Neural Network</h3>
+                <p id="neural-benchmark">Running...</p>
+            </div>
+            <div class="p-4 border rounded">
+                <h3>Genetic Algorithm</h3>
+                <p id="genetic-benchmark">Running...</p>
+            </div>
+            <div class="p-4 border rounded">
+                <h3>Chaos System</h3>
+                <p id="chaos-benchmark">Running...</p>
+            </div>
+        </div>
+        <button onclick="runBenchmarks()" class="btn btn-primary mt-4">Run Benchmarks</button>
+    </div>
 </div>
 
 <style>
@@ -134,6 +165,47 @@ function updateVisualization(type) {
     
     // Generate visualization data based on type
     const data = generateData(type);
+async function runBenchmarks() {
+    // Disable button and show running state
+    const button = document.querySelector('button[onclick="runBenchmarks()"]');
+    button.disabled = true;
+    button.textContent = 'Running Benchmarks...';
+    
+    // Reset all benchmark displays
+    document.querySelectorAll('#benchmark-results p').forEach(p => p.textContent = 'Running...');
+    
+    try {
+        const response = await fetch('/api/v1/visualization/benchmark', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ iterations: 100 })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Update benchmark results
+            Object.entries(data.results).forEach(([key, value]) => {
+                const element = document.getElementById(`${key}-benchmark`);
+                if (element) {
+                    element.textContent = `${value.toFixed(2)} ms/iteration`;
+                }
+            });
+        } else {
+            console.error('Benchmark failed:', data.error);
+            document.querySelectorAll('#benchmark-results p').forEach(p => p.textContent = 'Error running benchmark');
+        }
+    } catch (error) {
+        console.error('Error running benchmarks:', error);
+        document.querySelectorAll('#benchmark-results p').forEach(p => p.textContent = 'Error running benchmark');
+    }
+    
+    // Re-enable button
+    button.disabled = false;
+    button.textContent = 'Run Benchmarks';
+}
     
     // Update SVG content
     svg.innerHTML = generateSVGContent(data);
